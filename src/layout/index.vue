@@ -1,35 +1,63 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { debounce } from 'lodash-es';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
+import Loading from '@/components/loading/Loading.vue';
+import { useAppStatusStore } from '@/stores/app-status-store';
+import bgImage from '@/assets/image/background.png';
 
 defineOptions({
   name: 'Layout',
 });
 
 const currentWindowHeight = ref(window.innerHeight);
-const visibilityHeight = computed(() => {
-  return currentWindowHeight.value * 0.4;
-});
+const visibilityHeight = computed(() => currentWindowHeight.value * 0.4);
+const containerLoadTimeout = ref<any>();
 
-onMounted(() => {
-  // 使用防抖函数提高性能
+const layoutRef = ref<HTMLElement | null>(null);
+const appStatusStore = useAppStatusStore();
+
+const isLoaded = computed(() => appStatusStore.resourceLoadStatus);
+
+onMounted(async () => {
   window.addEventListener('resize', debounce(handleResize, 100));
+  await nextTick();
+  await containerLoadComplete();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-/**
- * 处理窗口调整
- */
 function handleResize() {
   currentWindowHeight.value = window.innerHeight;
+}
+
+async function containerLoadComplete() {
+  // 确保背景加载完成
+  await waitForImageLoad(bgImage);
+  containerLoadTimeout.value = setTimeout(() => {
+    appStatusStore.setResourceLoadStatus(true);
+  }, 1500);
+}
+
+function waitForImageLoad(imageSrc: string): Promise<void> {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = imageSrc;
+  });
 }
 </script>
 
 <template>
-  <ElContainer class="layout">
+  <!-- Loading -->
+  <Loading />
+
+  <!-- 页面主体 -->
+  <ElContainer v-if="isLoaded" ref="layoutRef" class="layout">
     <ElAffix>
       <ElHeader class="header-container">
         <NavBar />
@@ -66,5 +94,17 @@ function handleResize() {
 }
 .main-container {
   width: 100%;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
 }
 </style>

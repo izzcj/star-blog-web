@@ -73,7 +73,7 @@ function clickUserInfo() {
           </template>
         </ElMenu>
       </ElCol>
-      <ElCol :span="2" v-if="false">
+      <ElCol v-if="false" :span="2">
         <div class="venus-center info">
           <ElDropdown>
             <ElAvatar :size="50" :src="avatar" />

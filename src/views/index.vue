@@ -108,11 +108,8 @@ function homeTitleClick() {
 
   // 光标效果
   .cursor {
-    display: inline-block;
-    height: 1em;
     border-left: 2px solid rgba(255, 255, 255, 0.5);
     margin-left: 2px;
-    border-radius: 10px;
     animation: hideToShow 0.9s infinite;
   }
 }
