@@ -27,47 +27,6 @@ const commonRouter: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    path: '/blog',
-    component: DefaultLayout,
-    meta: {
-      title: '菜单一',
-      keepAlive: false,
-      topLevel: true,
-    },
-    children: [
-      {
-        name: 'Blog',
-        path: '/blog/index',
-        meta: {
-          title: '博客',
-          keepAlive: false,
-          topLevel: false,
-        },
-        component: () => import('@/views/blog/index.vue'),
-      },
-      {
-        name: 'Comment',
-        path: '/blog/comment',
-        meta: {
-          title: '评论',
-          keepAlive: false,
-          topLevel: false,
-        },
-        component: () => import('@/views/blog/comment/index.vue'),
-      },
-      {
-        name: 'Tag',
-        path: '/blog/tag',
-        meta: {
-          title: '标签',
-          keepAlive: false,
-          topLevel: false,
-        },
-        component: () => import('@/views/blog/tag/index.vue'),
-      },
-    ],
-  },
   // 个人信息
   {
     path: '/user',
