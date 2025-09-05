@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { debounce } from 'lodash-es';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
@@ -17,6 +16,8 @@ const containerLoadTimeout = ref<any>();
 
 const layoutRef = ref<HTMLElement | null>(null);
 const appStatusStore = useAppStatusStore();
+
+const backgroundImage = ref(bgImage);
 
 const isLoaded = computed(() => appStatusStore.resourceLoadStatus);
 
@@ -56,13 +57,14 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
   <!-- Loading -->
   <Loading />
 
+  <!-- 背景图 -->
+  <ElImage class="page-bg" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
+
   <!-- 页面主体 -->
   <ElContainer v-if="isLoaded" ref="layoutRef" class="layout">
-    <ElAffix>
-      <ElHeader class="header-container">
-        <NavBar />
-      </ElHeader>
-    </ElAffix>
+    <ElHeader class="header-container">
+      <NavBar />
+    </ElHeader>
     <ElMain id="venus-main" class="main-container hidden-scrollbar">
       <AppMain />
       <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
@@ -72,13 +74,16 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
 </template>
 
 <style lang="less" scoped>
+.page-bg {
+  /* 固定在页面背景 */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
 .layout {
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/image/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  position: relative;
 }
 .header-container {
   // 动画时长
