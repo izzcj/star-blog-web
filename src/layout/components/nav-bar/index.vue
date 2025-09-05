@@ -30,8 +30,6 @@ const currentRoute = useRoute();
 const selectedMenuIndex = ref();
 const logText = ref('StarBlog');
 const logType = ref('TEXT');
-// 是否显示用户信息
-const showUserInfo = ref(true);
 
 selectedMenuIndex.value = currentRoute.path;
 if (isEmpty(selectedMenuIndex.value)) {
@@ -53,33 +51,15 @@ watch(
 function clickUserInfo() {
   router.push('/user/info');
 }
-
-/**
- * 获取ElCol的Span
- *
- * @param part 类型
- */
-function getColSpan(part: 'logo' | 'menu' | 'user') {
-  const base = { logo: 3, user: 2 };
-  if (part === 'logo') {
-    return base.logo;
-  }
-  if (part === 'user') {
-    return showUserInfo.value ? base.user : 0;
-  }
-  if (part === 'menu') {
-    return 24 - base.logo - (showUserInfo.value ? base.user : 0);
-  }
-}
 </script>
 
 <template>
   <div class="nav-bar">
     <ElRow :gutter="10">
-      <ElCol :span="getColSpan('logo')">
+      <ElCol :span="3">
         <Logo :type="logType" :logo="logText" />
       </ElCol>
-      <ElCol :span="getColSpan('menu')">
+      <ElCol :span="19">
         <ElMenu
           class="right-aligned-menu"
           :ellipsis="false"
@@ -93,7 +73,7 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
           </template>
         </ElMenu>
       </ElCol>
-      <ElCol v-if="showUserInfo" :span="getColSpan('user')">
+      <ElCol v-if="false" :span="2">
         <div class="venus-center info">
           <ElDropdown>
             <ElAvatar :size="50" :src="avatar" />
@@ -125,11 +105,5 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
 .right-aligned-menu {
   display: flex;
   justify-content: flex-end;
-  --el-menu-text-color: rgb(255, 255, 255);
-  --el-menu-active-color: #ffd04b;
-  --el-menu-item-font-size: 15px;
-  --el-menu-hover-bg-color: var(--venus-menu-bg--color);
-  --el-menu-bg-color: transparent;
-  border-bottom: none !important;
 }
 </style>
