@@ -92,7 +92,7 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .nav-bar {
   // 透明背景
   background-color: transparent;

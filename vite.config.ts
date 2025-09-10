@@ -55,10 +55,8 @@ export default (configEnv: ConfigEnv): UserConfig => {
         localsConvention: 'camelCase',
       },
       preprocessorOptions: {
-        less: {
-          modifyVars: {},
-          javascriptEnabled: true,
-          additionalData: `@import "src/styles/global-variables.less";`,
+        scss: {
+          additionalData: `@import "src/styles/global-variables.scss";`,
         },
       },
     },

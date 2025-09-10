@@ -24,7 +24,7 @@ interface Props {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .logo {
   display: flex;
   align-items: center;

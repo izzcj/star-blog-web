@@ -57,7 +57,7 @@ function clickLogout() {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .info {
   padding-top: 5px;
 }

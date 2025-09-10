@@ -73,7 +73,7 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
   </ElContainer>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .page-bg {
   /* 固定在页面背景 */
   position: fixed;
@@ -87,14 +87,14 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
 }
 .header-container {
   // 动画时长
-  @transition-duration: 0.5s;
+  $transition-duration: 0.5s;
   // 鼠标移入变换,
   &:hover {
-    transition: background-color @transition-duration;
+    transition: background-color $transition-duration;
     background-color: var(--venus-menu-bg--color);
   }
   &:not(:hover) {
-    transition: background-color @transition-duration;
+    transition: background-color $transition-duration;
   }
 }
 .main-container {

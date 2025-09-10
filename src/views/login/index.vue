@@ -104,7 +104,7 @@ function login(formEl: FormInstance | undefined) {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .body {
   height: 100%;
   width: 100%;

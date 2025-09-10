@@ -7,8 +7,8 @@
   </div>
 </template>
 
-<style lang="less">
-@import '@/styles/index.less';
+<style lang="scss">
+@import '@/styles/index.scss';
 .container {
   display: flex;
   justify-content: center;

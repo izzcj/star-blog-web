@@ -224,7 +224,7 @@ function preventScroll(event: WheelEvent) {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .home-container {
   width: 100%;
   height: 100%;
