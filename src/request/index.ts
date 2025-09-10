@@ -91,7 +91,7 @@ instance.interceptors.response.use(
   },
   error => {
     if (error instanceof CanceledError) {
-      if (getAppConfig().showRapidDuplicateRequestWarning === 'true') {
+      if (getAppConfig().showRapidDuplicateRequestWarning) {
         const canceledError = error as CanceledError<unknown>;
         warningNotification(
           '请求已取消，此类情况一般由于段时间内发起了两次相同的请求导致，说明代码逻辑不合理，请根据Console错误堆栈排查解决！',

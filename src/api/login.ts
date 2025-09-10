@@ -5,14 +5,14 @@ const loginApi = {
    * 登录接口
    */
   login: {
-    uri: '/web/login',
+    uri: '/auth/login',
     method: RequestMethod.POST,
   },
   /**
    * 退出登录接口
    */
   logout: {
-    uri: '/web/logout',
+    uri: '/auth/logout',
     method: RequestMethod.POST,
   },
 };

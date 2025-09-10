@@ -42,13 +42,22 @@ export const useAuthenticationStore = defineStore({
     async login(formData: LoginData) {
       const { message, data } = await asyncRequest(loginApi.login, {
         data: {
-          loginType: 'accountPassword',
+          loginType: 'ACCOUNT_PASSWORD',
           ...formData,
         },
       });
 
       this.accessToken = data.accessToken;
       storage.set('accessToken', this.accessToken);
+      return message;
+    },
+
+    /**
+     * 退出登录
+     */
+    async logout() {
+      const { message } = await asyncRequest(loginApi.logout);
+      this.clearAuthentication();
       return message;
     },
 

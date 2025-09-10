@@ -3,13 +3,20 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client"],
   },
   "include": [
     "vite.config.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
+    "src/utils/*.ts",
+    "src/types/*.d.ts",
     "package.json"
   ]
 }

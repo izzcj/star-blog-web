@@ -92,7 +92,10 @@ export function createVitePlugins(_configEnv: ConfigEnv, viteEnv: Record<string,
     }),
     components({
       dts: './types/components.d.ts',
-      resolvers: [ ElementPlusResolver() ],
+      resolvers: [ ElementPlusResolver(({
+          importStyle: "sass",
+        }))
+      ],
       extensions: ['vue', 'tsx'],
       deep: true,
     }),

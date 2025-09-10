@@ -58,7 +58,7 @@ export const useUserInfoStore = defineStore({
     /**
      * 获取用户信息
      */
-    getUserInfo() {
+    async fetchUserInfo() {
       const instantMessageStore = useInstantMessageStore();
       return asyncRequest<UserInfoState>(userApi.info)
         .then(resp => {

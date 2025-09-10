@@ -4,16 +4,16 @@ import Logo from './logo/index.vue';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import CommonRouterPath from '@/enum/common-router-path';
 import commonRouters from '@/router/common-router';
+import UserInfo from '@/views/user/info/index.vue';
 
 let routers: any[] = [];
+
 const dynamicRoutesStore = useDynamicRouteStore();
 commonRouters.forEach(router => {
   if (!router.meta?.hidden) {
     routers.push(router);
   }
 });
-
-const avatar = ref('https://www.zmtc.com/wp-content/uploads/2023/0308/20230308090400294.jpg');
 
 // 过滤重定向路由
 routers = routers.filter(router => {
@@ -25,7 +25,6 @@ if (!isEmpty(dynamicRoutesStore.routes)) {
   });
 }
 
-const router = useRouter();
 const currentRoute = useRoute();
 const selectedMenuIndex = ref();
 const logText = ref('StarBlog');
@@ -46,13 +45,6 @@ watch(
 
   { immediate: true },
 );
-
-/**
- * 个人信息点击事件
- */
-function clickUserInfo() {
-  router.push('/user/info');
-}
 
 /**
  * 获取ElCol的Span
@@ -94,20 +86,7 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
         </ElMenu>
       </ElCol>
       <ElCol v-if="showUserInfo" :span="getColSpan('user')">
-        <div class="venus-center info">
-          <ElDropdown>
-            <ElAvatar :size="50" :src="avatar" />
-            <template #dropdown>
-              <ElDropdownMenu>
-                <ElDropdownItem @click="clickUserInfo">
-                  个人信息
-                </ElDropdownItem>
-                <ElDropdownItem>系统设置</ElDropdownItem>
-                <ElDropdownItem>退出登录</ElDropdownItem>
-              </ElDropdownMenu>
-            </template>
-          </ElDropdown>
-        </div>
+        <UserInfo />
       </ElCol>
     </ElRow>
   </div>
@@ -117,10 +96,6 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
 .nav-bar {
   // 透明背景
   background-color: transparent;
-
-  .info {
-    padding-top: 5px;
-  }
 }
 .right-aligned-menu {
   display: flex;

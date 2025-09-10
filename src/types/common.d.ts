@@ -40,7 +40,7 @@ declare global {
     /**
      * 是否显示快速的连续请求警告
      */
-    showRapidDuplicateRequestWarning: 'true' | 'false';
+    showRapidDuplicateRequestWarning: true | false;
     /**
      * 即时消息服务地址
      */
@@ -51,9 +51,6 @@ declare global {
    * 头部设置
    */
   interface HeaderSettings {
-    backgroundColor: string;
-    fixed: boolean;
-    showReload: boolean;
   }
 
   /**
@@ -162,12 +159,6 @@ declare global {
    * 菜单设置
    */
   interface MenuSettings {
-    minMenuWidth: number;
-    menuWidth: number;
-    fixed: boolean;
-    mixMenu: boolean;
-    collapsed: boolean;
-    mobileWidth: number;
   }
 
   /**
