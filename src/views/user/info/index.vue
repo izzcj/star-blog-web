@@ -4,7 +4,7 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import { successNotification } from '@/element-plus/notification';
 
 defineOptions({
-  name: 'UserInfo',
+  name: 'UserInfoPage',
 });
 
 const authenticationStore = useAuthenticationStore();

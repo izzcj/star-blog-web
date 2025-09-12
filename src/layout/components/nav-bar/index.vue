@@ -10,7 +10,7 @@ let routers: any[] = [];
 
 const dynamicRoutesStore = useDynamicRouteStore();
 commonRouters.forEach(router => {
-  if (!router.meta?.hidden) {
+  if (router.meta && !router.meta?.hidden) {
     routers.push(router);
   }
 });

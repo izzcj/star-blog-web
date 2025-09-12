@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'SvgIcon',
+});
 defineProps({
   prefix: {
     type: String,

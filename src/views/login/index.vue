@@ -5,7 +5,7 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import CommonRouterPath from '@/enum/common-router-path';
 
 defineOptions({
-  name: 'Login',
+  name: 'LoginPage',
 });
 
 const router = useRouter();

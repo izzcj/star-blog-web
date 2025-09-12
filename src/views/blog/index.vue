@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({
-  name: 'Blog',
+  name: 'BlogPage',
 });
 
 const count = ref(0);

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'Motto',
+});
 const props = defineProps({
   // motto
   motto: {

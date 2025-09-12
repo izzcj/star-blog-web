@@ -2,7 +2,7 @@
 import anime from 'animejs';
 
 defineOptions({
-  name: 'Home',
+  name: 'HomePage',
 });
 
 // TODO: 待替换为接口获取

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import anime from 'animejs';
 import { useAppStatusStore } from '@/stores/app-status-store';
+
+defineOptions({
+  name: 'Loading',
+});
 // 配置
 const siteName = '正在前往星站....';
 const appStatusStore = useAppStatusStore();

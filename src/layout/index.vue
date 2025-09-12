@@ -2,7 +2,7 @@
 import { debounce } from 'lodash-es';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
-import Loading from '@/components/loading/Loading.vue';
+import Loading from '@/components/loading/index.vue';
 import { useAppStatusStore } from '@/stores/app-status-store';
 import bgImage from '@/assets/image/background.png';
 
