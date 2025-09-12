@@ -1,7 +1,7 @@
-@import 'base';
-@import 'fade';
-@import 'scale';
-@import 'slide';
-@import 'scroll';
+@forward 'base';
+@forward 'fade';
+@forward 'scale';
+@forward 'slide';
+@forward 'scroll';
 
 

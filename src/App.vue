@@ -8,11 +8,9 @@
 </template>
 
 <style lang="scss">
-@import '@/styles/index.scss';
+@use "@/styles/index";
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @extend .venus-center;
   height: 100vh;
 }
 </style>

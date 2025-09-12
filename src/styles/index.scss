@@ -1,6 +1,6 @@
-@import 'transition/index';
-@import 'element-plus/index';
-@import 'animation/index';
+@forward 'transition/index';
+@forward 'element-plus/index';
+@forward 'animation/index';
 
 // 居中
 .venus-center {

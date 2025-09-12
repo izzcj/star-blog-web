@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import 'virtual:svg-icons-register';
-import 'element-plus/dist/index.css';
 import Plugins from '@/plugins';
 import 'animate.css';
 

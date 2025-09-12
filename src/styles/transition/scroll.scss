@@ -1,5 +1,6 @@
+@use "base" as base;
 .scroll-y-transition {
-  @include transition-default();
+  @include base.transition-default();
 
   &-enter-from,
   &-leave-to {
@@ -16,7 +17,7 @@
 }
 
 .scroll-y-reverse-transition {
-  @include transition-default();
+  @include base.transition-default();
 
   &-enter-from,
   &-leave-to {
@@ -33,7 +34,7 @@
 }
 
 .scroll-x-transition {
-  @include transition-default();
+  @include base.transition-default();
 
   &-enter-from,
   &-leave-to {
@@ -50,7 +51,7 @@
 }
 
 .scroll-x-reverse-transition {
-  @include transition-default();
+  @include base.transition-default();
 
   &-enter-from,
   &-leave-to {

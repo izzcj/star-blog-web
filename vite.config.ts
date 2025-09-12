@@ -56,7 +56,7 @@ export default (configEnv: ConfigEnv): UserConfig => {
       },
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "src/styles/global-variables.scss";`,
+          additionalData: `@use "@/styles/global-variables.scss";`,
         },
       },
     },
