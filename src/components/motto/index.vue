@@ -141,6 +141,6 @@ onBeforeUnmount(() => {
   <slot :content="content" />
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 
 </style>

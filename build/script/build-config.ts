@@ -47,7 +47,7 @@ function createConfig({
 }
 
 export function runBuildConfig() {
-  const config = loadEnv('production', path.resolve(process.cwd(), 'env'), 'FIERCE_APP');
+  const config = loadEnv('production', path.resolve(process.cwd(), 'env'), 'STAR_BLOG_APP');
   const name = chalk.blueBright(`😁 [${pkg.name}]`);
   console.log(`${name} - env variables loaded:`);
   console.log(chalk.greenBright(JSON.stringify(config, null, 2)));

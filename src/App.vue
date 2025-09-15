@@ -10,7 +10,6 @@
 <style lang="scss">
 @use "@/styles/index";
 .container {
-  @extend .venus-center;
   height: 100vh;
 }
 </style>

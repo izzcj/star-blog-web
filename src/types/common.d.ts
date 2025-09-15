@@ -8,8 +8,6 @@ import type RequestMethod from '@/enum/request-method';
  * @version 1.0.0
  * @since 2024/8/30
  */
-export {};
-
 declare global {
   /**
    * 允许为null的类型

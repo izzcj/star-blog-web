@@ -8,6 +8,7 @@ import checkerPlugin from 'vite-plugin-checker';
 import { configCompressPlugin } from './compress';
 import { configHtmlPlugin } from './html';
 import { configSvgIconsPlugin } from './svg-sprite';
+import tailwindcss from '@tailwindcss/vite';
 
 /**
  * 创建vite插件
@@ -112,7 +113,8 @@ export function createVitePlugins(_configEnv: ConfigEnv, viteEnv: Record<string,
       enableBuild: false,
     })
   ];
-
+  // tailwindcss
+  vitePlugins.push(tailwindcss());
   // vite-plugin-html
   vitePlugins.push(configHtmlPlugin(viteEnv, isBuild));
   // vite-plugin-svg-icons

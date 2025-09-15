@@ -77,12 +77,12 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
 .page-bg {
   /* 固定在页面背景 */
   position: fixed;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 .layout {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   position: relative;
 }
 .header-container {

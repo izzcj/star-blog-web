@@ -101,9 +101,9 @@ function preventScroll(event: WheelEvent) {
       </div>
       <div class="home-motto">
         <Motto #default="scope" :motto="currentMotto" @update-motto="updateMotto">
-          <h3>
+          <p>
             {{ scope.content }}<span class="cursor" />
-          </h3>
+          </p>
         </Motto>
       </div>
 
@@ -252,12 +252,17 @@ function preventScroll(event: WheelEvent) {
 }
 
 .home-motto {
-  height: 6.5vh;
+  height: 6vh;
   color: gainsboro;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 2vh;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
   .cursor {
     border-left: 2px solid rgba(255, 255, 255, 0.5);
     margin-left: 2px;

@@ -45,7 +45,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 #loader-wrapper {
   position: fixed;
   top: 0;

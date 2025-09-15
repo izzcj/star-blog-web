@@ -10,9 +10,6 @@
 // 项目的 `tsconfig.json` 中的 "file" 字段内。
 import 'vue-router';
 
-// 为了确保这个文件被当作一个模块，添加至少一个 `export` 声明
-export {};
-
 declare module 'vue-router' {
   interface RouteMeta {
     /**
@@ -40,5 +37,9 @@ declare module 'vue-router' {
      * 是否隐藏
      */
     hidden?: boolean;
+    /**
+     * 是否无需鉴权
+     */
+    ignoreAuthentication?: boolean;
   }
 }

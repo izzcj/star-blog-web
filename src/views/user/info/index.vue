@@ -35,8 +35,8 @@ function clickLogout() {
 </script>
 
 <template>
-  <div v-if="authenticationStore.isLoggedIn" class="venus-center info">
-    <ElDropdown>
+  <div class="cursor-pointer pt-[5px] venus-center">
+    <ElDropdown v-if="authenticationStore.isLoggedIn">
       <ElAvatar :size="50" :src="avatar" />
       <template #dropdown>
         <ElDropdownMenu>
@@ -49,16 +49,11 @@ function clickLogout() {
         </ElDropdownMenu>
       </template>
     </ElDropdown>
-  </div>
-  <div v-else class="venus-center info">
-    <ElAvatar :size="50" @click="clickLogin">
+    <ElAvatar v-else :size="50" @click="clickLogin">
       登录
     </ElAvatar>
   </div>
 </template>
 
 <style scoped lang="scss">
-.info {
-  padding-top: 5px;
-}
 </style>
