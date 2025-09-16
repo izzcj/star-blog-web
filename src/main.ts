@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import 'virtual:svg-icons-register';
-import '@/styles/tailwind.css';
-import 'animate.css';
 import Plugins from '@/plugins';
+import '@/styles/tailwind/index.css';
+import 'animate.css';
 
 const app = createApp(App);
 

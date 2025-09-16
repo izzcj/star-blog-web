@@ -2,14 +2,11 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="container hidden-scrollbar">
     <RouterView />
   </div>
 </template>
 
 <style lang="scss">
 @use "@/styles/index";
-.container {
-  height: 100vh;
-}
 </style>

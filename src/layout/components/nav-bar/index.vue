@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { Fold } from '@element-plus/icons-vue';
 import MenuItem from './menu-item/index.vue';
 import Logo from './logo/index.vue';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import CommonRouterPath from '@/enum/common-router-path';
 import commonRouters from '@/router/common-router';
@@ -9,6 +11,9 @@ import UserInfo from '@/views/user/info/index.vue';
 let routers: any[] = [];
 
 const dynamicRoutesStore = useDynamicRouteStore();
+const appSettingsStore = useAppSettingsStore();
+const showDrawer = ref(false);
+
 commonRouters.forEach(router => {
   if (router.meta && !router.meta?.hidden) {
     routers.push(router);
@@ -66,14 +71,14 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
 </script>
 
 <template>
-  <div class="nav-bar">
+  <div v-show="!appSettingsStore.isMobile" class="bg-transparent">
     <ElRow :gutter="10">
       <ElCol :span="getColSpan('logo')">
         <Logo :type="logType" :logo="logText" />
       </ElCol>
       <ElCol :span="getColSpan('menu')">
         <ElMenu
-          class="right-aligned-menu"
+          class="header-menu header-menu_horizontal"
           :ellipsis="false"
           mode="horizontal"
           :router="true"
@@ -90,21 +95,47 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
       </ElCol>
     </ElRow>
   </div>
+  <div v-show="appSettingsStore.isMobile" class="venus-center">
+    <Logo :type="logType" :logo="logText" class="mr-auto" />
+    <ElIcon class="ml-auto" size="30" @click="showDrawer = !showDrawer">
+      <Fold />
+    </ElIcon>
+    <ElDrawer v-model="showDrawer" body-class="header-drawer-body" :show-close="false">
+      <template #header>
+        <UserInfo />
+      </template>
+      <ElMenu
+        :ellipsis="false"
+        :router="true"
+        :default-active="selectedMenuIndex"
+        class="header-menu_vertical"
+      >
+        <template v-for="route of routers" :key="route.path">
+          <MenuItem :route="route" :base-path="route.path" />
+        </template>
+      </ElMenu>
+    </ElDrawer>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.nav-bar {
-  // 透明背景
-  background-color: transparent;
-}
-.right-aligned-menu {
-  display: flex;
-  justify-content: flex-end;
+.header-menu {
   --el-menu-text-color: rgb(255, 255, 255);
   --el-menu-active-color: #ffd04b;
   --el-menu-item-font-size: 15px;
   --el-menu-hover-bg-color: var(--venus-menu-bg--color);
   --el-menu-bg-color: transparent;
-  border-bottom: none !important;
+  &_horizontal {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: none !important;
+  }
+  &_vertical {
+    width: 100%;
+    border-right: none;
+  }
+}
+.header-drawer-body {
+  --el-drawer-padding-primary: 0;
 }
 </style>

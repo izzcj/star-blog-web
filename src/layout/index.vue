@@ -3,6 +3,7 @@ import { debounce } from 'lodash-es';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
 import Loading from '@/components/loading/index.vue';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useAppStatusStore } from '@/stores/app-status-store';
 import bgImage from '@/assets/image/background.png';
 
@@ -16,40 +17,41 @@ const containerLoadTimeout = ref<any>();
 
 const layoutRef = ref<HTMLElement | null>(null);
 const appStatusStore = useAppStatusStore();
+const appSettingsStore = useAppSettingsStore();
 
 const backgroundImage = ref(bgImage);
 
 const isLoaded = computed(() => appStatusStore.resourceLoadStatus);
+const isMobile = computed<boolean>({
+  get: () => appSettingsStore.isMobile,
+  set: bool => appSettingsStore.isMobile = bool,
+});
 
-onMounted(async () => {
+onMounted(() => {
+  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
   window.addEventListener('resize', debounce(handleResize, 100));
-  await nextTick();
-  await containerLoadComplete();
+  containerLoadComplete();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
+/**
+ * 处理窗口大小改变
+ */
 function handleResize() {
   currentWindowHeight.value = window.innerHeight;
+  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
 }
 
-async function containerLoadComplete() {
-  // 确保背景加载完成
-  await waitForImageLoad(bgImage);
+/**
+ * 容器加载完毕
+ */
+function containerLoadComplete() {
   containerLoadTimeout.value = setTimeout(() => {
     appStatusStore.setResourceLoadStatus(true);
   }, 1500);
-}
-
-function waitForImageLoad(imageSrc: string): Promise<void> {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = () => resolve();
-    img.src = imageSrc;
-  });
 }
 </script>
 
@@ -58,14 +60,14 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
   <Loading />
 
   <!-- 背景图 -->
-  <ElImage class="page-bg" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
+  <ElImage class="h-dvh w-dvw fixed" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
 
   <!-- 页面主体 -->
-  <ElContainer v-if="isLoaded" ref="layoutRef" class="layout">
-    <ElHeader class="header-container">
+  <ElContainer v-if="isLoaded" ref="layoutRef" class="h-dvh w-dvw relative">
+    <ElHeader :class="isMobile ? '' : 'transition-colors duration-500 ease-in-out hover:bg-(--venus-menu-bg--color)'">
       <NavBar />
     </ElHeader>
-    <ElMain id="venus-main" class="main-container hidden-scrollbar">
+    <ElMain id="venus-main" class="w-dvw hidden-scrollbar">
       <AppMain />
       <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
     </ElMain>
@@ -74,42 +76,4 @@ function waitForImageLoad(imageSrc: string): Promise<void> {
 </template>
 
 <style lang="scss" scoped>
-.page-bg {
-  /* 固定在页面背景 */
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-}
-.layout {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-.header-container {
-  // 动画时长
-  $transition-duration: 0.5s;
-  // 鼠标移入变换,
-  &:hover {
-    transition: background-color $transition-duration;
-    background-color: var(--venus-menu-bg--color);
-  }
-  &:not(:hover) {
-    transition: background-color $transition-duration;
-  }
-}
-.main-container {
-  width: 100%;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
 </style>

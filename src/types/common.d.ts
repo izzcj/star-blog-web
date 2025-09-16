@@ -154,12 +154,6 @@ declare global {
   }
 
   /**
-   * 菜单设置
-   */
-  interface MenuSettings {
-  }
-
-  /**
    * 菜单信息
    */
   interface Menu {

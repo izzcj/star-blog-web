@@ -17,17 +17,21 @@ defineProps({
   },
   width: {
     type: String,
-    default: '16px',
+    default: '20px',
   },
   height: {
     type: String,
-    default: '16px',
+    default: '20px',
+  },
+  customClass: {
+    type: String,
+    default: '',
   },
 });
 </script>
 
 <template>
-  <svg :style="{ width, height }">
+  <svg :class="customClass" :style="{ width, height }">
     <use :href="prefix + name" :fill="color" />
   </svg>
 </template>

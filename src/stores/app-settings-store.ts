@@ -17,10 +17,6 @@ export interface AppSettingsState {
    */
   showFooter: boolean;
   /**
-   * 菜单
-   */
-  menuSettings: MenuSettings;
-  /**
    * 是否开启路由动画
    */
   pageAnimation: boolean;
@@ -29,13 +25,13 @@ export interface AppSettingsState {
    */
   pageAnimationType: string;
   /**
+   * 触发移动端侧边栏的宽度
+   */
+  mobileWidth: number;
+  /**
    * 是否处于移动端模式
    */
   isMobile: boolean;
-  /**
-   * UI大小
-   */
-  size: 'small' | 'medium' | 'large';
 }
 
 export const useAppSettingsStore = defineStore({

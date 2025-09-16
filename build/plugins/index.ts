@@ -3,6 +3,8 @@ import type { ConfigEnv, PluginOption } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import autoImport from 'unplugin-auto-import/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 import components from 'unplugin-vue-components/vite';
 import checkerPlugin from 'vite-plugin-checker';
 import { configCompressPlugin } from './compress';
@@ -36,7 +38,11 @@ export function createVitePlugins(_configEnv: ConfigEnv, viteEnv: Record<string,
       resolvers: [
         ElementPlusResolver({
           importStyle: "sass",
-        })
+        }),
+        // 自动导入图标组件
+        IconsResolver({
+          prefix: 'Icon',
+        }),
       ],
       vueTemplate: true,
       imports: [
@@ -100,10 +106,17 @@ export function createVitePlugins(_configEnv: ConfigEnv, viteEnv: Record<string,
       resolvers: [
         ElementPlusResolver({
           importStyle: "sass",
-        })
+        }),
+        // 自动注册图标组件
+        IconsResolver({
+          enabledCollections: ['ep'],
+        }),
       ],
       extensions: ['vue', 'tsx'],
       deep: true,
+    }),
+    Icons({
+      autoInstall: true,
     }),
     checkerPlugin({
       eslint: {

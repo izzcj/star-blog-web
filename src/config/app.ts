@@ -9,10 +9,6 @@ import type { AppSettingsState } from '@/stores/app-settings-store';
  */
 const appSettings: AppSettingsState = {
   /**
-   * 是否是移动端
-   */
-  isMobile: false,
-  /**
    * 顶部
    */
   headerSettings: {
@@ -34,35 +30,6 @@ const appSettings: AppSettingsState = {
    */
   showFooter: false,
   /**
-   * 菜单
-   */
-  menuSettings: {
-    /**
-     * 最小宽度
-     */
-    minMenuWidth: 64,
-    /**
-     * 菜单宽度
-     */
-    menuWidth: 200,
-    /**
-     * 固定菜单
-     */
-    fixed: true,
-    /**
-     * 分割菜单
-     */
-    mixMenu: false,
-    /**
-     * 触发移动端侧边栏的宽度
-     */
-    mobileWidth: 800,
-    /**
-     * 折叠菜单
-     */
-    collapsed: false,
-  },
-  /**
    * 是否开启路由动画
    */
   pageAnimation: true,
@@ -72,9 +39,13 @@ const appSettings: AppSettingsState = {
    */
   pageAnimationType: 'fade-bottom',
   /**
-   * UI大小
+   * 触发移动端侧边栏的宽度
    */
-  size: 'small',
+  mobileWidth: 800,
+  /**
+   * 是否是移动端
+   */
+  isMobile: false,
 };
 
 export default appSettings;

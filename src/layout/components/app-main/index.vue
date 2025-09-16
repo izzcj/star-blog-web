@@ -2,6 +2,10 @@
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 
+defineOptions({
+  name: 'AppMain',
+});
+
 const appSettingsStore = useAppSettingsStore();
 const dynamicRoutesStore = useDynamicRouteStore();
 // 需要缓存的路由组件
