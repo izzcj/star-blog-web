@@ -15,8 +15,9 @@
     "vite.config.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
-    "src/utils/*.ts",
-    "src/types/*.d.ts",
-    "package.json"
+    "types/*.d.ts",
+    "src/utils/env-util.ts",
+    "src/types/common.d.ts",
+    "src/enum/request-method.ts"
   ]
 }

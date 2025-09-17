@@ -32,15 +32,16 @@ if (!isEmpty(dynamicRoutesStore.routes)) {
 
 const currentRoute = useRoute();
 const selectedMenuIndex = ref();
-const logText = ref('StarBlog');
 const logType = ref('TEXT');
-// 是否显示用户信息
+const logText = ref('StarBlog');
 const showUserInfo = ref(true);
 
 selectedMenuIndex.value = currentRoute.path;
+
 if (isEmpty(selectedMenuIndex.value)) {
   selectedMenuIndex.value = CommonRouterPath.HOME;
 }
+
 // 更新 selectedMenuIndex
 watch(
   () => currentRoute.path,
@@ -67,6 +68,13 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
   if (part === 'menu') {
     return 24 - base.logo - (showUserInfo.value ? base.user : 0);
   }
+}
+
+/**
+ * 菜单项点击事件
+ */
+function clickMenuItem() {
+  showDrawer.value = false;
 }
 </script>
 
@@ -95,12 +103,13 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
       </ElCol>
     </ElRow>
   </div>
+  <!-- 移动端 -->
   <div v-show="appSettingsStore.isMobile" class="venus-center">
     <Logo :type="logType" :logo="logText" class="mr-auto" />
     <ElIcon class="ml-auto" size="30" @click="showDrawer = !showDrawer">
       <Fold />
     </ElIcon>
-    <ElDrawer v-model="showDrawer" body-class="header-drawer-body" :show-close="false">
+    <ElDrawer v-model="showDrawer" size="40%" :show-close="false">
       <template #header>
         <UserInfo />
       </template>
@@ -108,10 +117,10 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
         :ellipsis="false"
         :router="true"
         :default-active="selectedMenuIndex"
-        class="header-menu_vertical"
+        class="header-menu header-menu_vertical"
       >
         <template v-for="route of routers" :key="route.path">
-          <MenuItem :route="route" :base-path="route.path" />
+          <MenuItem :route="route" :base-path="route.path" @click="clickMenuItem" />
         </template>
       </ElMenu>
     </ElDrawer>
@@ -120,22 +129,19 @@ function getColSpan(part: 'logo' | 'menu' | 'user') {
 
 <style lang="scss" scoped>
 .header-menu {
-  --el-menu-text-color: rgb(255, 255, 255);
   --el-menu-active-color: #ffd04b;
-  --el-menu-item-font-size: 15px;
-  --el-menu-hover-bg-color: var(--venus-menu-bg--color);
-  --el-menu-bg-color: transparent;
+  --el-menu-item-font-size: 16px;
   &_horizontal {
     display: flex;
     justify-content: flex-end;
     border-bottom: none !important;
+    --el-menu-hover-bg-color: var(--venus-menu-bg--color);
+    --el-menu-bg-color: transparent;
+    --el-menu-text-color: rgb(255, 255, 255);
   }
   &_vertical {
     width: 100%;
     border-right: none;
   }
-}
-.header-drawer-body {
-  --el-drawer-padding-primary: 0;
 }
 </style>

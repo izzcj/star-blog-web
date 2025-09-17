@@ -41,7 +41,7 @@ const appSettings: AppSettingsState = {
   /**
    * 触发移动端侧边栏的宽度
    */
-  mobileWidth: 800,
+  mobileWidth: 768,
   /**
    * 是否是移动端
    */

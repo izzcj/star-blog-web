@@ -11,6 +11,10 @@ defineOptions({
 
 const props = defineProps<Props>();
 
+const emit = defineEmits<{
+  (e: 'click', item: MenuItemRegistered): void;
+}>();
+
 interface Props {
   /**
    * 路由
@@ -60,18 +64,23 @@ function showMenuItem() {
  */
 function clickMenuItem(item: MenuItemRegistered) {
   dynamicRoutesStore.setActiveRouteIndex(item.index);
+  emit('click', item);
 }
 </script>
 
 <template>
   <ElMenuItem v-if="showMenuItem()" :index="resolvePath()" :route="route" @click="clickMenuItem">
-    <SvgIcon :name="route.meta?.icon || onlyOneChild?.meta?.icon" />{{ route?.meta?.title || onlyOneChild?.meta?.title }}
+    <template #title>
+      <SvgIcon :name="route.meta?.icon || onlyOneChild?.meta?.icon" />
+      <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title || onlyOneChild?.meta?.title }}</span>
+    </template>
   </ElMenuItem>
   <ElSubMenu v-else :index="resolvePath()">
     <template #title>
-      <SvgIcon :name="route.meta?.icon" />{{ route?.meta?.title }}
+      <SvgIcon :name="route.meta?.icon" />
+      <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title }}</span>
     </template>
-    <MenuItem v-for="child of route?.children" :key="child.path" :route="child" :base-path="resolvePath()" />
+    <MenuItem v-for="child of route?.children" :key="child.path" :route="child" :base-path="resolvePath()" @click="clickMenuItem" />
   </ElSubMenu>
 </template>
 

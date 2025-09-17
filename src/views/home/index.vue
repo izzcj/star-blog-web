@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import anime from 'animejs';
+import { calculateElTopToViewportDistance } from '@/utils/html-unit';
 
 defineOptions({
   name: 'HomePage',
@@ -22,6 +23,7 @@ const isExpanded = ref(false);
 
 onBeforeRouteLeave(() => {
   document.body.removeEventListener('wheel', preventScroll);
+  document.body.removeEventListener('touchmove', preventScroll);
 });
 
 /**
@@ -62,24 +64,34 @@ function homeTitleClick() {
  */
 function toggleExpand() {
   isExpanded.value = !isExpanded.value;
+  const homeHeader = document.querySelector('.home-header');
+  let distanceToViewportTop = calculateElTopToViewportDistance(homeHeader);
+  const bannerWave1 = document.querySelector('#banner-wave-1');
+  if (bannerWave1) {
+    distanceToViewportTop = distanceToViewportTop + bannerWave1.getBoundingClientRect().height;
+  }
+  const start = distanceToViewportTop * 0.4;
+  const end = distanceToViewportTop;
   if (isExpanded.value) {
     // 展开动画
     anime({
       targets: '.home-header',
-      height: ['40vh', '100vh'],
+      height: [`${start}px`, `${end}px`],
       easing: 'easeInOutQuad',
       duration: 1000,
     });
     document.body.addEventListener('wheel', preventScroll, { passive: false });
+    document.body.addEventListener('touchmove', preventScroll, { passive: false });
   } else {
     // 收起动画
     anime({
       targets: '.home-header',
-      height: ['100vh', '40vh'],
+      height: [`${end}px`, `${start}px`],
       easing: 'easeInOutQuad',
       duration: 1000,
     });
     document.body.removeEventListener('wheel', preventScroll);
+    document.body.removeEventListener('touchmove', preventScroll);
   }
 }
 
@@ -88,13 +100,13 @@ function toggleExpand() {
  *
  * @param event 滚轮事件
  */
-function preventScroll(event: WheelEvent) {
+function preventScroll(event: Event) {
   event.preventDefault();
 }
 </script>
 
 <template>
-  <div class="home-container">
+  <div class="size-full">
     <div class="venus-center home-header">
       <div class="home-title" @mouseenter="homeTitleAnime" @click="homeTitleClick">
         <span v-for="(char, index) of title" :key="index" class="title">{{ char }}</span>
@@ -114,7 +126,7 @@ function preventScroll(event: WheelEvent) {
     <div class="home-body">
       <ElRow :gutter="20" class="home-content">
         <!-- 左侧区域 -->
-        <ElCol :span="6">
+        <ElCol :span="24" :md="6">
           <div class="affix-content">
             <ElCard class="home-card">
               <template #header>
@@ -145,7 +157,7 @@ function preventScroll(event: WheelEvent) {
         </ElCol>
 
         <!-- 中间区域 -->
-        <ElCol :span="13">
+        <ElCol :span="24" :md="13">
           <ElCard class="home-card">
             <ElScrollbar>
               <div class="blog-list">
@@ -174,7 +186,7 @@ function preventScroll(event: WheelEvent) {
         </ElCol>
 
         <!-- 右侧区域 -->
-        <ElCol :span="5">
+        <ElCol :span="24" :md="5">
           <div class="affix-content">
             <ElCard class="home-card">
               <template #header>
@@ -225,24 +237,18 @@ function preventScroll(event: WheelEvent) {
 </template>
 
 <style scoped lang="scss">
-.home-container {
-  width: 100%;
-  height: 100%;
-}
-
 .home-header {
   display: flex;
   flex-direction: column;
   position: relative;
-  user-select: none;
-  height: 40vh;
+  height: 40dvh;
   overflow: hidden;
 }
 
 .home-title {
   cursor: pointer;
   color: rgb(255, 255, 255);
-  font-size: 4vh;
+  font-size: 4dvh;
   font-weight: 800;
   margin-bottom: 20px;
   .title {
@@ -252,13 +258,13 @@ function preventScroll(event: WheelEvent) {
 }
 
 .home-motto {
-  height: 6vh;
+  height: 6dvh;
   color: gainsboro;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 2vh;
+  font-size: 2dvh;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -271,7 +277,7 @@ function preventScroll(event: WheelEvent) {
 }
 
 #banner-wave-1 {
-  height: 8vh;
+  height: 8dvh;
   background: url("@/assets/image/bannerWave1.png");
   position: absolute;
   width: 100%;
@@ -279,7 +285,7 @@ function preventScroll(event: WheelEvent) {
   animation: gradientBG 20s linear infinite;
 }
 #banner-wave-2 {
-  height: 10vh;
+  height: 10dvh;
   background: url("@/assets/image/bannerWave2.png");
   position: absolute;
   width: 100%;
@@ -295,12 +301,32 @@ function preventScroll(event: WheelEvent) {
   max-width: 100%;
 }
 
+.home-content {
+  @media (max-width: 768px) {
+    .el-col {
+      width: 100% !important;
+    }
+
+    .el-col:nth-child(1) {
+      order: 1;
+    }
+
+    .el-col:nth-child(2) {
+      order: 3;
+    }
+
+    .el-col:nth-child(3) {
+      order: 2;
+    }
+  }
+}
+
 .blog-list {
-  max-height: calc(80vh - 20px);
+  max-height: calc(80dvh - 20px);
 }
 
 .affix-content {
-  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
   overflow-y: auto;
   padding-right: 5px;
 }
@@ -319,7 +345,7 @@ function preventScroll(event: WheelEvent) {
 
 .blog-item {
   margin-bottom: 15px;
-  min-height: 15vh;
+  min-height: 15dvh;
 }
 .blog-title {
   font-weight: bold;

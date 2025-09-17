@@ -1,4 +1,6 @@
 import { ElNotification, ElMessage } from 'element-plus';
+import 'element-plus/es/components/notification/style/index';
+import 'element-plus/es/components/message/style/index';
 
 const commonNotificationOptions = {
   // 是否允许使用html作为文本
