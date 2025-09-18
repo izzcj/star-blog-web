@@ -8,7 +8,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { APP_CONFIG_FILE_NAME } from '../constants';
 
 export function configHtmlPlugin(env: Record<string, string>, isBuild: boolean) {
-  const { APP_TITLE } = env;
+  const { STAR_BLOG_APP_TITLE } = env;
 
   const getAppConfigSrc = () => {
     return `/${APP_CONFIG_FILE_NAME}`;
@@ -32,7 +32,7 @@ export function configHtmlPlugin(env: Record<string, string>, isBuild: boolean) 
     inject: {
       // Inject data into ejs template
       data: {
-        title: APP_TITLE,
+        title: STAR_BLOG_APP_TITLE,
       },
       // Embed the generated app.config.js file
       tags: [
