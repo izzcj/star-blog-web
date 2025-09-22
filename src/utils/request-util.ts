@@ -1,6 +1,7 @@
 import type { AxiosResponse, RawAxiosRequestHeaders } from 'axios';
 import RequestMethod from '@/enum/request-method';
 import instance from '@/request';
+import { replaceTemplate } from '@/utils/string-util';
 
 // ------------------简化请求方法-------------------- //
 export async function get<T = any>(uri: string, params: Recordable = {}, headers: RawAxiosRequestHeaders = {}) {
@@ -140,8 +141,13 @@ function mergedRequestInfo<D extends Recordable = Recordable>(
     };
   });
 
+  let uri = api.uri;
+  if (apiRequest?.pathParams) {
+    uri = replaceTemplate(api.uri, apiRequest.pathParams);
+  }
+
   return {
-    uri: api.uri,
+    uri,
     method: api.method,
     apiRequest: mergedApiRequest,
   };

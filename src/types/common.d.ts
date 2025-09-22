@@ -14,10 +14,6 @@ declare global {
    */
   type Nullable<T> = T | null;
   /**
-   * 允许为undefined的类型
-   */
-  type Undefinable<T> = T | undefined;
-  /**
    * 简化Record类型
    * k默认为string
    */
@@ -46,23 +42,17 @@ declare global {
   }
 
   /**
-   * 头部设置
-   */
-  interface HeaderSettings {
-  }
-
-  /**
    * API描述符
    */
   interface ApiDescriptor {
     /**
-     * API的请求方法
-     */
-    method: RequestMethod;
-    /**
      * API URI
      */
     uri: string;
+    /**
+     * API的请求方法
+     */
+    method: RequestMethod;
     /**
      * 固定查询参数
      */
@@ -79,6 +69,16 @@ declare global {
      * 是否为加密传输数据
      */
     isEncrypt?: boolean;
+  }
+
+  /**
+   * API模块
+   */
+  interface ApiModule {
+    /**
+     * API描述
+     */
+    apis: Recordable<Readonly<ApiDescriptor>>;
   }
 
   /**
@@ -106,7 +106,11 @@ declare global {
     /**
      * API查询参数
      */
-    params?: Recordable<Nullable<string>>;
+    params?: Recordable<Nullable<string | number>>;
+    /**
+     * 路径参数
+     */
+    pathParams?: Recordable<Nullable<string | number>>;
     /**
      * API数据参数
      */

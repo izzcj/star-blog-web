@@ -1,20 +1,18 @@
 import RequestMethod from '@/enum/request-method';
 
-const loginApi = {
-  /**
-   * 登录接口
-   */
-  login: {
-    uri: '/auth/login',
-    method: RequestMethod.POST,
-  },
-  /**
-   * 退出登录接口
-   */
-  logout: {
-    uri: '/auth/logout',
-    method: RequestMethod.POST,
+const loginApiModule: ApiModule = {
+  apis: {
+    // 登录
+    login: {
+      uri: '/auth/login',
+      method: RequestMethod.POST,
+    },
+    // 退出登录
+    logout: {
+      uri: '/auth/logout',
+      method: RequestMethod.POST,
+    },
   },
 };
 
-export default loginApi;
+export default loginApiModule;

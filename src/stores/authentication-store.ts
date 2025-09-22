@@ -1,4 +1,4 @@
-import loginApi from '@/api/login';
+import loginApiModule from '@/api/login';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import { useInstantMessageStore } from '@/stores/instant-message-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
@@ -40,7 +40,7 @@ export const useAuthenticationStore = defineStore({
      * @param formData 登录表单数据
      */
     async login(formData: LoginData) {
-      const { message, data } = await asyncRequest(loginApi.login, {
+      const { message, data } = await asyncRequest(loginApiModule.apis.login, {
         data: {
           ...formData,
         },
@@ -55,7 +55,7 @@ export const useAuthenticationStore = defineStore({
      * 退出登录
      */
     async logout() {
-      const { message } = await asyncRequest(loginApi.logout);
+      const { message } = await asyncRequest(loginApiModule.apis.logout);
       this.clearAuthentication();
       return message;
     },

@@ -1,13 +1,13 @@
 import RequestMethod from '@/enum/request-method';
 
-const userApi = {
-  /**
-   * 获取登录用户信息
-   */
-  info: {
-    uri: '/system/user/profile',
-    method: RequestMethod.GET,
+const userApiModule: ApiModule = {
+  apis: {
+    // 获取登录用户信息
+    info: {
+      uri: '/system/user/profile',
+      method: RequestMethod.GET,
+    },
   },
 };
 
-export default userApi;
+export default userApiModule;

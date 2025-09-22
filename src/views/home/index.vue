@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import anime from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-unit';
+import BlogPage from '@/views/blog/index.vue';
 
 defineOptions({
   name: 'HomePage',
@@ -158,31 +159,7 @@ function preventScroll(event: Event) {
 
         <!-- 中间区域 -->
         <ElCol :span="24" :md="13">
-          <ElCard class="home-card">
-            <ElScrollbar>
-              <div class="blog-list">
-                <ElCard
-                  v-for="i of 30"
-                  :key="i"
-                  class="blog-item"
-                  shadow="hover"
-                >
-                  <div class="blog-title">
-                    这是博客标题 {{ i }}
-                  </div>
-                  <div class="blog-summary">
-                    这是博客的简要介绍内容，展示博客的主要内容和亮点。
-                  </div>
-                  <div class="blog-meta">
-                    <span class="publish-date">2024-08-{{ 20 + i }}</span>
-                    <ElTag size="small" class="blog-tag">
-                      技术
-                    </ElTag>
-                  </div>
-                </ElCard>
-              </div>
-            </ElScrollbar>
-          </ElCard>
+          <BlogPage />
         </ElCol>
 
         <!-- 右侧区域 -->
