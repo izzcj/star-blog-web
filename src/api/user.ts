@@ -2,10 +2,10 @@ import RequestMethod from '@/enum/request-method';
 
 const userApi = {
   /**
-   * 登录接口
+   * 获取登录用户信息
    */
   info: {
-    uri: '/user/info',
+    uri: '/system/user/profile',
     method: RequestMethod.GET,
   },
 };

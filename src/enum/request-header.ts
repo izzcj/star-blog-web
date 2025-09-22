@@ -1,5 +1,5 @@
 /**
- * 请求头枚举信息
+ * 请求头枚举
  */
 enum RequestHeader {
   /**

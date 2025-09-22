@@ -23,6 +23,11 @@ export default (router: Router) => {
      * 系统未启动鉴权
      */
     if (config.anonymousEnable) {
+      // 已登录且未获取用户信息
+      if (authenticationStore.isLoggedIn && !userInfoStore.isFetched) {
+        userInfoStore.fetchUserInfo().then(result => next(result));
+        return;
+      }
       next();
       return;
     }
@@ -36,7 +41,7 @@ export default (router: Router) => {
     }
 
     if (!authenticationStore.isLoggedIn) {
-      // 未登录
+      // 无需鉴权的路由
       if (to.meta.ignoreAuthentication) {
         next();
         return;

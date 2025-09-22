@@ -12,13 +12,29 @@ export interface UserInfoState {
    */
   id: string;
   /**
-   * 用户名称
+   * 用户账号
    */
-  name: string;
+  account: string;
+  /**
+   * 用户昵称
+   */
+  nickname: string;
   /**
    * 用户头像
    */
   avatar: string;
+  /**
+   * 邮箱
+   */
+  email: string;
+  /**
+   * 上次登录时间
+   */
+  lastLoginIp: string;
+  /**
+   * 上次登录时间
+   */
+  lastLoginTime: string;
   /**
    * 权限信息
    */
@@ -30,8 +46,12 @@ export const useUserInfoStore = defineStore({
   state: (): UserInfoState => {
     return {
       id: '',
-      name: '',
+      account: '',
+      nickname: '',
       avatar: '',
+      email: '',
+      lastLoginIp: '',
+      lastLoginTime: '',
       functionPermissions: [],
     };
   },
@@ -50,8 +70,12 @@ export const useUserInfoStore = defineStore({
     clearUserInfo() {
       this.$patch({
         id: '',
-        name: '',
+        account: '',
+        nickname: '',
         avatar: '',
+        email: '',
+        lastLoginIp: '',
+        lastLoginTime: '',
         functionPermissions: [],
       });
     },

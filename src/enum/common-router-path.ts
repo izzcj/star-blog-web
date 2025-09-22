@@ -1,9 +1,5 @@
 /**
  * 通用路由地址枚举
- *
- * @author Ale
- * @version 1.0.0
- * @since 2024/8/29
  */
 enum CommonRouterPath {
   /**

@@ -42,7 +42,6 @@ export const useAuthenticationStore = defineStore({
     async login(formData: LoginData) {
       const { message, data } = await asyncRequest(loginApi.login, {
         data: {
-          loginType: 'ACCOUNT_PASSWORD',
           ...formData,
         },
       });

@@ -6,7 +6,7 @@ import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import CommonRouterPath from '@/enum/common-router-path';
 import commonRouters from '@/router/common-router';
-import UserInfo from '@/views/user/info/index.vue';
+import UserDropdown from '@/layout/components/nav-bar/user-dropdown/index.vue';
 
 let routers: any[] = [];
 
@@ -99,7 +99,7 @@ function clickMenuItem() {
         </ElMenu>
       </ElCol>
       <ElCol v-if="showUserInfo" :span="getColSpan('user')">
-        <UserInfo />
+        <UserDropdown />
       </ElCol>
     </ElRow>
   </div>
@@ -111,7 +111,7 @@ function clickMenuItem() {
     </ElIcon>
     <ElDrawer v-model="showDrawer" size="40%" :show-close="false">
       <template #header>
-        <UserInfo />
+        <UserDropdown />
       </template>
       <ElMenu
         :ellipsis="false"

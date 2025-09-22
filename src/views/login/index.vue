@@ -4,6 +4,7 @@ import { Lock, User } from '@element-plus/icons-vue';
 import { frameworkConfig } from '@/config/framework.config';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import CommonRouterPath from '@/enum/common-router-path';
+import LoginType from '@/enum/login-type';
 import loginBg from '@/assets/image/login-bg.png';
 
 defineOptions({
@@ -34,9 +35,12 @@ const rules = reactive<FormRules<LoginData>>({
   ],
 });
 
+const loginType = ref(LoginType.ACCOUNT_PASSWORD);
+
 const loginData = reactive<LoginData>({
   account: '',
   password: '',
+  loginType: loginType.value,
 });
 
 /**
@@ -89,9 +93,9 @@ function login(formEl: FormInstance | undefined) {
         </ElButton>
       </div>
     </ElHeader>
-    <ElMain>
+    <ElMain class="animate__animated animate__lightSpeedInLeft login-box-container shadow-lg">
       <div class="venus-center min-h-full pt-5 md:ml-[20%]">
-        <ElCard class="w-[80dvw] bg-white/80 backdrop-blur-xs z-10 md:w-[20dvw]">
+        <ElCard class="w-[80%] bg-white/80 backdrop-blur-xs z-10 md:w-[400px]">
           <ElTabs class="p-6 text-2xl">
             <ElTabPane label="登录">
               <ElForm ref="formRef" :model="loginData" :rules="rules" :hide-required-asterisk="true" class="pt-5">

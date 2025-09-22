@@ -151,6 +151,10 @@ declare global {
      * 密码
      */
     password: string;
+    /**
+     * 登录类型
+     */
+    loginType: string;
   }
 
   /**
