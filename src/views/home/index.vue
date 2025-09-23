@@ -298,10 +298,6 @@ function preventScroll(event: Event) {
   }
 }
 
-.blog-list {
-  max-height: calc(80dvh - 20px);
-}
-
 .affix-content {
   max-height: calc(100dvh - 40px);
   overflow-y: auto;
@@ -318,31 +314,5 @@ function preventScroll(event: Event) {
   font-weight: bold;
   font-size: 16px;
   color: #333;
-}
-
-.blog-item {
-  margin-bottom: 15px;
-  min-height: 15dvh;
-}
-.blog-title {
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
-}
-.blog-summary {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-.blog-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.publish-date {
-  font-size: 12px;
-  color: #999;
 }
 </style>

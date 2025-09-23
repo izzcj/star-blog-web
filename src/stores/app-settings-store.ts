@@ -11,7 +11,7 @@ export interface AppSettingsState {
   /**
    * 顶部设置
    */
-  headerSettings: HeaderSettings;
+  headerSettings: object;
   /**
    * 页脚
    */

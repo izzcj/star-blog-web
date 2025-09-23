@@ -36,11 +36,18 @@ const onlyOneChild = ref();
  * @param route 路由
  */
 function isOnlyOneChildren(route: RouteRecordRaw) {
+  let showChildCount = 0;
   if (route.children?.length && route.meta?.topLevel) {
-    if (route.children.length <= 1) {
-      onlyOneChild.value = route.children[0];
-      return true;
-    }
+    route.children.forEach(child => {
+      if (!child.meta?.hidden) {
+        showChildCount++;
+      }
+      if (showChildCount > 1) {
+        return false;
+      }
+      onlyOneChild.value = child;
+    });
+    return showChildCount === 1;
   }
   return false;
 }
