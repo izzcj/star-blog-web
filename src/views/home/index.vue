@@ -125,9 +125,9 @@ function preventScroll(event: Event) {
     </div>
 
     <div class="home-body">
-      <ElRow :gutter="20" class="home-content">
+      <ElRow :gutter="20" justify="center" class="home-content">
         <!-- 左侧区域 -->
-        <ElCol :span="24" :md="6">
+        <ElCol :span="24" :md="4">
           <div class="affix-content">
             <ElCard class="home-card">
               <template #header>
@@ -158,12 +158,12 @@ function preventScroll(event: Event) {
         </ElCol>
 
         <!-- 中间区域 -->
-        <ElCol :span="24" :md="13">
+        <ElCol :span="24" :md="12">
           <BlogPage />
         </ElCol>
 
         <!-- 右侧区域 -->
-        <ElCol :span="24" :md="5">
+        <ElCol :span="24" :md="4">
           <div class="affix-content">
             <ElCard class="home-card">
               <template #header>

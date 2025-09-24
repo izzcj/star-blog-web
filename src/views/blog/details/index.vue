@@ -44,12 +44,12 @@ function goBack() {
         <ElIcon v-if="appSettingsStore.isMobile" class="mb-4" @click="goBack">
           <Back />
         </ElIcon>
-        <h1 class="text-[28px]/[1.3] font-bold mb-4 text-[#333]">
+        <h1 class="venus-center text-[28px]/[1.3] font-bold mb-4 text-[#333]">
           {{ blogDetail.title }}
         </h1>
 
         <!-- 博客元信息 -->
-        <div class="flex flex-wrap gap-4 text-[14px] text-[#666] border-b border-solid border-[#eee] pb-[15px]">
+        <div class="flex flex-wrap justify-center gap-4 text-[14px] text-[#666] border-b border-solid border-[#eee] pb-[15px]">
           <span v-if="blogDetail.top" class="meta-item top-tag">
             置顶
           </span>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, View } from '@element-plus/icons-vue';
+import { Avatar, Clock, View } from '@element-plus/icons-vue';
 import type { Blog } from './metadata';
 import blogApiModule from '@/api/blog';
 import { asyncRequest } from '@/utils/request-util';
@@ -47,42 +47,58 @@ function clickBlog(blog: Blog) {
 </script>
 
 <template>
-  <div>
-    <ElCard v-for="blog of blogList" :key="blog.id" @click="clickBlog(blog)">
-      <div>
-        <ElImage :src="blog.coverImage" fit="cover" />
-        <div class="flex">
-          <span class="mr-auto">
+  <ElCard class="min-h-full">
+    <div class="flex flex-wrap gap-4 justify-center w-full mx-auto 2xl:max-w-[900px]">
+      <ElCard v-for="blog of blogList" :key="blog.id" class="flex-1 cursor-pointer min-w-[300px] 2xl:max-w-[400px]" body-class="flex flex-col min-h-full" @click="clickBlog(blog)">
+        <div v-if="blog.coverImage" class="rounded-[8px] shadow-xl overflow-hidden">
+          <img :src="blog.coverImage" :alt="blog.title" class="transition duration-300 ease-in-out hover:scale-125" />
+        </div>
+        <div class="pt-2">
+          <span class="mr-auto text-[20px] font-bold">
             {{ blog.title }}
           </span>
-          <ElTag class="ml-auto">
-            {{ blog.typeName }}
-          </ElTag>
         </div>
-        <p class="text-[12px] text-black/50">
+        <span v-if="blog.summary" class="mt-auto text-[12px] text-black/75">
           {{ blog.summary }}
-        </p>
-        <div class="pt-5 text-[13px] text-black/40 flex">
-          <div class="mr-auto venus-center">
-            <ElIcon>
-              <Avatar />
-            </ElIcon>
-            {{ blog.createByName }}
+        </span>
+        <div class="pt-5 text-[13px] text-black/40">
+          <div class="mr-auto flex flex-wrap">
+            <div class="venus-center">
+              <ElIcon>
+                <Avatar />
+              </ElIcon>
+              <span class="pl-1">
+                {{ blog.createByName }}
+              </span>
+            </div>
             <div class="pl-2 venus-center">
-              <ElIcon class="pr-0.5">
+              <ElIcon>
                 <View />
               </ElIcon>
-              {{ blog.viewCount }}
+              <span class="pl-1">
+                {{ blog.viewCount }}
+              </span>
             </div>
           </div>
-          <div class="ml-auto">
-            {{ blog.publishTime }}
+          <div class="mr-auto">
+            <div class="flex items-center">
+              <ElIcon>
+                <Clock />
+              </ElIcon>
+              <span class="pl-1">
+                {{ blog.publishTime }}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </ElCard>
-  </div>
+      </ElCard>
+    </div>
+  </ElCard>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.blog-cover {
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
 </style>
