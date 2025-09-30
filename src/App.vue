@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useUploadInfoStore } from '@/stores/upload-info-state';
+
+const uploadInfoStore = useUploadInfoStore();
+uploadInfoStore.fetchOssBaseUrls();
 </script>
 
 <template>

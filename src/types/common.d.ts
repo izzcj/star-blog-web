@@ -36,6 +36,10 @@ declare global {
      */
     showRapidDuplicateRequestWarning: true | false;
     /**
+     * Minio 服务地址
+     */
+    minioServerUrl: string;
+    /**
      * 即时消息服务地址
      */
     instantMessageServerUrl: string;

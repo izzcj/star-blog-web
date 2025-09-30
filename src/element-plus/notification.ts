@@ -1,6 +1,7 @@
-import { ElNotification, ElMessage } from 'element-plus';
+import { ElNotification, ElMessage, ElLoading } from 'element-plus';
 import 'element-plus/es/components/notification/style/index';
 import 'element-plus/es/components/message/style/index';
+import 'element-plus/es/components/loading/style/index';
 
 const commonNotificationOptions = {
   // 是否允许使用html作为文本
@@ -64,6 +65,17 @@ export function infoMessage(message: string) {
     ...commonMessageOptions,
     message,
   });
+}
+
+/**
+ * 加载信息
+ */
+export function loadingMessage(message: string) {
+  const loading = ElLoading.service({
+    lock: true,
+    text: message,
+  });
+  return () => loading.close();
 }
 
 /**

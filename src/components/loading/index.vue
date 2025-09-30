@@ -110,12 +110,6 @@ onMounted(() => {
       .letter {
         display: inline-block;
       }
-
-      .tip {
-        margin-top: 6px;
-        font-size: 18px;
-        opacity: 0.6;
-      }
     }
   }
   // 加载完成动画

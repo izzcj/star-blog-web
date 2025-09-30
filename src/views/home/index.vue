@@ -2,6 +2,7 @@
 import anime from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-unit';
 import BlogPage from '@/views/blog/index.vue';
+import MasterInfo from '@/views/home/components/master-info/index.vue';
 
 defineOptions({
   name: 'HomePage',
@@ -130,29 +131,7 @@ function preventScroll(event: Event) {
         <ElCol :span="24" :md="4">
           <div class="affix-content">
             <ElCard class="home-card">
-              <template #header>
-                <div class="card-header">
-                  城市
-                </div>
-              </template>
-              <div class="city-info">
-                <p>城市：杭州</p>
-                <p>省份：浙江省</p>
-                <p>区域：华东地区</p>
-              </div>
-            </ElCard>
-            <ElCard class="home-card">
-              <template #header>
-                <div class="card-header">
-                  天气
-                </div>
-              </template>
-              <div class="weather-info">
-                <p>城市：杭州</p>
-                <p>天气：晴朗</p>
-                <p>温度：25°C</p>
-                <p>湿度：60%</p>
-              </div>
+              <span>广告招租位</span>
             </ElCard>
           </div>
         </ElCol>
@@ -165,36 +144,14 @@ function preventScroll(event: Event) {
         <!-- 右侧区域 -->
         <ElCol :span="24" :md="4">
           <div class="affix-content">
-            <ElCard class="home-card">
-              <template #header>
-                <div class="card-header">
-                  站长信息
-                </div>
-              </template>
-              <div class="admin-info">
-                <ElAvatar
-                  src="https://www.zmtc.com/wp-content/uploads/2023/0308/20230308090400294.jpg"
-                  size="large"
-                  class="admin-avatar"
-                />
-                <div class="admin-details">
-                  <p class="admin-name">
-                    不快乐的阿乐
-                  </p>
-                  <p class="admin-desc">
-                    热爱技术，其实是干后端的
-                  </p>
-                </div>
-              </div>
-            </ElCard>
-
+            <MasterInfo />
             <ElCard class="home-card">
               <template #header>
                 <div class="card-header">
                   热门标签
                 </div>
               </template>
-              <div class="hot-tags">
+              <div class="flex flex-wrap gap-2">
                 <ElTag
                   v-for="tag of ['Vue', 'React', 'JavaScript', 'TypeScript', 'CSS', 'HTML']"
                   :key="tag"

@@ -24,6 +24,10 @@ export interface UserInfoState {
    */
   avatar: string;
   /**
+   * 备注
+   */
+  remark: string;
+  /**
    * 邮箱
    */
   email: string;
@@ -49,6 +53,7 @@ export const useUserInfoStore = defineStore({
       account: '',
       nickname: '',
       avatar: '',
+      remark: '',
       email: '',
       lastLoginIp: '',
       lastLoginTime: '',
@@ -73,6 +78,7 @@ export const useUserInfoStore = defineStore({
         account: '',
         nickname: '',
         avatar: '',
+        remark: '',
         email: '',
         lastLoginIp: '',
         lastLoginTime: '',

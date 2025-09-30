@@ -51,7 +51,7 @@ function clickBlog(blog: Blog) {
     <div class="flex flex-wrap gap-4 justify-center w-full mx-auto 2xl:max-w-[900px]">
       <ElCard v-for="blog of blogList" :key="blog.id" class="flex-1 cursor-pointer min-w-[300px] 2xl:max-w-[400px]" body-class="flex flex-col min-h-full" @click="clickBlog(blog)">
         <div v-if="blog.coverImage" class="rounded-[8px] shadow-xl overflow-hidden">
-          <img :src="blog.coverImage" :alt="blog.title" class="transition duration-300 ease-in-out hover:scale-125" />
+          <img :src="blog.coverImage" :alt="blog.title" class="transition duration-500 ease-in-out hover:scale-125" />
         </div>
         <div class="pt-2">
           <span class="mr-auto text-[20px] font-bold">

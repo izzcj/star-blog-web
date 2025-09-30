@@ -1,12 +1,12 @@
 <script setup lang="ts">
 defineOptions({
-  name: 'UserInfoPage',
+  name: 'UserInfo',
 });
 </script>
 
 <template>
   <div>
-    <p>用户信息</p>
+    用户信息
   </div>
 </template>
 

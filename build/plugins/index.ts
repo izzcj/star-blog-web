@@ -96,7 +96,7 @@ export function createVitePlugins(_configEnv: ConfigEnv, viteEnv: Record<string,
         },
         {
           from: 'vue',
-          imports: ['Ref', 'ComputedRef', 'PropType'],
+          imports: ['Ref', 'ComputedRef', 'PropType', 'ComponentObjectPropsOptions', 'ComponentOptions'],
           type: true,
         },
       ],
