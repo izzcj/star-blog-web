@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { UploadFile, UploadFiles, UploadUserFile, UploadRawFile } from 'element-plus';
+import type { UploadUserFile, UploadRawFile } from 'element-plus';
 import path from 'path-browserify';
 import { indexOf, remove } from 'lodash-es';
-import type { VenusUploadProps } from './props';
+import { Delete } from '@element-plus/icons-vue';
+import { venusUploadProps } from './props';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
@@ -12,13 +13,20 @@ import { errorNotification } from '@/element-plus/notification';
 defineOptions({
   name: 'VenusUpload',
 });
-const props = defineProps<VenusUploadProps>();
+const props = defineProps({
+  ...venusUploadProps,
+});
 
 const emit = defineEmits<{
-  (e: 'update:value', value: Nullable<string> | string[]): void;
+  (e: 'update:value', value?: string | string[] | null): void;
 }>();
 
+interface VenusUploadFile extends UploadUserFile {
+  fullPath?: string | null;
+}
+
 const uploadInfoStore = useUploadInfoStore();
+const result = uploadInfoStore.fetchOssBaseUrls();
 const apiBaseUrl = getAppConfig().apiBaseUrl;
 let uploadUrl: string;
 if (apiBaseUrl.endsWith('/')) {
@@ -44,25 +52,70 @@ const headers = computed<Recordable>(() => {
 });
 
 const listType = computed(() => {
+  if (!props.multiple) {
+    return 'picture';
+  }
   return props.fileType == 'image' ? 'picture-card' : 'picture';
 });
 
-const showFileList = computed(() => {
-  if (props.max) {
-    return props.max > 1;
-  }
-  return true;
+const limit = computed(() => {
+  return props.multiple ?? false ? (props.max ?? 5) : 1;
 });
 
-const fileList = ref<UploadUserFile[]>([]);
+const showFileList = computed(() => {
+  return (props.multiple ?? false) && limit.value > 1;
+});
+
+const fileList = ref<VenusUploadFile[]>([]);
+const singleImage = computed(() => {
+  return fileList.value[fileList.value.length - 1];
+});
 
 const objectKeys = ref<string[]>([]);
+
+// 监听value属性，处理回显数据
+watch(
+  () => props.value ?? [],
+  value => {
+    let files: string[];
+    if (isString(value) && value) {
+      files = [value];
+    } else if (isArray(value) && value.length > 0) {
+      files = value;
+    } else {
+      files = [];
+    }
+
+    if (isEqual(files, objectKeys.value)) {
+      return;
+    }
+
+    const updateFileList = () => {
+      fileList.value = files.map(file => {
+        objectKeys.value.push(file);
+        return {
+          name: path.basename(file).split('__', 2)[1],
+          fullPath: file,
+          url: uploadInfoStore.getOssBaseUrl(props.ossProvider ?? 'minio') + file,
+          status: 'success',
+        } as VenusUploadFile;
+      });
+    };
+
+    if (uploadInfoStore.fetched) {
+      updateFileList();
+    } else {
+      result?.then(updateFileList);
+    }
+  },
+  { immediate: true },
+);
 
 watch(
   () => objectKeys.value.length,
   _ => {
     let value;
-    if (objectKeys.value.length > 1) {
+    if (props.multiple ?? false) {
       value = [...objectKeys.value];
     } else {
       value = objectKeys.value.length ? objectKeys.value[0] : null;
@@ -76,13 +129,16 @@ watch(
  *
  * @param response   请求响应
  * @param uploadFile 上传文件
- * @param _          上传文件列表
  */
-function onSuccess(response: any, uploadFile: UploadFile, _: UploadFiles) {
+function onSuccess(response: any, uploadFile: VenusUploadFile) {
   const objectKey = response.data;
   objectKeys.value.push(objectKey);
-  uploadFile.url = uploadInfoStore.getOssBaseUrl(props.ossProvider ?? 'minio') + objectKey;
-  uploadFile.name = path.basename(objectKey);
+  // 使用 nextTick 确保 DOM 更新后再修改文件信息
+  nextTick(() => {
+    uploadFile.url = uploadInfoStore.getOssBaseUrl(props.ossProvider ?? 'minio') + objectKey;
+    uploadFile.fullPath = objectKey;
+    uploadFile.name = path.basename(objectKey).split('__', 2)[1];
+  });
 }
 
 /**
@@ -91,8 +147,8 @@ function onSuccess(response: any, uploadFile: UploadFile, _: UploadFiles) {
  * @param rawFile 需要上传的文件
  */
 function beforeUpload(rawFile: UploadRawFile) {
-  const supportableImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/bmp'];
-  if (props.fileType == 'image') {
+  if (props.fileType === 'image') {
+    const supportableImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/bmp'];
     if (indexOf(supportableImageTypes, rawFile.type) == -1) {
       errorNotification('仅支持jpeg,png,jpg,bmp格式的图片', '错误');
       return false;
@@ -105,21 +161,35 @@ function beforeUpload(rawFile: UploadRawFile) {
  * 移除文件前回调
  *
  * @param uploadFile 上传文件
- * @param _          上传文件列表
  */
-async function beforeRemove(uploadFile: UploadFile, _: UploadFiles) {
+async function beforeRemove(uploadFile: VenusUploadFile) {
   if (uploadFile.status != 'success') {
     return true;
   }
-  const response: any = uploadFile.response;
+  if (!uploadFile.fullPath) {
+    errorNotification('请先上传文件', '错误');
+    return false;
+  }
   try {
-    await uploadInfoStore.removeTempObject(props.ossProvider ?? 'minio', response.data);
-    remove(objectKeys.value, item => item == response.data);
+    await uploadInfoStore.removeTempObject(props.ossProvider ?? 'minio', uploadFile.fullPath);
+    remove(objectKeys.value, item => item == uploadFile.fullPath);
     return true;
   } catch (error) {
     console.error('Failed to remove temp object:', error);
+    errorNotification('删除文件失败', '错误');
     return false;
   }
+}
+
+/**
+ * 处理移除文件
+ *
+ * @param file 上传文件
+ */
+function handleRemove(file: VenusUploadFile) {
+  beforeRemove(file).then(() => {
+    remove(fileList.value, item => item == file);
+  });
 }
 </script>
 
@@ -129,26 +199,36 @@ async function beforeRemove(uploadFile: UploadFile, _: UploadFiles) {
       v-model:file-list="fileList"
       class="size-full"
       :action="uploadUrl"
+      :headers="headers"
+      :accept="props.fileType"
       :disabled="props.disabled"
       :drag="props.draggable"
-      :headers="headers"
-      :multiple="props.multiple"
-      :accept="props.fileType"
-      :limit="props.max"
       :show-file-list="showFileList"
+      :multiple="props.multiple ?? false"
+      :limit="limit"
       :list-type="listType"
       :before-upload="beforeUpload"
       :on-success="onSuccess"
       :before-remove="beforeRemove"
     >
-      <template #trigger>
+      <div v-if="!props.multiple && fileList.length === 1" class="el-upload-list--picture-card">
+        <img :src="singleImage.url" class="object-cover transition-all duration-500 ease-in-out transform animate-fade-in" alt="" />
+        <span class="el-upload-list__item-actions" @click.stop>
+          <span class="el-upload-list__item-delete" @click="handleRemove(singleImage)">
+            <ElIcon>
+              <Delete />
+            </ElIcon>
+          </span>
+        </span>
+      </div>
+      <div v-else>
         <ElIcon>
           <slot />
         </ElIcon>
         <div v-if="props.draggable" class="el-upload__text">
           拖拽文件到这里，或 <em>点击上传</em>
         </div>
-      </template>
+      </div>
     </ElUpload>
   </div>
 </template>

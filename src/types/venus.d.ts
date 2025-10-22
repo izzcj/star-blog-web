@@ -1,23 +1,42 @@
 import type { RawAxiosRequestHeaders } from 'axios';
 import type RequestMethod from '@/enum/request-method';
+import type { PublicVenusUploadProps } from '@/components/venus/venus-upload/props';
 
-/**
- * 通用类型
- *
- * @author Ale
- * @version 1.0.0
- * @since 2024/8/30
- */
 declare global {
   /**
    * 允许为null的类型
    */
   type Nullable<T> = T | null;
   /**
+   * 允许undefined的类型
+   */
+  type Undefinable<T> = T | undefined;
+  /**
+   * 可能为数组的类型
+   */
+  type MaybeArray<T = any> = T | T[];
+  /**
    * 简化Record类型
    * k默认为string
    */
   type Recordable<T = any> = Record<string, T>;
+
+  /**
+   * 决定函数
+   */
+  type DecisionFunction<T = Recordable, R = string> = (t: T) => R;
+  /**
+   * 二元决定函数
+   */
+  type BiDecisionFunction<T = any, S = Recordable, R = string> = (t: T, s?: S) => R;
+  /**
+   * 二元控制函数
+   */
+  type BiControlFunction<T = Recordable, S = any> = BiDecisionFunction<T, S, boolean>;
+  /**
+   * 消费函数
+   */
+  type ConsumerFunction<T> = (t: T) => void;
 
   /**
    * 应用配置
@@ -218,4 +237,10 @@ declare global {
      */
     children: Menu[];
   }
+
+  /**
+   * 上传表单组件基础选项
+   */
+  interface UploadFormFieldBaseOptions
+    extends Omit<PublicVenusUploadProps, 'fileType' | 'value' | 'onUpdateValue'> {}
 }
