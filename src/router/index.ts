@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
 import commonRouter from '@/router/common-router';
+import adminRouter from '@/router/admin-router';
 
 type RouterGuardSetter = (router: Router) => void;
 
@@ -14,7 +15,10 @@ const router = createRouter({
   history: createWebHistory(),
   strict: false,
   scrollBehavior: () => ({ left: 0, top: 0 }),
-  routes: commonRouter,
+  routes: [
+    ...commonRouter,
+    ...adminRouter,
+  ],
 });
 
 for (const guard of values(guardModules)) {

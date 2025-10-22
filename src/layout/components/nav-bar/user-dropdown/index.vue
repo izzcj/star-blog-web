@@ -27,6 +27,13 @@ function clickLogin() {
 }
 
 /**
+ * 进入管理后台
+ */
+function toAdmin() {
+  router.push('/admin');
+}
+
+/**
  * 退出登录点击事件
  */
 function clickLogout() {
@@ -44,6 +51,9 @@ function clickLogout() {
         <ElDropdownMenu>
           <ElDropdownItem @click="clickUserInfo">
             个人信息
+          </ElDropdownItem>
+          <ElDropdownItem v-if="userInfoStore.isAdmin" @click="toAdmin">
+            管理后台
           </ElDropdownItem>
           <ElDropdownItem @click="clickLogout">
             退出登录

@@ -40,9 +40,13 @@ export interface UserInfoState {
    */
   lastLoginTime: string;
   /**
+   * 是否是管理员
+   */
+  admin: boolean;
+  /**
    * 权限信息
    */
-  functionPermissions: string[];
+  permissions: string[];
 }
 
 export const useUserInfoStore = defineStore({
@@ -57,7 +61,8 @@ export const useUserInfoStore = defineStore({
       email: '',
       lastLoginIp: '',
       lastLoginTime: '',
-      functionPermissions: [],
+      admin: false,
+      permissions: [],
     };
   },
   getters: {
@@ -66,6 +71,12 @@ export const useUserInfoStore = defineStore({
      */
     isFetched(): boolean {
       return !!this.id;
+    },
+    /**
+     * 是否是管理员
+     */
+    isAdmin(): boolean {
+      return this.admin;
     },
   },
   actions: {
@@ -82,7 +93,8 @@ export const useUserInfoStore = defineStore({
         email: '',
         lastLoginIp: '',
         lastLoginTime: '',
-        functionPermissions: [],
+        admin: false,
+        permissions: [],
       });
     },
     /**

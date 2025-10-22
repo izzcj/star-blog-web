@@ -6,7 +6,7 @@
  * @since 2024/8/30
  */
 const viewModules: Recordable<() => Promise<Recordable>> = import.meta.glob(
-  ['@/views/**/index.{vue,tsx}', '!@/views/**/components/**/index.{vue,tsx}'],
+  ['@/views/**/index.{vue,tsx}', '!@/views/admin/**/index.{vue,tsx}', '!@/views/**/components/**/index.{vue,tsx}'],
   {
     eager: false,
   },
