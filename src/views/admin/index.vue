@@ -5,7 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <p>这是管理员页面</p>
+  <p>这里是统计信息</p>
 </template>
 
 <style scoped lang="scss">

@@ -16,6 +16,41 @@ const blogApiModule: ApiModule = {
       uri: '/blog/{id}',
       method: RequestMethod.GET,
     },
+    /**
+     * 新增博客
+     */
+    create: {
+      uri: '/blog',
+      method: RequestMethod.POST,
+    },
+    /**
+     * 修改博客
+     */
+    modify: {
+      uri: '/blog',
+      method: RequestMethod.PUT,
+    },
+    /**
+     * 发布博客
+     */
+    publish: {
+      uri: '/blog/{id}/publish',
+      method: RequestMethod.POST,
+    },
+    /**
+     * 置顶博客
+     */
+    top: {
+      uri: '/blog/{id}/top',
+      method: RequestMethod.POST,
+    },
+    /**
+     * 删除博客
+     */
+    delete: {
+      uri: '/blog/{id}',
+      method: RequestMethod.DELETE,
+    },
   },
 };
 

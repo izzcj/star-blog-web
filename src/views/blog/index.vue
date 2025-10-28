@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Avatar, Clock, View } from '@element-plus/icons-vue';
-import type { Blog } from './metadata';
+import type { Blog } from '../admin/blog/metadata';
 import blogApiModule from '@/api/blog';
 import { asyncRequest } from '@/utils/request-util';
 

@@ -3,6 +3,7 @@ import CommonRouterPath from '@/enum/common-router-path';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
 import { successNotification } from '@/element-plus/notification';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 defineOptions({
   name: 'UserDropdown',
@@ -10,6 +11,7 @@ defineOptions({
 
 const authenticationStore = useAuthenticationStore();
 const userInfoStore = useUserInfoStore();
+const appSettingsStore = useAppSettingsStore();
 const router = useRouter();
 const avatar = ref(userInfoStore.avatar);
 /**
@@ -52,7 +54,7 @@ function clickLogout() {
           <ElDropdownItem @click="clickUserInfo">
             个人信息
           </ElDropdownItem>
-          <ElDropdownItem v-if="userInfoStore.isAdmin" @click="toAdmin">
+          <ElDropdownItem v-if="userInfoStore.isAdmin && !appSettingsStore.isMobile" @click="toAdmin">
             管理后台
           </ElDropdownItem>
           <ElDropdownItem @click="clickLogout">

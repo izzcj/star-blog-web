@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
-import type { Blog } from '../metadata';
+import type { Blog } from '../../admin/blog/metadata';
 import { asyncRequest } from '@/utils/request-util';
 import blogApiModule from '@/api/blog';
 import { useAppSettingsStore } from '@/stores/app-settings-store';

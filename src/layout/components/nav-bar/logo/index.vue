@@ -3,7 +3,9 @@ defineOptions({
   name: 'Logo',
 });
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  textClass: '',
+});
 
 interface Props {
   /**
@@ -14,13 +16,25 @@ interface Props {
    * log地址/logo文本
    */
   logo: string;
+  /**
+   * 文本的自定义类名
+   */
+  textClass?: string;
 }
 </script>
 
 <template>
   <div class="logo">
     <img v-if="type === 'IMAGE'" :src="logo" alt="LOGO" class="mr-2" />
-    <span v-for="(char, index) of logo" v-else :key="index" class="text">{{ char }}</span>
+    <span
+      v-for="(char, index) of logo"
+      v-else
+      :key="index"
+      class="text"
+      :class="[textClass]"
+    >
+      {{ char }}
+    </span>
   </div>
 </template>
 

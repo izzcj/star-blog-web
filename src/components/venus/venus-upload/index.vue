@@ -2,7 +2,7 @@
 import type { UploadUserFile, UploadRawFile } from 'element-plus';
 import path from 'path-browserify';
 import { indexOf, remove } from 'lodash-es';
-import { Delete } from '@element-plus/icons-vue';
+import { Delete, Plus } from '@element-plus/icons-vue';
 import { venusUploadProps } from './props';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { useAuthenticationStore } from '@/stores/authentication-store';
@@ -53,7 +53,7 @@ const headers = computed<Recordable>(() => {
 
 const listType = computed(() => {
   if (!props.multiple) {
-    return 'picture';
+    return 'picture-card';
   }
   return props.fileType == 'image' ? 'picture-card' : 'picture';
 });
@@ -223,11 +223,10 @@ function handleRemove(file: VenusUploadFile) {
       </div>
       <div v-else>
         <ElIcon>
-          <slot />
+          <slot>
+            <Plus />
+          </slot>
         </ElIcon>
-        <div v-if="props.draggable" class="el-upload__text">
-          拖拽文件到这里，或 <em>点击上传</em>
-        </div>
       </div>
     </ElUpload>
   </div>
