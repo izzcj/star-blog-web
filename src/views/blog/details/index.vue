@@ -80,7 +80,7 @@ function goBack() {
       </div>
 
       <!-- 博客内容 -->
-      <div class="blog-content" v-html="blogDetail.content" />
+      <VenusMdEditor v-model:value="blogDetail.content" :is-read="true" />
 
       <!-- 标签 -->
       <div v-if="blogDetail.tags && blogDetail.tags.length > 0" class="blog-tags">
@@ -123,58 +123,6 @@ function goBack() {
     max-width: 100%;
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  }
-}
-
-.blog-content {
-  margin: 20px 0;
-  line-height: 1.8;
-  font-size: 16px;
-  color: #333;
-
-  :deep(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
-
-  :deep(p) {
-    margin-bottom: 16px;
-  }
-
-  :deep(h1), :deep(h2), :deep(h3) {
-    margin: 20px 0 10px 0;
-    color: #333;
-  }
-
-  :deep(ul), :deep(ol) {
-    padding-left: 20px;
-    margin-bottom: 16px;
-  }
-
-  :deep(li) {
-    margin-bottom: 8px;
-  }
-
-  :deep(code) {
-    background-color: #f5f5f5;
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-family: monospace;
-  }
-
-  :deep(pre) {
-    background-color: #f5f5f5;
-    padding: 12px;
-    border-radius: 4px;
-    overflow-x: auto;
-  }
-
-  :deep(blockquote) {
-    border-left: 4px solid #ddd;
-    padding-left: 16px;
-    margin: 16px 0;
-    color: #666;
   }
 }
 

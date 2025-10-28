@@ -150,14 +150,14 @@ function resetForm() {
         </div>
       </template>
 
-      <div class="flex-1 overflow-y-auto pb-[30px]">
+      <div class="overflow-y-auto pb-[30px]">
         <ElForm
           ref="formRef"
           :model="blogForm"
           :rules="rules"
           label-position="top"
           label-width="80px"
-          class="max-w-[800px] mx-auto"
+          class="max-w-[80%] mx-auto"
         >
           <!-- 标题 -->
           <ElFormItem label="标题" prop="title">
@@ -206,15 +206,8 @@ function resetForm() {
           </ElFormItem>
 
           <!-- 内容 -->
-          <ElFormItem label="内容" prop="content">
-            <ElInput
-              v-model="blogForm.content"
-              type="textarea"
-              :rows="15"
-              placeholder="请输入博客内容"
-              maxlength="10000"
-              show-word-limit
-            />
+          <ElFormItem class="" label="内容" prop="content">
+            <VenusMdEditor v-model:value="blogForm.content" />
           </ElFormItem>
         </ElForm>
       </div>
