@@ -1,4 +1,4 @@
-import userApiModule from '@/api/user';
+import userApiModule from '@/api/system/user';
 import { errorMessage, errorNotification } from '@/element-plus/notification';
 import { useInstantMessageStore } from '@/stores/instant-message-store';
 import { asyncRequest } from '@/utils/request-util';

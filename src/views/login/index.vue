@@ -109,7 +109,7 @@ function login(formEl: FormInstance | undefined) {
                   </ElInput>
                 </ElFormItem>
                 <ElFormItem prop="password">
-                  <ElInput v-model="loginData.password" placeholder="请输入密码" type="password" class="h-10">
+                  <ElInput v-model="loginData.password" placeholder="请输入密码" type="password" class="h-10" show-password>
                     <template #prefix>
                       <ElIcon>
                         <Lock />

@@ -7,7 +7,12 @@ import gEmoji from '@bytemd/plugin-gemoji';
 import breaks from '@bytemd/plugin-breaks';
 import mediumZoom from '@bytemd/plugin-medium-zoom';
 
-export const index = [
+export const plugins = [
+  highlight(),
+  frontMatter(),
+  gEmoji(),
+  breaks(),
+  mediumZoom(),
   gfm(
     {
       locale: {
@@ -17,11 +22,29 @@ export const index = [
       },
     },
   ),
-  highlight(),
-  frontMatter(),
-  math(),
-  mermaid(),
-  gEmoji(),
-  breaks(),
-  mediumZoom(),
+  math(
+    {
+      locale: {
+        inline: '内联',
+        block: '块级',
+      },
+    },
+  ),
+  mermaid(
+    {
+      locale: {
+        mermaid: '图表',
+        flowchart: '流程图',
+        sequence: '时序图',
+        class: '类图',
+        state: '状态图',
+        er: 'E-R图',
+        uj: 'UJ图',
+        gantt: '甘特图',
+        pie: '饼图',
+        mindmap: '思维导图',
+        timeline: '时间轴',
+      },
+    },
+  ),
 ];

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import 'element-plus/es/components/upload/style/index';
 import type { UploadUserFile, UploadRawFile } from 'element-plus';
 import path from 'path-browserify';
 import { indexOf, remove } from 'lodash-es';

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
-import type { Blog } from '../../admin/blog/metadata';
+import type { BlogDetail } from '@/views/admin/blog/metadata';
 import { asyncRequest } from '@/utils/request-util';
-import blogApiModule from '@/api/blog';
+import blogApiModule from '@/api/blog/blog';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 defineOptions({
@@ -19,10 +19,6 @@ const props = defineProps({
 
 const router = useRouter();
 const appSettingsStore = useAppSettingsStore();
-
-interface BlogDetail extends Blog {
-  content: string;
-}
 
 const blogDetail = ref<BlogDetail>();
 
@@ -98,7 +94,7 @@ function goBack() {
   </ElCard>
 
   <!-- 加载状态 -->
-  <div v-else class="loading">
+  <div v-else class="p-5">
     <ElSkeleton :rows="10" animated />
   </div>
 </template>
@@ -135,9 +131,5 @@ function goBack() {
     margin-right: 10px;
     margin-bottom: 10px;
   }
-}
-
-.loading {
-  padding: 20px;
 }
 </style>

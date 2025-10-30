@@ -20,7 +20,6 @@ const instance = axios.create({
     serialize: params => qs.stringify(params, { arrayFormat: 'brackets', skipNulls: true }),
   },
   responseType: 'json',
-  validateStatus: () => true,
 });
 
 let authenticationStore: Nullable<ReturnType<typeof useAuthenticationStore>> = null;

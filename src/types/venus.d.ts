@@ -1,6 +1,5 @@
 import type { RawAxiosRequestHeaders } from 'axios';
 import type RequestMethod from '@/enum/request-method';
-import type { PublicVenusUploadProps } from '@/components/venus/venus-upload/props';
 
 declare global {
   /**
@@ -239,8 +238,28 @@ declare global {
   }
 
   /**
-   * 上传表单组件基础选项
+   * 数据选项
    */
-  interface UploadFormFieldBaseOptions
-    extends Omit<PublicVenusUploadProps, 'fileType' | 'value' | 'onUpdateValue'> {}
+  interface DataOption extends Recordable {
+    /**
+     * 名称
+     */
+    label: string;
+    /**
+     * 名称拼音
+     */
+    labelPinyin?: string;
+    /**
+     * 值
+     */
+    value: string | number | boolean;
+    /**
+     * 描述
+     */
+    description?: string;
+    /**
+     * 是否禁用
+     */
+    disabled?: boolean;
+  }
 }

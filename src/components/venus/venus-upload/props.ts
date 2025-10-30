@@ -15,10 +15,8 @@ export const venusUploadProps = {
   uploadTip: string(),
   // 是否禁用
   disabled: bool().def(false),
-  // 文件Key
+  // 值
   value: oneOfType([nullable(), string(), arrayOf(string())]).def(null),
   // 值更新函数
   onUpdateValue: func<ConsumerFunction<Undefinable<MaybeArray<string>>>>(),
 } as const;
-
-export type PublicVenusUploadProps = ExtractPublicPropTypes<typeof venusUploadProps>;

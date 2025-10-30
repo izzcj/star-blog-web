@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UserInfoState } from '@/stores/user-info-store';
 import { asyncRequest } from '@/utils/request-util';
-import userApiModule from '@/api/user';
+import userApiModule from '@/api/system/user';
 
 defineOptions({
   name: 'MasterInfo',

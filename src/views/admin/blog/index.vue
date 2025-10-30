@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 import type { Blog } from './metadata';
-import blogApiModule from '@/api/blog';
+import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
 
@@ -138,7 +138,7 @@ function deleteBlog(blog: Blog) {
         stripe
         class="w-full"
       >
-        <ElTableColumn prop="title" label="标题" min-width="200" />
+        <ElTableColumn prop="title" label="标题" min-width="200" show-overflow-tooltip />
         <ElTableColumn prop="typeName" label="类型" width="100" />
         <ElTableColumn prop="viewCount" label="浏览量" width="100" />
         <ElTableColumn prop="createByName" label="作者" width="120" />

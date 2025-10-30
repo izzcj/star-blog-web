@@ -3,7 +3,7 @@ import 'bytemd/dist/index.css';
 import 'juejin-markdown-themes/dist/fancy.min.css';
 import 'highlight.js/styles/atom-one-dark.css';
 import zhHans from 'bytemd/locales/zh_Hans.json';
-import { index } from './plugins';
+import { plugins } from './plugins';
 import { venusMdEditorProps } from './props';
 
 defineOptions({
@@ -48,8 +48,8 @@ function handleContentChange(value: string) {
 
 <template>
   <div class="size-full">
-    <ByteMdEditor v-if="!props.isRead" :locale="zhHans" :value="content" :plugins="index" @change="handleContentChange" />
-    <ByteMdViewer v-else :value="content" :plugins="index" />
+    <ByteMdEditor v-if="!props.isRead" :locale="zhHans" :value="content" :plugins="plugins" @change="handleContentChange" />
+    <ByteMdViewer v-else :value="content" :plugins="plugins" />
   </div>
 </template>
 

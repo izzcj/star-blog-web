@@ -14,3 +14,10 @@ export interface Blog {
   createByName: string;
   tags: Recordable[];
 }
+
+/**
+ * 博客详情
+ */
+export interface BlogDetail extends Blog {
+  content: string;
+}

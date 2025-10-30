@@ -2,8 +2,8 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 import { Refresh, UploadFilled } from '@element-plus/icons-vue';
-import type { Blog } from '../../metadata';
-import blogApiModule from '@/api/blog';
+import type { BlogDetail } from '../../metadata';
+import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
 
@@ -20,7 +20,7 @@ const loading = ref(false);
 // 博客表单数据
 const blogForm = reactive({
   id: undefined as string | undefined,
-  type: '1',
+  type: '',
   title: '',
   summary: '',
   content: '',
@@ -37,6 +37,9 @@ const rules = reactive<FormRules>({
   summary: [
     { required: false, message: '请输入摘要', trigger: 'blur' },
     { max: 200, message: '摘要长度不能超过 200 个字符', trigger: 'blur' },
+  ],
+  type: [
+    { required: true, message: '请选择分类', trigger: 'change' },
   ],
   content: [
     { required: true, message: '请输入博客内容', trigger: 'blur' },
@@ -59,9 +62,10 @@ function fetchBlogDetail(id: string) {
   loading.value = true;
   asyncRequest(blogApiModule.apis.detail, { pathParams: { id } })
     .then(res => {
-      const blog = res.data as Blog & { content: string };
+      const blog = res.data as BlogDetail;
       blogForm.id = blog.id;
       blogForm.title = blog.title;
+      blogForm.type = blog.type;
       blogForm.summary = blog.summary;
       blogForm.content = blog.content;
       blogForm.coverImage = blog.coverImage;
@@ -181,23 +185,13 @@ function resetForm() {
           </ElFormItem>
 
           <!-- 标签 -->
-          <ElFormItem label="标签">
-            <ElSelect
-              v-model="blogForm.tags"
-              multiple
-              filterable
-              allow-create
-              default-first-option
-              placeholder="请选择或创建标签"
-              class="w-full"
-            >
-              <ElOption
-                v-for="tag of ['Vue', 'React', 'JavaScript', 'TypeScript', 'CSS', 'HTML']"
-                :key="tag"
-                :label="tag"
-                :value="tag"
-              />
-            </ElSelect>
+          <ElFormItem label="分类" prop="type">
+            <VenusSelect
+              v-model:value="blogForm.type"
+              option-type="dict"
+              option-key="blog_type"
+              placeholder="请选择分类"
+            />
           </ElFormItem>
 
           <!-- 封面图 -->
