@@ -2,7 +2,7 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 import { Refresh, UploadFilled } from '@element-plus/icons-vue';
-import type { BlogDetail } from '../../metadata';
+import type { BlogDetail } from '@/components/blog/metadata';
 import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';

@@ -63,7 +63,7 @@ const commonRouter: RouteRecordRaw[] = [
         props: true,
         meta: {
           title: '博客详情',
-          keepAlive: true,
+          keepAlive: false,
           topLevel: false,
           hidden: true,
         },

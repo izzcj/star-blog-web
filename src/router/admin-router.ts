@@ -23,35 +23,43 @@ export const adminRouter: RouteRecordRaw[] = [
         path: '',
         component: () => import('@/views/admin/index.vue'),
       },
+    ],
+  },
+  {
+    path: '/admin/blog',
+    component: AdminLayout,
+    meta: {
+      title: '博客管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
       {
-        path: 'blog',
         name: 'BlogManagement',
-        meta: {
-          title: '博客管理',
-          keepAlive: true,
-          topLevel: false,
-        },
+        path: '',
         component: () => import('@/views/admin/blog/index.vue'),
       },
       {
         // 编辑博客
-        path: 'blog/edit/:id',
+        path: 'edit/:id',
         name: 'BlogEdit',
         meta: {
           title: '编辑博客',
           keepAlive: true,
           topLevel: false,
+          hidden: true,
         },
         component: () => import('@/views/admin/blog/components/editor/index.vue'),
       },
       {
         // 新增博客
-        path: 'blog/create',
+        path: 'create',
         name: 'BlogCreate',
         meta: {
           title: '新增博客',
           keepAlive: true,
           topLevel: false,
+          hidden: true,
         },
         component: () => import('@/views/admin/blog/components/editor/index.vue'),
       },

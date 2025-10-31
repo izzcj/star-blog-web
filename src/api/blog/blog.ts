@@ -31,6 +31,13 @@ const blogApiModule: ApiModule = {
       method: RequestMethod.PUT,
     },
     /**
+     * 增加博客浏览次数
+     */
+    incrementViewCount: {
+      uri: '/blog/{id}/view-count',
+      method: RequestMethod.PUT,
+    },
+    /**
      * 发布博客
      */
     publish: {
@@ -50,6 +57,13 @@ const blogApiModule: ApiModule = {
     delete: {
       uri: '/blog/{id}',
       method: RequestMethod.DELETE,
+    },
+    /**
+     * 获取热门博客
+     */
+    hotBlogs: {
+      uri: '/blog/hot',
+      method: RequestMethod.GET,
     },
   },
 };

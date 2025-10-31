@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
-import type { BlogDetail } from '@/views/admin/blog/metadata';
+import type { BlogDetail } from '@/components/blog/metadata';
 import { asyncRequest } from '@/utils/request-util';
 import blogApiModule from '@/api/blog/blog';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
@@ -23,11 +23,16 @@ const appSettingsStore = useAppSettingsStore();
 const blogDetail = ref<BlogDetail>();
 
 onMounted(() => {
-  asyncRequest(blogApiModule.apis.detail, { pathParams: { id: props.id } }).then(res => {
-    blogDetail.value = res.data;
+  asyncRequest(blogApiModule.apis.incrementViewCount, { pathParams: { id: props.id } }).then(() => {
+    asyncRequest(blogApiModule.apis.detail, { pathParams: { id: props.id } }).then(res => {
+      blogDetail.value = res.data;
+    });
   });
 });
 
+/**
+ * 返回
+ */
 function goBack() {
   router.back();
 }
@@ -72,7 +77,7 @@ function goBack() {
 
       <!-- 封面图 -->
       <div v-if="blogDetail.coverImage" class="blog-cover">
-        <img :src="blogDetail.coverImage" :alt="blogDetail.title" />
+        <VenusImage :src="blogDetail.coverImage" :alt="blogDetail.title" />
       </div>
 
       <!-- 博客内容 -->

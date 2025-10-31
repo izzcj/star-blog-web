@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import anime from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-unit';
-import BlogPage from '@/views/blog/index.vue';
 import MasterInfo from '@/views/home/components/master-info/index.vue';
+import HotBlog from '@/views/home/components/hot-blog/index.vue';
 
 defineOptions({
   name: 'HomePage',
@@ -138,7 +138,7 @@ function preventScroll(event: Event) {
 
         <!-- 中间区域 -->
         <ElCol :span="24" :md="12">
-          <BlogPage />
+          <HotBlog />
         </ElCol>
 
         <!-- 右侧区域 -->

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
-import type { Blog } from './metadata';
+import type { Blog } from '@/components/blog/metadata';
 import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
