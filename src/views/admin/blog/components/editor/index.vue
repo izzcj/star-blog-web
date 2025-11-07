@@ -60,7 +60,7 @@ onMounted(() => {
  */
 function fetchBlogDetail(id: string) {
   loading.value = true;
-  asyncRequest(blogApiModule.apis.detail, { pathParams: { id } })
+  asyncRequest(blogApiModule.apis.fetchDetail, { pathParams: { id } })
     .then(res => {
       const blog = res.data as BlogDetail;
       blogForm.id = blog.id;

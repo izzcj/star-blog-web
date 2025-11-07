@@ -2,9 +2,7 @@
 import 'element-plus/es/components/select/style/index';
 import { ElSelect, ElOption, ElOptionGroup } from 'element-plus';
 import { venusSelectProps } from './props';
-import { asyncRequest } from '@/utils/request-util';
-import dictDataApiModule from '@/api/system/dict-data';
-import enumApiModule from '@/api/enum';
+import { useLoadDataOptions } from '@/uses/use-data-options';
 
 defineOptions({
   name: 'VenusSelect',
@@ -17,69 +15,14 @@ const emit = defineEmits<{
   (e: 'update:value', value?: string | number | boolean | null): void;
 }>();
 
-const selectValue = ref(props.value);
-const options = ref<DataOption[]>([]);
+const model = useVModel(props, 'value', emit);
 
-onMounted(loadOptions);
-
-watch(
-  () => props.value,
-  value => {
-    console.log('props.value', props.value);
-    selectValue.value = value;
-  },
-  { immediate: true },
-);
-
-watch(
-  selectValue,
-  value => {
-    emit('update:value', value);
-  },
-);
-
-watch(
-  () => [props.optionType, props.optionKey],
-  loadOptions,
-);
-
-/**
- * 加载options
- */
-async function loadOptions() {
-  try {
-    if (props.optionType === 'dict') {
-      const res = await asyncRequest(dictDataApiModule.apis.options, {
-        params: { dictType: props.optionKey as string },
-      });
-      options.value = res.data || [];
-      return;
-    }
-
-    if (props.optionType === 'enum') {
-      const res = await asyncRequest(enumApiModule.apis.options, {
-        params: { class: props.optionKey as string },
-      });
-      options.value = res.data || [];
-      return;
-    }
-
-    if (props.optionType === 'const' && isArray(props.optionKey)) {
-      options.value = props.optionKey.map(item => ({
-        label: item.label ?? item.value ?? item,
-        value: item.value ?? item.label ?? item,
-      }));
-    }
-  } catch (error) {
-    console.error('加载选项失败:', error);
-    options.value = [];
-  }
-}
+const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
 </script>
 
 <template>
   <ElSelect
-    v-model="selectValue"
+    v-model="model"
     :multiple="props.multiple"
     :multiple-limit="props.multipleLimit"
     :placeholder="props.placeholder"

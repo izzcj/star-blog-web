@@ -5,7 +5,7 @@ const enumApiModule: ApiModule = {
     /**
      * 获取枚举选项列表
      */
-    options: {
+    fetchOptions: {
       uri: '/enumeration/options',
       method: RequestMethod.GET,
     },

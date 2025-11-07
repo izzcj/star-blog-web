@@ -12,7 +12,7 @@ const dictDataApiModule: ApiModule = {
     /**
      * 获取字典数据选项
      */
-    options: {
+    fetchOptions: {
       uri: '/system/dict/data/options',
       method: RequestMethod.GET,
     },

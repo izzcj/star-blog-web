@@ -33,7 +33,7 @@ watch(() => [pagination.page, pagination.size], () => {
  */
 function fetchBlogList() {
   loading.value = true;
-  asyncRequest(blogApiModule.apis.page, {
+  asyncRequest(blogApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,

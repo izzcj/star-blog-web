@@ -37,6 +37,4 @@ export const venusSelectProps = {
   optionKey: oneOfType([string(), array<DataOption>()]),
   // 值
   value: oneOfType([string(), number(), bool(), nullable()]).def(null),
-  // 值更新函数
-  onUpdateValue: func<ConsumerFunction<Undefinable<string | number | boolean>>>(),
 } as const;

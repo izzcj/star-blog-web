@@ -24,7 +24,7 @@ const blogDetail = ref<BlogDetail>();
 
 onMounted(() => {
   asyncRequest(blogApiModule.apis.incrementViewCount, { pathParams: { id: props.id } }).then(() => {
-    asyncRequest(blogApiModule.apis.detail, { pathParams: { id: props.id } }).then(res => {
+    asyncRequest(blogApiModule.apis.fetchDetail, { pathParams: { id: props.id } }).then(res => {
       blogDetail.value = res.data;
     });
   });

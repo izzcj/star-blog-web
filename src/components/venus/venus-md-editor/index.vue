@@ -19,22 +19,7 @@ const emit = defineEmits<{
 const ByteMdEditor = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Editor);
 const ByteMdViewer = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Viewer);
 
-const content = ref(props.value);
-
-watch(
-  () => props.value,
-  value => {
-    content.value = value;
-  },
-  { immediate: true },
-);
-
-watch(
-  content,
-  value => {
-    emit('update:value', value);
-  },
-);
+const model = useVModel(props, 'value', emit);
 
 /**
  * 处理内容改变
@@ -42,14 +27,14 @@ watch(
  * @param value 内容
  */
 function handleContentChange(value: string) {
-  content.value = value;
+  model.value = value;
 }
 </script>
 
 <template>
   <div class="size-full">
-    <ByteMdEditor v-if="!props.isRead" :locale="zhHans" :value="content" :plugins="plugins" @change="handleContentChange" />
-    <ByteMdViewer v-else :value="content" :plugins="plugins" />
+    <ByteMdEditor v-if="!props.isRead" :locale="zhHans" :value="model" :plugins="plugins" @change="handleContentChange" />
+    <ByteMdViewer v-else :value="model" :plugins="plugins" />
   </div>
 </template>
 

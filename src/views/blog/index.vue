@@ -26,7 +26,7 @@ onMounted(() => {
  * 加载博客数据
  */
 function loadBlogData() {
-  asyncRequest(blogApiModule.apis.page, { params }).then(res => {
+  asyncRequest(blogApiModule.apis.fetchPage, { params }).then(res => {
     blogList.value = res.data.data;
   });
 }
