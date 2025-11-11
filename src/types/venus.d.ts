@@ -19,7 +19,6 @@ declare global {
    * k默认为string
    */
   type Recordable<T = any> = Record<string, T>;
-
   /**
    * 决定函数
    */
@@ -144,6 +143,28 @@ declare global {
   }
 
   /**
+   * 基本实体
+   */
+  interface BaseEntity {
+    /**
+     * ID
+     */
+    id: string;
+    /**
+     * 创建时间
+     */
+    createTime: string;
+    /**
+     * 更新时间
+     */
+    updateTime: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+  }
+
+  /**
    * 即时消息
    */
   interface InstantMessage {
@@ -261,5 +282,23 @@ declare global {
      * 是否禁用
      */
     disabled?: boolean;
+  }
+
+  /**
+   * 分组数据选项
+   */
+  interface DataOptionsGroup extends Recordable {
+    /**
+     * 分组名称
+     */
+    label: string;
+    /**
+     * 分组唯一标识
+     */
+    key: string | number;
+    /**
+     * 分组下面的选项
+     */
+    options: DataOption[];
   }
 }

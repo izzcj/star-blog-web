@@ -3,7 +3,7 @@
 import { css as formatCss, html as formatHtml, js as formatJs } from 'js-beautify';
 import { editor } from 'monaco-editor';
 import { venusMonacoEditorProps } from './props';
-import { initResult } from './init';
+import { initMonaco } from './init';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 import IEditorOptions = editor.IEditorOptions;
 import IGlobalEditorOptions = editor.IGlobalEditorOptions;
@@ -27,7 +27,7 @@ const height = computed(() => {
     return props.height;
   }
 
-  return `${props.height ?? 320}px`;
+  return `${props.height ?? 400}px`;
 });
 
 const width = '100%';
@@ -71,42 +71,42 @@ const editorOptions = computed(() => {
 
 let monacoEditor: Nullable<IStandaloneCodeEditor> = null;
 
-onMounted(() => {
-  initResult.then(monaco => {
-    if (editorContainer.value) {
-      const instance = monaco.editor.create(editorContainer.value, {
-        lineHeight: 1.5,
-        value: formattedContent.value,
-        fontFamily: 'Consolas, fierce-jetbrains-mono',
-        tabIndex: 2,
-        folding: false,
-        contextmenu: false,
-        minimap: {
-          enabled: false,
-        },
-        automaticLayout: true,
-        scrollbar: {
-          verticalScrollbarSize: 8,
-          horizontalScrollbarSize: 8,
-        },
-        formatOnPaste: true,
-        mouseWheelZoom: true,
-        autoClosingQuotes: 'always',
-        ...editorOptions.value,
-      });
-      monacoEditor = instance;
-      instance.onDidChangeModelContent(() => {
-        const currentContent = instance.getValue();
-        if (currentContent != content.value) {
-          content.value = currentContent;
-          emit('update:value', currentContent);
-          if (isFunction(props.onUpdateValue)) {
-            props.onUpdateValue.call(undefined, currentContent);
-          }
+onMounted(async () => {
+  const monacoInstance = await initMonaco();
+  if (editorContainer.value) {
+    const instance = monacoInstance.editor.create(editorContainer.value, {
+      lineHeight: 1.5,
+      value: formattedContent.value,
+      fontFamily: 'Consolas, fierce-jetbrains-mono',
+      tabIndex: 2,
+      folding: false,
+      contextmenu: false,
+      minimap: {
+        enabled: false,
+      },
+      automaticLayout: true,
+      scrollbar: {
+        verticalScrollbarSize: 8,
+        horizontalScrollbarSize: 8,
+      },
+      formatOnPaste: true,
+      mouseWheelZoom: true,
+      autoClosingQuotes: 'always',
+      ...editorOptions.value,
+    });
+    monacoEditor = instance;
+    instance.onDidChangeModelContent(() => {
+      const currentContent = instance.getValue();
+      if (currentContent != content.value) {
+        content.value = currentContent;
+        emit('update:value', currentContent);
+        if (isFunction(props.onUpdateValue)) {
+          props.onUpdateValue.call(undefined, currentContent);
+          console.log('onUpdateValue');
         }
-      });
-    }
-  });
+      }
+    });
+  }
 });
 
 onBeforeUnmount(() => {
@@ -119,6 +119,7 @@ watch(editorOptions, options => {
     ...options,
   });
 });
+
 watch(
   () => props.value,
   value => {

@@ -6,6 +6,7 @@ import type { BlogDetail } from '@/components/blog/metadata';
 import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
+import { DataOptionType } from '@/enum/data-option-type';
 
 defineOptions({
   name: 'BlogEditor',
@@ -188,7 +189,7 @@ function resetForm() {
           <ElFormItem label="分类" prop="type">
             <VenusSelect
               v-model:value="blogForm.type"
-              option-type="dict"
+              :option-type="DataOptionType.DICT"
               option-key="blog_type"
               placeholder="请选择分类"
             />
@@ -196,7 +197,7 @@ function resetForm() {
 
           <!-- 封面图 -->
           <ElFormItem label="封面图">
-            <VenusUpload v-model:value="blogForm.coverImage" :multiple="false" :max="1" />
+            <VenusUpload v-model:value="blogForm.coverImage" />
           </ElFormItem>
 
           <!-- 内容 -->

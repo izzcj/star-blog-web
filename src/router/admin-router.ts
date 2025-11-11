@@ -26,6 +26,28 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin/system/config',
+    component: AdminLayout,
+    meta: {
+      title: '系统配置',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'SystemConfig',
+        path: '',
+        meta: {
+          title: '系统配置',
+          keepAlive: true,
+          topLevel: false,
+          hidden: true,
+        },
+        component: () => import('@/views/admin/system/system-config/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/admin/blog',
     component: AdminLayout,
     meta: {

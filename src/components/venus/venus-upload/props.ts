@@ -8,7 +8,7 @@ export const venusUploadProps = {
   // 是否批量上传
   multiple: bool().def(false),
   // 最大上传文件数量，multiple开启后有效
-  max: integer(),
+  max: integer().def(1),
   // 是否可以拖拽上传
   draggable: bool().def(true),
   // 上传文件提示，进在draggable开启后有效

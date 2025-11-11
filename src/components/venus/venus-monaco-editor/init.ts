@@ -35,8 +35,16 @@ self.MonacoEnvironment = {
   },
 };
 
-export const initResult = loader.init().then(monaco => {
-  // 主题可以去https://github.com/brijeshb42/monaco-themes找
+/**
+ * 初始化Monaco编辑器
+ */
+export async function initMonaco() {
+  const monaco = await loader.init();
+
+  if (!monaco?.editor) {
+    throw new Error('Monaco 加载失败');
+  }
+
   monaco.editor.defineTheme('venus-dark', {
     base: 'vs-dark',
     inherit: true,
@@ -62,4 +70,4 @@ export const initResult = loader.init().then(monaco => {
   });
 
   return monaco;
-});
+}

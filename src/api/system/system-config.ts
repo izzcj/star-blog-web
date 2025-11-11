@@ -9,6 +9,9 @@ export const systemConfigApiModule: ApiModule = {
       uri: '/system/config',
       method: RequestMethod.GET,
     },
+    /**
+     * 获取系统配置列表
+     */
     fetchList: {
       uri: '/system/config/list',
       method: RequestMethod.GET,

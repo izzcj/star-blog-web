@@ -15,11 +15,11 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: 'update:value', value?: string | null): void;
 }>();
+const model = useVModel(props, 'value', emit);
 // 避免直接引入Editor和Viewer出现'未使用的类型'警告
 const ByteMdEditor = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Editor);
-const ByteMdViewer = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Viewer);
 
-const model = useVModel(props, 'value', emit);
+const ByteMdViewer = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Viewer);
 
 /**
  * 处理内容改变
@@ -33,8 +33,18 @@ function handleContentChange(value: string) {
 
 <template>
   <div class="size-full">
-    <ByteMdEditor v-if="!props.isRead" :locale="zhHans" :value="model" :plugins="plugins" @change="handleContentChange" />
-    <ByteMdViewer v-else :value="model" :plugins="plugins" />
+    <ByteMdEditor
+      v-if="!props.isRead"
+      :locale="zhHans"
+      :value="model"
+      :plugins="plugins"
+      @change="handleContentChange"
+    />
+    <ByteMdViewer
+      v-else
+      :value="model"
+      :plugins="plugins"
+    />
   </div>
 </template>
 

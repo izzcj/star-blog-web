@@ -36,26 +36,24 @@ const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
     :no-match-text="props.noMatchText"
     :no-data-text="props.noDataText"
   >
-    <template v-if="props.group">
+    <template v-for="option of options" :key="option.key || option.value || option.label">
       <ElOptionGroup
-        v-for="group of options"
-        :key="group[props.groupLabel]"
-        :label="group[props.groupLabel]"
+        v-if="'options' in option && Array.isArray(option.options)"
+        :label="option.label"
       >
         <ElOption
-          v-for="item of group[props.groupOptions]"
+          v-for="item of option.options"
           :key="`${item.value}-${item.label}`"
           :label="item.label"
           :value="item.value"
+          :disabled="item.disabled"
         />
       </ElOptionGroup>
-    </template>
-    <template v-else>
       <ElOption
-        v-for="option of options"
-        :key="`${option.value}-${option.label}`"
+        v-else
         :label="option.label"
         :value="option.value"
+        :disabled="option.disabled"
       />
     </template>
   </ElSelect>

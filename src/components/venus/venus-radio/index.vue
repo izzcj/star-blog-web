@@ -14,24 +14,18 @@ const emit = defineEmits<{
   (e: 'update:value', value?: string | number | boolean | null): void;
 }>();
 
-const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
-
 const model = useVModel(props, 'value', emit);
+
+const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
 </script>
 
 <template>
-  <ElRadioGroup v-model="model" :disabled="disabled">
-    <template v-if="props.type === 'radio'">
-      <ElRadio v-for="item of options" :key="`${item.value}-${item.label}`" :value="item.value">
-        {{ item.label }}
-      </ElRadio>
-    </template>
-    <template v-else>
-      <ElRadioButton v-for="item of options" :key="`${item.value}-${item.label}`" :value="item.value">
-        {{ item.label }}
-      </ElRadioButton>
-    </template>
-  </ElRadioGroup>
+  <ElRadioGroup
+    v-model="model"
+    :options="options"
+    :disabled="props.disabled"
+    :type="props.type"
+  />
 </template>
 
 <style scoped lang="scss">

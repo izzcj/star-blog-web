@@ -8,7 +8,7 @@ defineOptions({
 });
 
 const logType = ref('TEXT');
-const logText = ref('StarBlog');
+const logText = ref('StarBlog管理后台');
 
 const route = useRoute();
 const router = useRouter();
@@ -21,6 +21,12 @@ const activeMenu = computed(() => {
 });
 
 const menus = shallowRef([
+  {
+    id: 'system-config',
+    title: '系统配置',
+    icon: Notebook,
+    path: '/admin/system/config',
+  },
   {
     id: 'blog-management',
     title: '博客管理',

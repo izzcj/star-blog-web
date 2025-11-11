@@ -1,6 +1,7 @@
 import { asyncRequest } from '@/utils/request-util';
 import dictDataApiModule from '@/api/system/dict-data';
 import enumApiModule from '@/api/enum';
+import type DataOptionType from '@/enum/data-option-type';
 
 /**
  * 数据选项加载 Composable
@@ -9,8 +10,8 @@ import enumApiModule from '@/api/enum';
  * @param optionKey  选项key
  * @param autoLoad   是否在参数变化时自动加载，默认 true
  */
-export function useLoadDataOptions<T extends DataOption>(
-  optionType: string,
+export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
+  optionType: DataOptionType,
   optionKey: string | T[] | undefined,
   autoLoad = true,
 ) {
@@ -31,10 +32,24 @@ export function useLoadDataOptions<T extends DataOption>(
       asyncRequest(enumApiModule.apis.fetchOptions, { params: { class: key } }),
     const: (list: T[]) =>
       Promise.resolve({
-        data: list.map((item: any) => ({
-          label: item.label ?? item.value ?? item,
-          value: item.value ?? item.label ?? item,
-        })),
+        data: list.map((item: any) => {
+          // 如果已经是分组结构，直接返回
+          if ('options' in item && Array.isArray(item.options)) {
+            return {
+              label: item.label,
+              key: item.key ?? item.label,
+              options: item.options.map((opt: any) => ({
+                label: opt.label ?? opt.value ?? opt,
+                value: opt.value ?? opt.label ?? opt,
+              })),
+            } as DataOptionsGroup;
+          }
+          // 否则按普通选项处理
+          return {
+            label: item.label ?? item.value ?? item,
+            value: item.value ?? item.label ?? item,
+          } as DataOption;
+        }),
       } as { data: T[] }),
   };
 

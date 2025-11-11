@@ -1,4 +1,5 @@
 import { array, bool, func, nullable, number, oneOf, oneOfType, string } from 'vue-types';
+import DataOptionType from '@/enum/data-option-type';
 
 export const venusSelectProps = {
   // 是否多选
@@ -25,16 +26,12 @@ export const venusSelectProps = {
   noMatchText: string().def('无匹配数据'),
   // 无数据提示
   noDataText: string().def('无数据'),
-  // 是否将弹出框的选项进行分组
+  // 是否分组
   group: bool().def(false),
-  // 分组字段
-  groupLabel: string().def('label'),
-  // 分组字段
-  groupOptions: string().def('options'),
   // 选项类型
-  optionType: oneOf(['dict', 'enum', 'const'] as const).def('dict'),
+  optionType: oneOf(values(DataOptionType)).def(DataOptionType.DICT),
   // 选项key，字典为字典类型，枚举为枚举全路径，常量为常量值
-  optionKey: oneOfType([string(), array<DataOption>()]),
+  optionKey: oneOfType([string(), array<DataOption | DataOptionsGroup>()]),
   // 值
   value: oneOfType([string(), number(), bool(), nullable()]).def(null),
 } as const;
