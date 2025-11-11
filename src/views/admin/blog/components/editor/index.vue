@@ -6,7 +6,7 @@ import type { BlogDetail } from '@/components/blog/metadata';
 import blogApiModule from '@/api/blog/blog';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
-import { DataOptionType } from '@/enum/data-option-type';
+import DataOptionType from '@/enum/data-option-type';
 
 defineOptions({
   name: 'BlogEditor',
