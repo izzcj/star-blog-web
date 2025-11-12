@@ -1,42 +1,42 @@
 <script setup lang="ts">
 import { Avatar, Clock, View } from '@element-plus/icons-vue';
-import type { Blog } from '@/components/blog/metadata';
+import type { Article } from '@/components/article/metadata';
 
 defineOptions({
-  name: 'BlogCard',
+  name: 'ArticleCard',
 });
 
 defineProps<{
-  blog: Blog;
+  article: Article;
 }>();
 
 const router = useRouter();
 
 /**
- * 点击博客
+ * 点击文章
  */
-function clickBlog(blog: Blog) {
+function clickArticle(article: Article) {
   router.push({
-    name: 'BlogDetails',
+    name: 'ArticleDetails',
     params: {
-      id: blog.id,
+      id: article.id,
     },
   });
 }
 </script>
 
 <template>
-  <div @click="clickBlog(blog)">
-    <div v-if="blog.coverImage" class="rounded-[8px] shadow-xl overflow-hidden">
-      <VenusImage :src="blog.coverImage" :alt="blog.title" class="transition duration-500 ease-in-out hover:scale-125" />
+  <div @click="clickArticle(article)">
+    <div v-if="article.coverImage" class="rounded-[8px] shadow-xl overflow-hidden">
+      <VenusImage :src="article.coverImage" :alt="article.title" class="transition duration-500 ease-in-out hover:scale-125" />
     </div>
     <div class="pt-2">
       <span class="mr-auto text-[20px] font-bold">
-        {{ blog.title }}
+        {{ article.title }}
       </span>
     </div>
-    <span v-if="blog.summary" class="mt-auto text-[12px] text-black/75">
-      {{ blog.summary }}
+    <span v-if="article.summary" class="mt-auto text-[12px] text-black/75">
+      {{ article.summary }}
     </span>
     <div class="pt-5 text-[13px] text-black/40">
       <div class="mr-auto flex flex-wrap">
@@ -45,7 +45,7 @@ function clickBlog(blog: Blog) {
             <Avatar />
           </ElIcon>
           <span class="pl-1">
-            {{ blog.createByName }}
+            {{ article.createByName }}
           </span>
         </div>
         <div class="pl-2 venus-center">
@@ -53,7 +53,7 @@ function clickBlog(blog: Blog) {
             <View />
           </ElIcon>
           <span class="pl-1">
-            {{ blog.viewCount }}
+            {{ article.viewCount }}
           </span>
         </div>
       </div>
@@ -63,7 +63,7 @@ function clickBlog(blog: Blog) {
             <Clock />
           </ElIcon>
           <span class="pl-1">
-            {{ blog.publishTime }}
+            {{ article.publishTime }}
           </span>
         </div>
       </div>

@@ -44,30 +44,30 @@ const commonRouter: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/blog/index',
+    path: '/article/index',
     component: DefaultLayout,
     meta: {
-      title: '博客',
+      title: '文章',
       keepAlive: true,
       topLevel: true,
     },
     children: [
       {
-        name: 'Blog',
+        name: 'Article',
         path: '',
-        component: () => import('@/views/blog/index.vue'),
+        component: () => import('@/views/blog/article/index.vue'),
       },
       {
-        name: 'BlogDetails',
-        path: '/blog/details/:id',
+        name: 'ArticleDetails',
+        path: '/article/details/:id',
         props: true,
         meta: {
-          title: '博客详情',
+          title: '文章详情',
           keepAlive: false,
           topLevel: false,
           hidden: true,
         },
-        component: () => import('@/views/blog/details/index.vue'),
+        component: () => import('@/views/blog/article/details/index.vue'),
       },
     ],
   },

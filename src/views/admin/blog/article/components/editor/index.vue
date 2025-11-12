@@ -2,14 +2,14 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 import { Refresh, UploadFilled } from '@element-plus/icons-vue';
-import type { BlogDetail } from '@/components/blog/metadata';
-import blogApiModule from '@/api/blog/blog';
+import type { ArticleDetail } from '@/components/article/metadata';
+import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
 import DataOptionType from '@/enum/data-option-type';
 
 defineOptions({
-  name: 'BlogEditor',
+  name: 'ArticleEditor',
 });
 
 const route = useRoute();
@@ -18,8 +18,8 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-// 博客表单数据
-const blogForm = reactive({
+// 文章表单数据
+const articleForm = reactive({
   id: undefined as string | undefined,
   type: '',
   title: '',
@@ -43,35 +43,35 @@ const rules = reactive<FormRules>({
     { required: true, message: '请选择分类', trigger: 'change' },
   ],
   content: [
-    { required: true, message: '请输入博客内容', trigger: 'blur' },
+    { required: true, message: '请输入文章内容', trigger: 'blur' },
   ],
 });
 
 onMounted(() => {
   const blogId = route.params.id as string;
   if (blogId) {
-    fetchBlogDetail(blogId);
+    fetchArticleDetail(blogId);
   }
 });
 
 /**
- * 获取博客详情
+ * 获取文章详情
  *
- * @param id 博客ID
+ * @param id 文章ID
  */
-function fetchBlogDetail(id: string) {
+function fetchArticleDetail(id: string) {
   loading.value = true;
-  asyncRequest(blogApiModule.apis.fetchDetail, { pathParams: { id } })
+  asyncRequest(articleApiModule.apis.fetchDetail, { pathParams: { id } })
     .then(res => {
-      const blog = res.data as BlogDetail;
-      blogForm.id = blog.id;
-      blogForm.title = blog.title;
-      blogForm.type = blog.type;
-      blogForm.summary = blog.summary;
-      blogForm.content = blog.content;
-      blogForm.coverImage = blog.coverImage;
+      const article = res.data as ArticleDetail;
+      articleForm.id = article.id;
+      articleForm.title = article.title;
+      articleForm.type = article.type;
+      articleForm.summary = article.summary;
+      articleForm.content = article.content;
+      articleForm.coverImage = article.coverImage;
       // 简化处理标签
-      blogForm.tags = blog.tags.map((tag: any) => tag.name || tag);
+      articleForm.tags = article.tags.map((tag: any) => tag.name || tag);
     })
     .finally(() => {
       loading.value = false;
@@ -88,23 +88,23 @@ function submitForm() {
 
   formRef.value.validate(valid => {
     if (valid) {
-      saveBlog();
+      saveArticle();
     }
   });
 }
 
 /**
- * 保存博客
+ * 保存文章
  */
-function saveBlog() {
+function saveArticle() {
   loading.value = true;
   asyncRequest(
-    blogForm.id ? blogApiModule.apis.modify : blogApiModule.apis.create,
+    articleForm.id ? articleApiModule.apis.modify : articleApiModule.apis.create,
     {
       data: {
-        ...blogForm,
+        ...articleForm,
         // 简化处理标签
-        tags: blogForm.tags.map(tag => ({ name: tag })),
+        tags: articleForm.tags.map(tag => ({ name: tag })),
       },
     },
   )
@@ -133,7 +133,7 @@ function resetForm() {
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">
-            {{ blogForm.id ? '编辑博客' : '写博客' }}
+            {{ articleForm.id ? '编辑文章' : '写文章' }}
           </span>
           <div>
             <ElButton
@@ -158,7 +158,7 @@ function resetForm() {
       <div class="overflow-y-auto pb-[30px]">
         <ElForm
           ref="formRef"
-          :model="blogForm"
+          :model="articleForm"
           :rules="rules"
           label-position="top"
           label-width="80px"
@@ -167,8 +167,8 @@ function resetForm() {
           <!-- 标题 -->
           <ElFormItem label="标题" prop="title">
             <ElInput
-              v-model="blogForm.title"
-              placeholder="请输入博客标题"
+              v-model="articleForm.title"
+              placeholder="请输入标题"
               clearable
             />
           </ElFormItem>
@@ -176,10 +176,10 @@ function resetForm() {
           <!-- 摘要 -->
           <ElFormItem label="摘要" prop="summary">
             <ElInput
-              v-model="blogForm.summary"
+              v-model="articleForm.summary"
               type="textarea"
               :rows="3"
-              placeholder="请输入博客摘要"
+              placeholder="请输入摘要"
               maxlength="200"
               show-word-limit
             />
@@ -188,7 +188,7 @@ function resetForm() {
           <!-- 标签 -->
           <ElFormItem label="分类" prop="type">
             <VenusSelect
-              v-model:value="blogForm.type"
+              v-model:value="articleForm.type"
               :option-type="DataOptionType.DICT"
               option-key="blog_type"
               placeholder="请选择分类"
@@ -197,12 +197,12 @@ function resetForm() {
 
           <!-- 封面图 -->
           <ElFormItem label="封面图">
-            <VenusUpload v-model:value="blogForm.coverImage" />
+            <VenusUpload v-model:value="articleForm.coverImage" />
           </ElFormItem>
 
           <!-- 内容 -->
           <ElFormItem class="" label="内容" prop="content">
-            <VenusMdEditor v-model:value="blogForm.content" />
+            <VenusMdEditor v-model:value="articleForm.content" />
           </ElFormItem>
         </ElForm>
       </div>

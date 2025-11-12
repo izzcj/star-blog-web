@@ -1,71 +1,71 @@
 import RequestMethod from '@/enum/request-method';
 
-const blogApiModule: ApiModule = {
+const articleApiModule: ApiModule = {
   apis: {
     /**
-     * 分页获取博客列表
+     * 分页获取文章列表
      */
     fetchPage: {
-      uri: '/blog/page',
+      uri: '/blog/article/page',
       method: RequestMethod.GET,
     },
     /**
-     * 获取博客详情
+     * 获取文章详情
      */
     fetchDetail: {
-      uri: '/blog/{id}',
+      uri: '/blog/article/{id}',
       method: RequestMethod.GET,
     },
     /**
-     * 新增博客
+     * 新增文章
      */
     create: {
-      uri: '/blog',
+      uri: '/blog/article',
       method: RequestMethod.POST,
     },
     /**
-     * 修改博客
+     * 修改文章
      */
     modify: {
-      uri: '/blog',
+      uri: '/blog/article',
       method: RequestMethod.PUT,
     },
     /**
-     * 增加博客浏览次数
+     * 增加文章浏览次数
      */
     incrementViewCount: {
-      uri: '/blog/{id}/view-count',
+      uri: '/blog/article/{id}/view-count',
       method: RequestMethod.PUT,
     },
     /**
-     * 发布博客
+     * 发布文章
      */
     publish: {
-      uri: '/blog/{id}/publish',
+      uri: '/blog/article/{id}/publish',
       method: RequestMethod.POST,
     },
     /**
-     * 置顶博客
+     * 置顶文章
      */
     top: {
-      uri: '/blog/{id}/top',
+      uri: '/blog/article/{id}/top',
       method: RequestMethod.POST,
     },
     /**
-     * 删除博客
+     * 删除文章
      */
     delete: {
-      uri: '/blog/{id}',
+      uri: '/blog/article/{id}',
       method: RequestMethod.DELETE,
     },
     /**
-     * 获取热门博客
+     * 获取热门文章
      */
-    hotBlogs: {
-      uri: '/blog/hot',
+    hotArticles: {
+      uri: '/blog/article/hot',
       method: RequestMethod.GET,
     },
   },
 };
 
-export default blogApiModule;
+export default articleApiModule;

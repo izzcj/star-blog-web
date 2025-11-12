@@ -48,42 +48,40 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/admin/blog',
+    path: '/admin/article',
     component: AdminLayout,
     meta: {
-      title: '博客管理',
+      title: '文章管理',
       keepAlive: true,
       topLevel: true,
     },
     children: [
       {
-        name: 'BlogManagement',
+        name: 'ArticleManagement',
         path: '',
-        component: () => import('@/views/admin/blog/index.vue'),
+        component: () => import('@/views/admin/blog/article/index.vue'),
       },
       {
-        // 编辑博客
         path: 'edit/:id',
-        name: 'BlogEdit',
+        name: 'ArticleEdit',
         meta: {
-          title: '编辑博客',
+          title: '编辑文章',
           keepAlive: true,
           topLevel: false,
           hidden: true,
         },
-        component: () => import('@/views/admin/blog/components/editor/index.vue'),
+        component: () => import('@/views/admin/blog/article/components/editor/index.vue'),
       },
       {
-        // 新增博客
         path: 'create',
-        name: 'BlogCreate',
+        name: 'ArticleCreate',
         meta: {
-          title: '新增博客',
+          title: '新增文章',
           keepAlive: true,
           topLevel: false,
           hidden: true,
         },
-        component: () => import('@/views/admin/blog/components/editor/index.vue'),
+        component: () => import('@/views/admin/blog/article/components/editor/index.vue'),
       },
     ],
   },

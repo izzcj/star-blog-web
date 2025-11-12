@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
-import type { Blog } from '@/components/blog/metadata';
-import blogApiModule from '@/api/blog/blog';
+import type { Article } from '@/components/article/metadata';
+import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
 
 defineOptions({
-  name: 'BlogManagementPage',
+  name: 'ArticleManagementPage',
 });
 
 const router = useRouter();
-const blogList = ref<Blog[]>([]);
+const articleList = ref<Article[]>([]);
 const loading = ref(false);
 const total = ref(0);
 const pagination = reactive({
@@ -20,27 +20,27 @@ const pagination = reactive({
 });
 
 onMounted(() => {
-  fetchBlogList();
+  fetchArticleList();
 });
 
 watch(() => [pagination.page, pagination.size], () => {
-  fetchBlogList();
+  fetchArticleList();
 });
 
 /**
- * 获取博客列表
+ * 获取文章列表
  *
  */
-function fetchBlogList() {
+function fetchArticleList() {
   loading.value = true;
-  asyncRequest(blogApiModule.apis.fetchPage, {
+  asyncRequest(articleApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,
     },
   })
     .then(res => {
-      blogList.value = res.data.data;
+      articleList.value = res.data.data;
       total.value = Number(res.data.total);
     })
     .finally(() => {
@@ -49,55 +49,55 @@ function fetchBlogList() {
 }
 
 /**
- * 编辑博客
+ * 编辑文章
  *
- * @param blog 博客信息
+ * @param article 文章信息
  */
-function editBlog(blog: Blog) {
-  router.push(`/admin/blog/edit/${blog.id}`);
+function editArticle(article: Article) {
+  router.push(`/admin/article/edit/${article.id}`);
 }
 
 /**
- * 发布博客
+ * 发布文章
  *
- * @param blog 博客信息
+ * @param article 文章信息
  */
-function publishBlog(blog: Blog) {
-  asyncRequest(blogApiModule.apis.publish, {
-    pathParams: { id: blog.id },
+function publishArticle(article: Article) {
+  asyncRequest(articleApiModule.apis.publish, {
+    pathParams: { id: article.id },
   })
     .then(() => {
-      successNotification('博客发布成功', '成功');
-      fetchBlogList();
+      successNotification('发布成功', '成功');
+      fetchArticleList();
     });
 }
 
 /**
  * 切换置顶状态
  *
- * @param blog 博客信息
+ * @param article 文章信息
  */
-function toggleTop(blog: Blog) {
-  asyncRequest(blogApiModule.apis.top, {
-    pathParams: { id: blog.id },
+function toggleTop(article: Article) {
+  asyncRequest(articleApiModule.apis.top, {
+    pathParams: { id: article.id },
   })
     .then(() => {
       successNotification(
-        `${blog.top ? '取消置顶' : '置顶'}成功`,
+        `${article.top ? '取消置顶' : '置顶'}成功`,
         '成功',
       );
-      fetchBlogList();
+      fetchArticleList();
     });
 }
 
 /**
- * 删除博客
+ * 删除文章
  *
- * @param blog 博客信息
+ * @param article 文章信息
  */
-function deleteBlog(blog: Blog) {
+function deleteArticle(article: Article) {
   ElMessageBox.confirm(
-    `确定要删除博客"${blog.title}"吗？此操作不可恢复！`,
+    `确定要删除文章"${article.title}"吗？此操作不可恢复！`,
     '删除确认',
     {
       confirmButtonText: '确定',
@@ -106,16 +106,13 @@ function deleteBlog(blog: Blog) {
     },
   )
     .then(() => {
-      asyncRequest(blogApiModule.apis.delete, {
-        pathParams: { id: blog.id },
+      asyncRequest(articleApiModule.apis.delete, {
+        pathParams: { id: article.id },
       })
         .then(() => {
           successNotification('删除成功', '成功');
-          fetchBlogList();
+          fetchArticleList();
         });
-    })
-    .catch(() => {
-      // 用户取消删除
     });
 }
 </script>
@@ -125,16 +122,16 @@ function deleteBlog(blog: Blog) {
     <ElCard class="min-h-full">
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">博客管理</span>
-          <ElButton type="primary" @click="router.push('/admin/blog/create')">
-            写博客
+          <span class="text-lg font-semibold">文章管理</span>
+          <ElButton type="primary" @click="router.push('/admin/blog/article/create')">
+            写文章
           </ElButton>
         </div>
       </template>
 
       <ElTable
         v-loading="loading"
-        :data="blogList"
+        :data="articleList"
         stripe
         class="w-full"
       >
@@ -155,7 +152,7 @@ function deleteBlog(blog: Blog) {
         </ElTableColumn>
         <ElTableColumn label="操作" width="250" fixed="right">
           <template #default="{ row }">
-            <ElButton link type="primary" size="small" @click="editBlog(row)">
+            <ElButton link type="primary" size="small" @click="editArticle(row)">
               修改
             </ElButton>
             <ElButton
@@ -163,7 +160,7 @@ function deleteBlog(blog: Blog) {
               type="primary"
               size="small"
               :disabled="row.status === 'PUBLISHED'"
-              @click="publishBlog(row)"
+              @click="publishArticle(row)"
             >
               发布
             </ElButton>
@@ -175,7 +172,7 @@ function deleteBlog(blog: Blog) {
             >
               {{ row.top ? '取消置顶' : '置顶' }}
             </ElButton>
-            <ElButton link type="danger" size="small" @click="deleteBlog(row)">
+            <ElButton link type="danger" size="small" @click="deleteArticle(row)">
               删除
             </ElButton>
           </template>

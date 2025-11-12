@@ -96,7 +96,7 @@ function login(formEl: FormInstance | undefined) {
     <ElMain class="animate__animated animate__lightSpeedInLeft login-box-container shadow-lg">
       <div class="venus-center min-h-full pt-5 md:ml-[20%]">
         <ElCard class="w-[80%] bg-white/80 backdrop-blur-xs z-10 md:w-[400px]">
-          <ElTabs class="p-6 text-2xl">
+          <ElTabs class="p-6">
             <ElTabPane label="登录">
               <ElForm ref="formRef" :model="loginData" :rules="rules" :hide-required-asterisk="true" class="pt-5">
                 <ElFormItem prop="account">

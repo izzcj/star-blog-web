@@ -14,8 +14,8 @@ const route = useRoute();
 const router = useRouter();
 
 const activeMenu = computed(() => {
-  if (route.path.startsWith('/admin/blog')) {
-    return '/admin/blog';
+  if (route.path.startsWith('/admin/article')) {
+    return '/admin/article';
   }
   return route.path;
 });
@@ -28,10 +28,10 @@ const menus = shallowRef([
     path: '/admin/system/config',
   },
   {
-    id: 'blog-management',
-    title: '博客管理',
+    id: 'article-management',
+    title: '文章管理',
     icon: Notebook,
-    path: '/admin/blog',
+    path: '/admin/article',
   },
 ]);
 

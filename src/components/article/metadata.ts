@@ -1,10 +1,10 @@
 /**
- * 博客类型定义
+ * 文章类型定义
  */
-export interface Blog extends BaseEntity {
-  // 博客类型
+export interface Article extends BaseEntity {
+  // 类型
   type: string;
-  // 博客类型名称
+  // 类型名称
   typeName: string;
   // 标题
   title: string;
@@ -25,9 +25,9 @@ export interface Blog extends BaseEntity {
 }
 
 /**
- * 博客详情
+ * 文章详情
  */
-export interface BlogDetail extends Blog {
+export interface ArticleDetail extends Article {
   // 内容
   content: string;
 }
