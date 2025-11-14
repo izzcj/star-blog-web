@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { Notebook } from '@element-plus/icons-vue';
+import { Notebook, Reading, Setting } from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
 
 defineOptions({
@@ -24,7 +24,7 @@ const menus = shallowRef([
   {
     id: 'system-config',
     title: '系统配置',
-    icon: Notebook,
+    icon: Setting,
     path: '/admin/system/config',
   },
   {
@@ -36,7 +36,7 @@ const menus = shallowRef([
   {
     id: 'article-management',
     title: '文章管理',
-    icon: Notebook,
+    icon: Reading,
     path: '/admin/article',
   },
 ]);
