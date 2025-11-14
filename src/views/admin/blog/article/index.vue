@@ -123,7 +123,7 @@ function deleteArticle(article: Article) {
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">文章管理</span>
-          <ElButton type="primary" @click="router.push('/admin/blog/article/create')">
+          <ElButton type="primary" @click="router.push('/admin/article/create')">
             写文章
           </ElButton>
         </div>
@@ -140,14 +140,13 @@ function deleteArticle(article: Article) {
         <ElTableColumn prop="viewCount" label="浏览量" width="100" />
         <ElTableColumn prop="createByName" label="作者" width="120" />
         <ElTableColumn prop="publishTime" label="发布时间" width="180" />
-        <ElTableColumn label="状态" width="100">
+        <ElTableColumn label="是否置顶" width="100">
           <template #default="{ row }">
-            <ElTag v-if="row.top" type="danger">
-              置顶
-            </ElTag>
-            <ElTag v-else type="info">
-              普通
-            </ElTag>
+            <ElSwitch
+              v-model="row.top"
+              :disabled="row.status === 'PUBLISHED'"
+              @change="toggleTop(row)"
+            />
           </template>
         </ElTableColumn>
         <ElTableColumn label="操作" width="250" fixed="right">
@@ -163,14 +162,6 @@ function deleteArticle(article: Article) {
               @click="publishArticle(row)"
             >
               发布
-            </ElButton>
-            <ElButton
-              link
-              :type="row.top ? 'warning' : 'primary'"
-              size="small"
-              @click="toggleTop(row)"
-            >
-              {{ row.top ? '取消置顶' : '置顶' }}
             </ElButton>
             <ElButton link type="danger" size="small" @click="deleteArticle(row)">
               删除

@@ -1,4 +1,4 @@
-import { arrayOf, bool, func, integer, nullable, oneOf, oneOfType, string } from 'vue-types';
+import { bool, integer, oneOf, string } from 'vue-types';
 
 export const venusUploadProps = {
   // OSS实现
@@ -15,8 +15,4 @@ export const venusUploadProps = {
   uploadTip: string(),
   // 是否禁用
   disabled: bool().def(false),
-  // 值
-  value: oneOfType([nullable(), string(), arrayOf(string())]).def(null),
-  // 值更新函数
-  onUpdateValue: func<ConsumerFunction<Undefinable<MaybeArray<string>>>>(),
 } as const;

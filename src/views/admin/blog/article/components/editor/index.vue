@@ -190,7 +190,7 @@ function resetForm() {
             <VenusSelect
               v-model:value="articleForm.type"
               :option-type="DataOptionType.DICT"
-              option-key="blog_type"
+              option-key="article-type"
               placeholder="请选择分类"
             />
           </ElFormItem>

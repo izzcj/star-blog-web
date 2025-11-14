@@ -11,11 +11,8 @@ defineOptions({
 const props = defineProps({
   ...venusSelectProps,
 });
-const emit = defineEmits<{
-  (e: 'update:value', value?: string | number | boolean | null): void;
-}>();
 
-const model = useVModel(props, 'value', emit);
+const model = defineModel<string | number | boolean | null>('value', { type: [String, Number, Boolean] });
 
 const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
 </script>

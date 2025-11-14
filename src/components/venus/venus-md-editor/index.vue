@@ -12,10 +12,7 @@ defineOptions({
 const props = defineProps({
   ...venusMdEditorProps,
 });
-const emit = defineEmits<{
-  (e: 'update:value', value?: string | null): void;
-}>();
-const model = useVModel(props, 'value', emit);
+const model = defineModel<string | null>('value', { type: String });
 // 避免直接引入Editor和Viewer出现'未使用的类型'警告
 const ByteMdEditor = defineAsyncComponent(async () => ((await import('@bytemd/vue-next')) as any).Editor);
 
@@ -24,10 +21,10 @@ const ByteMdViewer = defineAsyncComponent(async () => ((await import('@bytemd/vu
 /**
  * 处理内容改变
  *
- * @param value 内容
+ * @param content 内容
  */
-function handleContentChange(value: string) {
-  model.value = value;
+function handleContentChange(content: string) {
+  model.value = content;
 }
 </script>
 

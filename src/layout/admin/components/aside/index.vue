@@ -28,6 +28,12 @@ const menus = shallowRef([
     path: '/admin/system/config',
   },
   {
+    id: 'dict-management',
+    title: '字典管理',
+    icon: Notebook,
+    path: '/admin/dict',
+  },
+  {
     id: 'article-management',
     title: '文章管理',
     icon: Notebook,

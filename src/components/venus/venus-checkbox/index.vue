@@ -10,11 +10,7 @@ const props = defineProps({
   ...venusCheckboxProps,
 });
 
-const emit = defineEmits<{
-  (e: 'update:value', value?: string | number | boolean | null): void;
-}>();
-
-const model = useVModel(props, 'value', emit);
+const model = defineModel<string[] | number[] | null>('value', { type: Array });
 
 const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
 </script>

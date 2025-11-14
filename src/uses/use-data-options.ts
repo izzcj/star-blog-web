@@ -27,7 +27,7 @@ export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
   // 请求映射表
   const loaders: Record<string, (key: any) => Promise<{ data: T[] }>> = {
     dict: (key: string) =>
-      asyncRequest(dictDataApiModule.apis.fetchOptions, { params: { dictType: key } }),
+      asyncRequest(dictDataApiModule.apis.fetchOptions, { params: { dictKey: key } }),
     enum: (key: string) =>
       asyncRequest(enumApiModule.apis.fetchOptions, { params: { class: key } }),
     const: (list: T[]) =>

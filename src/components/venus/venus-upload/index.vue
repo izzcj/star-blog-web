@@ -18,9 +18,7 @@ const props = defineProps({
   ...venusUploadProps,
 });
 
-const emit = defineEmits<{
-  (e: 'update:value', value?: string | string[] | null): void;
-}>();
+const model = defineModel<string | string[] | null>('value', { type: [String, Array] });
 
 interface VenusUploadFile extends UploadUserFile {
   fullPath?: string | null;
@@ -74,9 +72,8 @@ const singleImage = computed(() => {
 
 const objectKeys = ref<string[]>([]);
 
-// 监听value属性，处理回显数据
 watch(
-  () => props.value ?? [],
+  () => model.value ?? [],
   value => {
     let files: string[];
     if (isString(value) && value) {
@@ -121,7 +118,7 @@ watch(
     } else {
       value = objectKeys.value.length ? objectKeys.value[0] : null;
     }
-    emit('update:value', value);
+    model.value = value;
   },
 );
 

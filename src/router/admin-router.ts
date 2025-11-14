@@ -48,6 +48,34 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin/dict',
+    component: AdminLayout,
+    meta: {
+      title: '字典管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'DictManagement',
+        path: '',
+        component: () => import('@/views/admin/system/dict/index.vue'),
+      },
+      {
+        path: 'data/:dictKey',
+        name: 'DictData',
+        meta: {
+          title: '字典数据',
+          keepAlive: true,
+          topLevel: false,
+          hidden: true,
+        },
+        component: () => import('@/views/admin/system/dict/components/dict-data/index.vue'),
+        props: true,
+      },
+    ],
+  },
+  {
     path: '/admin/article',
     component: AdminLayout,
     meta: {

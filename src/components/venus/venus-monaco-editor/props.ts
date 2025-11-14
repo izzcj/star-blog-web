@@ -1,4 +1,4 @@
-import { bool, func, nullable, number, oneOf, oneOfType, string } from 'vue-types';
+import { bool, number, oneOf, oneOfType, string } from 'vue-types';
 
 export const venusMonacoEditorProps = {
   // 语言
@@ -15,10 +15,6 @@ export const venusMonacoEditorProps = {
   showLineNumber: bool().def(true),
   // 是否显示边框
   border: bool().def(false),
-  // 值
-  value: oneOfType([nullable(), string()]).def(null),
-  // 值更新函数
-  onUpdateValue: func<ConsumerFunction<Undefinable<string>>>(),
 } as const;
 
 // 语言注册器（用于以后自定义语言）

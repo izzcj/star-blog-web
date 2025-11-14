@@ -173,7 +173,7 @@ function submitForm() {
             <div class="flex justify-between items-center">
               <span>系统配置</span>
               <ElButton type="primary" @click="clickAddConfig">
-                新增配置
+                新增
               </ElButton>
             </div>
           </template>

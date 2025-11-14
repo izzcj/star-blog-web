@@ -17,9 +17,7 @@ const props = defineProps({
   ...venusMonacoEditorProps,
 });
 
-const emit = defineEmits<{
-  (e: 'update:value', value?: string | null): void;
-}>();
+const model = defineModel<string>('value', { type: String, default: '' });
 
 const editorContainer = ref<HTMLElement>();
 const height = computed(() => {
@@ -32,30 +30,29 @@ const height = computed(() => {
 
 const width = '100%';
 
-const content = ref<string>(props.value ?? '');
 const formattedContent = computed(() => {
   if (props.language == 'json' || props.language == 'javascript' || props.language == 'typescript') {
-    return formatJs(content.value, {
+    return formatJs(model.value, {
       indent_size: 2,
       indent_with_tabs: false,
     });
   }
 
   if (props.language == 'html') {
-    return formatHtml(content.value, {
+    return formatHtml(model.value, {
       indent_size: 2,
       indent_with_tabs: false,
     });
   }
 
   if (props.language == 'css') {
-    return formatCss(content.value, {
+    return formatCss(model.value, {
       indent_size: 2,
       indent_with_tabs: false,
     });
   }
 
-  return content.value;
+  return model.value;
 });
 
 const disabled = computed(() => props.disabled ?? false);
@@ -97,13 +94,8 @@ onMounted(async () => {
     monacoEditor = instance;
     instance.onDidChangeModelContent(() => {
       const currentContent = instance.getValue();
-      if (currentContent != content.value) {
-        content.value = currentContent;
-        emit('update:value', currentContent);
-        if (isFunction(props.onUpdateValue)) {
-          props.onUpdateValue.call(undefined, currentContent);
-          console.log('onUpdateValue');
-        }
+      if (currentContent != model.value) {
+        model.value = currentContent;
       }
     });
   }
@@ -121,10 +113,10 @@ watch(editorOptions, options => {
 });
 
 watch(
-  () => props.value,
+  () => model.value,
   value => {
-    if (value != content.value) {
-      content.value = value ?? '';
+    if (value != model.value) {
+      model.value = value ?? '';
       monacoEditor?.setValue(formattedContent.value);
     }
   },
