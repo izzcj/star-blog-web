@@ -3,18 +3,15 @@ import anime from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-util';
 import MasterInfo from '@/views/home/components/master-info/index.vue';
 import HotArticle from '@/views/home/components/hot-article/index.vue';
+import { asyncRequest } from '@/utils/request-util';
+import { systemConfigApiModule } from '@/api/system/system-config';
+import type { SystemConfig } from '@/views/admin/system/system-config/metadata';
 
 defineOptions({
   name: 'HomePage',
 });
 
-// TODO: 待替换为接口获取
-const mottoList = [
-  '醉后不知天在水，满船清梦压星河',
-  '人道洛阳花似锦，偏我来时不逢春',
-  '愿你长歌乘风去，归来仍少年',
-  '晚安',
-];
+let mottoList: string[] = [];
 
 const currentMottoIndex = ref(0);
 const currentMotto = ref(mottoList[currentMottoIndex.value]);
@@ -23,10 +20,27 @@ const title = ref('夏至未至');
 // header 展开状态
 const isExpanded = ref(false);
 
+onMounted(() => {
+  loadMotto();
+});
+
 onBeforeRouteLeave(() => {
   document.body.removeEventListener('wheel', preventScroll);
   document.body.removeEventListener('touchmove', preventScroll);
 });
+
+/**
+ * 加载 motto
+ */
+function loadMotto() {
+  asyncRequest<SystemConfig>(systemConfigApiModule.apis.fetchOne, { params: { key: 'home-motto' } })
+    .then(res => {
+      if (res.data.value) {
+        mottoList = JSON.parse(res.data.value) as string[];
+        currentMotto.value = mottoList[0];
+      }
+    });
+}
 
 /**
  * 更新 motto

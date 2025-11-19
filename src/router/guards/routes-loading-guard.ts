@@ -16,7 +16,6 @@ export default (router: Router) => {
       || dynamicRouteStore.isFetched
       || frameworkConfig.ignoreFetchMenusRouteNames.includes(to.name as string)
     ) {
-      console.log(dynamicRouteStore.routes);
       next();
       return;
     }
