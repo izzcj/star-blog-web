@@ -3,6 +3,7 @@ import App from '@/App.vue';
 import 'virtual:svg-icons-register';
 import Plugins from '@/plugins';
 import '@/styles/tailwind/index.css';
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 import 'animate.css';
 
 const app = createApp(App);

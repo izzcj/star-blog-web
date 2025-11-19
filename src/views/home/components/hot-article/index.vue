@@ -41,12 +41,12 @@ async function loadHotArticle() {
         </ElButton>
       </div>
     </template>
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-wrap gap-4 justify-center w-full mx-auto 2xl:max-w-[900px]">
       <template v-if="hotArticle.length">
         <ElCard
           v-for="article of hotArticle"
           :key="article.id"
-          class="mb-1 cursor-pointer"
+          class="mb-1 cursor-pointer min-w-[300px] 2xl:max-w-[400px]"
           body-class="p-2"
         >
           <ArticleCard :article="article" />

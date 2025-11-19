@@ -18,15 +18,19 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-// 文章表单数据
-const articleForm = reactive({
-  id: undefined as string | undefined,
+const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName'> = {
+  id: undefined,
   type: '',
   title: '',
   summary: '',
   content: '',
   coverImage: '',
-  tags: [] as string[],
+  tags: [] as Recordable[],
+};
+
+// 文章表单数据
+const articleForm = ref({
+  ...initialFormData,
 });
 
 // 表单验证规则
@@ -61,17 +65,9 @@ onMounted(() => {
  */
 function fetchArticleDetail(id: string) {
   loading.value = true;
-  asyncRequest(articleApiModule.apis.fetchDetail, { pathParams: { id } })
+  asyncRequest<ArticleDetail>(articleApiModule.apis.fetchDetail, { pathParams: { id } })
     .then(res => {
-      const article = res.data as ArticleDetail;
-      articleForm.id = article.id;
-      articleForm.title = article.title;
-      articleForm.type = article.type;
-      articleForm.summary = article.summary;
-      articleForm.content = article.content;
-      articleForm.coverImage = article.coverImage;
-      // 简化处理标签
-      articleForm.tags = article.tags.map((tag: any) => tag.name || tag);
+      articleForm.value = res.data;
     })
     .finally(() => {
       loading.value = false;
@@ -99,12 +95,12 @@ function submitForm() {
 function saveArticle() {
   loading.value = true;
   asyncRequest(
-    articleForm.id ? articleApiModule.apis.modify : articleApiModule.apis.create,
+    articleForm.value.id ? articleApiModule.apis.modify : articleApiModule.apis.create,
     {
       data: {
         ...articleForm,
         // 简化处理标签
-        tags: articleForm.tags.map(tag => ({ name: tag })),
+        tags: articleForm.value.tags.map(tag => ({ name: tag.name })),
       },
     },
   )
@@ -142,7 +138,7 @@ function resetForm() {
               :loading="loading"
               @click="submitForm"
             >
-              发布
+              保存
             </ElButton>
             <ElButton
               :icon="Refresh"

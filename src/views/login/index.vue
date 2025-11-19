@@ -87,7 +87,7 @@ function login(formEl: FormInstance | undefined) {
   <ElImage :src="loginBg" class="h-dvh w-dvw fixed" fit="cover" :z-index="-1" />
   <ElContainer class="h-dvh w-dvw relative opacity-100">
     <ElHeader>
-      <div class="min-h-full">
+      <div class="min-h-full pt-2">
         <ElButton class="bg-transparent text-white border-[0px]" @click="router.back()">
           返回
         </ElButton>

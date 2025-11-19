@@ -68,9 +68,9 @@ export const useUploadInfoStore = defineStore({
       }
 
       this.loading = true;
-      this.loadingPromise = asyncRequest(uploadApiModule.apis.fetchOssBaseUrls)
+      this.loadingPromise = asyncRequest<Recordable<string>>(uploadApiModule.apis.fetchOssBaseUrls)
         .then(resp => {
-          this.ossBaseUrls = resp.data as Recordable<string>;
+          this.ossBaseUrls = resp.data;
           this.fetched = true;
           this.loadingPromise = null;
         })

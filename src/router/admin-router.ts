@@ -48,7 +48,28 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/admin/dict',
+    path: '/admin/system/menu',
+    component: AdminLayout,
+    meta: {
+      title: '菜单管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'MenuManagement',
+        path: '',
+        meta: {
+          title: '菜单管理',
+          keepAlive: true,
+          topLevel: false,
+        },
+        component: () => import('@/views/admin/system/menu/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/admin/system/dict',
     component: AdminLayout,
     meta: {
       title: '字典管理',
@@ -76,7 +97,7 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/admin/article',
+    path: '/admin/blog/article',
     component: AdminLayout,
     meta: {
       title: '文章管理',

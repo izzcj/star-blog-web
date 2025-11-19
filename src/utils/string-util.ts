@@ -5,7 +5,7 @@
  * @param params   参数
  * @return 替换后的模板
  */
-export function replaceTemplate(template: string, params: Recordable<Nullable<string | number>>) {
+export function replaceTemplate(template: string, params: Recordable<Undefinable<string | number>>) {
   let result = template;
   for (const key of keys(params)) {
     const value = params[key];

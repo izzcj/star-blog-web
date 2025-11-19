@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteRecordRaw } from 'vue-router';
 import { Fold } from '@element-plus/icons-vue';
 import MenuItem from './menu-item/index.vue';
 import Logo from './logo/index.vue';
@@ -8,7 +9,7 @@ import CommonRouterPath from '@/enum/common-router-path';
 import commonRouters from '@/router/common-router';
 import UserDropdown from '@/layout/components/nav-bar/user-dropdown/index.vue';
 
-let routers: any[] = [];
+let routers: RouteRecordRaw[] = [];
 
 const dynamicRoutesStore = useDynamicRouteStore();
 const appSettingsStore = useAppSettingsStore();

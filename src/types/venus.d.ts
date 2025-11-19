@@ -127,11 +127,11 @@ declare global {
     /**
      * API查询参数
      */
-    params?: Recordable<Nullable<string | number>>;
+    params?: Recordable<Undefinable<string | number>>;
     /**
      * 路径参数
      */
-    pathParams?: Recordable<Nullable<string | number>>;
+    pathParams?: Recordable<Undefinable<string | number>>;
     /**
      * API数据参数
      */
@@ -149,15 +149,15 @@ declare global {
     /**
      * ID
      */
-    id: string;
+    id: number | undefined;
     /**
      * 创建时间
      */
-    createTime: string;
+    createTime?: string;
     /**
      * 更新时间
      */
-    updateTime: string;
+    updateTime?: string;
     /**
      * 备注
      */
@@ -207,15 +207,11 @@ declare global {
   /**
    * 菜单信息
    */
-  interface Menu {
-    /**
-     * 菜单ID
-     */
-    id: string;
+  interface Menu extends BaseEntity {
     /**
      * 父级菜单ID
      */
-    parentId: string;
+    parentId: number;
     /**
      * 菜单名称
      */
@@ -223,7 +219,7 @@ declare global {
     /**
      * 组件名称
      */
-    componentName: string;
+    component: string;
     /**
      * 菜单URI
      */
@@ -249,13 +245,17 @@ declare global {
      */
     hidden: boolean;
     /**
-     * 菜单类型
+     * 是否启用
      */
-    type: string;
+    enabled: boolean;
     /**
-     * 子菜单
+     * 排序
      */
-    children: Menu[];
+    sort: number;
+    /**
+     * 路由参数
+     */
+    params?: string[];
   }
 
   /**

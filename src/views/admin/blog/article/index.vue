@@ -54,7 +54,7 @@ function fetchArticleList() {
  * @param article 文章信息
  */
 function editArticle(article: Article) {
-  router.push(`/admin/article/edit/${article.id}`);
+  router.push(`/admin/blog/article/edit/${article.id}`);
 }
 
 /**
@@ -123,7 +123,7 @@ function deleteArticle(article: Article) {
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">文章管理</span>
-          <ElButton type="primary" @click="router.push('/admin/article/create')">
+          <ElButton type="primary" @click="router.push('/admin/blog/article/create')">
             写文章
           </ElButton>
         </div>
