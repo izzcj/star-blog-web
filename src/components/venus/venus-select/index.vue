@@ -32,6 +32,7 @@ const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
     :remote-method="props.remoteMethod"
     :no-match-text="props.noMatchText"
     :no-data-text="props.noDataText"
+    class="min-w-[150px]"
   >
     <template v-for="option of options" :key="option.key || option.value || option.label">
       <ElOptionGroup

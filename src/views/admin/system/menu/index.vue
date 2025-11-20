@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus';
 import { Delete, Edit, Plus, Refresh, Search } from '@element-plus/icons-vue';
 import type { MenuTree, MenuQueryParams } from './metadata';
-import MenuForm from './components/MenuForm.vue';
+import MenuEditor from './components/edtior/index.vue';
 import menuApiModule from '@/api/system/menu';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
@@ -24,12 +23,12 @@ const dialogTitle = ref('新增菜单');
 const isEdit = ref(false);
 
 // 表单引用
-const menuFormRef = ref<InstanceType<typeof MenuForm>>();
+const menuFormRef = ref<InstanceType<typeof MenuEditor>>();
 
 // 初始表单数据
 const initialFormData: Menu = {
-  id: undefined,
-  parentId: 0,
+  id: '',
+  parentId: '0',
   name: '',
   component: '',
   uri: '',
@@ -39,6 +38,7 @@ const initialFormData: Menu = {
   keepAlive: true,
   hidden: false,
   enabled: true,
+  common: true,
   sort: 0,
   remark: '',
 };
@@ -124,7 +124,7 @@ function handleAdd(parentMenu?: Menu) {
   dialogTitle.value = parentMenu ? `新增子菜单（父级：${parentMenu.name}）` : '新增菜单';
   formData.value = {
     ...initialFormData,
-    parentId: parentMenu?.id ?? 0,
+    parentId: parentMenu?.id ?? '0',
     sort: 0,
   };
   dialogVisible.value = true;
@@ -159,6 +159,7 @@ async function handleEdit(menu: Menu) {
       keepAlive: detail.keepAlive,
       hidden: detail.hidden,
       enabled: detail.enabled,
+      common: detail.common,
       sort: 0,
       remark: '',
     };
@@ -178,16 +179,6 @@ async function handleEdit(menu: Menu) {
  */
 async function handleDelete(menu: Menu) {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除菜单"${menu.name}"吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      },
-    );
-
     loading.value = true;
     await asyncRequest(menuApiModule.apis.delete, {
       params: { id: menu.id },
@@ -255,7 +246,7 @@ onMounted(() => {
 
 <template>
   <div class="menu-management-page">
-    <ElCard shadow="never">
+    <ElCard>
       <!-- 查询表单 -->
       <ElForm inline :model="queryParams">
         <ElFormItem label="菜单名称">
@@ -267,22 +258,13 @@ onMounted(() => {
           />
         </ElFormItem>
         <ElFormItem>
-          <ElButton type="primary" @click="handleQuery">
-            <ElIcon class="mr-1">
-              <Search />
-            </ElIcon>
+          <ElButton :icon="Search" type="primary" @click="handleQuery">
             查询
           </ElButton>
-          <ElButton @click="handleReset">
-            <ElIcon class="mr-1">
-              <Refresh />
-            </ElIcon>
+          <ElButton :icon="Refresh" @click="handleReset">
             重置
           </ElButton>
-          <ElButton type="success" @click="handleAdd()">
-            <ElIcon class="mr-1">
-              <Plus />
-            </ElIcon>
+          <ElButton :icon="Plus" type="success" @click="handleAdd()">
             新增
           </ElButton>
         </ElFormItem>
@@ -342,26 +324,44 @@ onMounted(() => {
           </template>
         </ElTableColumn>
 
+        <ElTableColumn prop="common" label="公共菜单" width="80" align="center">
+          <template #default="{ row }">
+            <ElTag v-if="row.hidden" type="warning" size="small">
+              是
+            </ElTag>
+            <ElTag v-else type="success" size="small">
+              否
+            </ElTag>
+          </template>
+        </ElTableColumn>
+
         <ElTableColumn label="操作" width="240" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton type="primary" link size="small" @click="handleAdd(row)">
-              <ElIcon class="mr-1">
-                <Plus />
-              </ElIcon>
+            <ElButton
+              :icon="Plus"
+              type="primary"
+              link
+              size="small"
+              @click="handleAdd(row)"
+            >
               新增
             </ElButton>
-            <ElButton type="primary" link size="small" @click="handleEdit(row)">
-              <ElIcon class="mr-1">
-                <Edit />
-              </ElIcon>
+            <ElButton
+              :icon="Edit"
+              type="primary"
+              link
+              size="small"
+              @click="handleEdit(row)"
+            >
               修改
             </ElButton>
-            <ElButton type="danger" link size="small" @click="handleDelete(row)">
-              <ElIcon class="mr-1">
-                <Delete />
-              </ElIcon>
-              删除
-            </ElButton>
+            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDelete(row)">
+              <template #reference>
+                <ElButton :icon="Delete" type="danger" link size="small">
+                  删除
+                </ElButton>
+              </template>
+            </ElPopconfirm>
           </template>
         </ElTableColumn>
       </ElTable>
@@ -375,7 +375,7 @@ onMounted(() => {
       :close-on-click-modal="false"
       @closed="handleDialogClose"
     >
-      <MenuForm
+      <MenuEditor
         ref="menuFormRef"
         v-model="formData"
         :menu-tree="menuTreeData"

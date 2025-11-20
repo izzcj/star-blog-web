@@ -149,7 +149,7 @@ declare global {
     /**
      * ID
      */
-    id: number | undefined;
+    id: string | undefined;
     /**
      * 创建时间
      */
@@ -211,7 +211,7 @@ declare global {
     /**
      * 父级菜单ID
      */
-    parentId: number;
+    parentId: string;
     /**
      * 菜单名称
      */
@@ -248,6 +248,10 @@ declare global {
      * 是否启用
      */
     enabled: boolean;
+    /**
+     * 是否公共菜单
+     */
+    common: boolean;
     /**
      * 排序
      */

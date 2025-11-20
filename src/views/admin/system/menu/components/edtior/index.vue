@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import type { MenuTree } from '../metadata';
+import type { MenuTree } from '../../metadata';
 import IconSelector from '@/components/icon-selector/index.vue';
 
 interface Props {
@@ -38,7 +38,7 @@ const parentMenuOptions = computed(() => {
   }
 
   // 递归过滤函数：移除当前节点及其所有子节点
-  function filterMenuTree(menus: MenuTree[], excludeId: number): MenuTree[] {
+  function filterMenuTree(menus: MenuTree[], excludeId: string): MenuTree[] {
     return menus
       .filter(menu => menu.id !== excludeId)
       .map(menu => ({
@@ -54,15 +54,16 @@ const parentMenuOptions = computed(() => {
 const parentMenuTreeData = computed(() => {
   return [
     {
-      id: 0,
+      id: '',
       name: '顶级菜单',
-      parentId: 0,
+      parentId: '0',
       component: '',
       uri: '',
       icon: '',
       topLevel: true,
       keepAlive: false,
       hidden: false,
+      common: true,
       children: parentMenuOptions.value,
     } as MenuTree,
   ];
@@ -211,6 +212,10 @@ defineExpose({
 
     <ElFormItem label="是否隐藏">
       <ElSwitch v-model="formData.hidden" />
+    </ElFormItem>
+
+    <ElFormItem label="公共菜单">
+      <ElSwitch v-model="formData.common" />
     </ElFormItem>
 
     <ElFormItem label="备注" prop="remark">

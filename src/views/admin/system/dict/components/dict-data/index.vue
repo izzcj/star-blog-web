@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus';
+import { DArrowLeft, Delete, Edit, Plus } from '@element-plus/icons-vue';
 import type { DictData } from './metadata';
 import dictDataApiModule from '@/api/system/dict-data';
 import { asyncRequest } from '@/utils/request-util';
@@ -126,13 +126,9 @@ function saveDictItem(dictItem: DictData) {
  * @param dictItem 字典项
  */
 function handleDeleteDictItem(dictItem: DictData) {
-  ElMessageBox.confirm(`确定删除字典项"${dictItem.dictLabel}"吗？`, '提示', {
-    type: 'warning',
-  }).then(() => {
-    asyncRequest(dictDataApiModule.apis.delete, { pathParams: { id: dictItem.id } }).then(() => {
-      successMessage('删除成功');
-      loadDictData();
-    });
+  asyncRequest(dictDataApiModule.apis.delete, { pathParams: { id: dictItem.id } }).then(() => {
+    successMessage('删除成功');
+    loadDictData();
   });
 }
 
@@ -164,11 +160,9 @@ function handleSubmit() {
       <template #header>
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-4">
-            <ElButton type="primary" @click="handleBack">
-              返回
-            </ElButton>
+            <ElButton :icon="DArrowLeft" type="primary" @click="handleBack" />
           </div>
-          <ElButton type="primary" @click="handleAddDictItem">
+          <ElButton :icon="Plus" type="primary" @click="handleAddDictItem">
             新增字典项
           </ElButton>
         </div>
@@ -186,12 +180,22 @@ function handleSubmit() {
         <ElTableColumn prop="remark" label="备注" />
         <ElTableColumn label="操作" width="150">
           <template #default="{ row }">
-            <ElButton type="primary" link @click="handleEditDictItem(row)">
+            <ElButton
+              :icon="Edit"
+              type="primary"
+              size="small"
+              link
+              @click="handleEditDictItem(row)"
+            >
               修改
             </ElButton>
-            <ElButton type="danger" link @click="handleDeleteDictItem(row)">
-              删除
-            </ElButton>
+            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteDictItem(row)">
+              <template #reference>
+                <ElButton :icon="Delete" type="danger" link size="small">
+                  删除
+                </ElButton>
+              </template>
+            </ElPopconfirm>
           </template>
         </ElTableColumn>
       </ElTable>

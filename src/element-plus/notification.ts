@@ -2,6 +2,7 @@ import { ElNotification, ElMessage, ElLoading } from 'element-plus';
 import 'element-plus/es/components/notification/style/index';
 import 'element-plus/es/components/message/style/index';
 import 'element-plus/es/components/loading/style/index';
+import 'element-plus/es/components/message-box/style/index';
 
 const commonNotificationOptions = {
   // 是否允许使用html作为文本
@@ -129,7 +130,49 @@ export function errorNotification(message: string, title?: string) {
 export function infoNotification(message: string, title?: string) {
   return ElNotification.info({
     ...commonNotificationOptions,
-    title: title ?? '消息',
+    title: title ?? '提示',
     message,
+  });
+}
+
+/**
+ * 警告确认
+ *
+ * @param message 确认信息
+ * @param title   标题
+ */
+export function warringConfirm(message: string, title?: string) {
+  return ElMessageBox.confirm(message, title ?? '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  });
+}
+
+/**
+ * 错误确认
+ *
+ * @param message 确认信息
+ * @param title   标题
+ */
+export function errorConfirm(message: string, title?: string) {
+  return ElMessageBox.confirm(message, title ?? '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'error',
+  });
+}
+
+/**
+ * 消息确认
+ *
+ * @param message 确认信息
+ * @param title   标题
+ */
+export function infoConfirm(message: string, title?: string) {
+  return ElMessageBox.confirm(message, title ?? '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'info',
   });
 }

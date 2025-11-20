@@ -10,8 +10,6 @@ export interface MenuTree extends Menu {
  * 菜单查询参数
  */
 export interface MenuQueryParams {
-  /**
-   * 菜单名称（模糊搜索）
-   */
+  // 菜单名称（模糊搜索）
   name?: string;
 }

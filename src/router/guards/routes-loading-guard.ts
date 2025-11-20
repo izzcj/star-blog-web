@@ -1,7 +1,6 @@
 import type { Router } from 'vue-router';
 
 import { frameworkConfig } from '@/config/framework.config';
-import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import { errorMessage } from '@/element-plus/notification';
 import CommonRouterPathName from '@/enum/common-router-path-name';
@@ -9,13 +8,8 @@ import CommonRouterPath from '@/enum/common-router-path';
 
 export default (router: Router) => {
   router.beforeEach((to, _, next) => {
-    const authenticationStore = useAuthenticationStore();
     const dynamicRouteStore = useDynamicRouteStore();
-    if (
-      !authenticationStore.isLoggedIn
-      || dynamicRouteStore.isFetched
-      || frameworkConfig.ignoreFetchMenusRouteNames.includes(to.name as string)
-    ) {
+    if (dynamicRouteStore.isFetched || frameworkConfig.ignoreFetchMenusRouteNames.includes(to.name as string)) {
       next();
       return;
     }

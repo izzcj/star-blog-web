@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
-import { Refresh, UploadFilled } from '@element-plus/icons-vue';
+import { Check, Refresh } from '@element-plus/icons-vue';
 import type { ArticleDetail } from '@/components/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
@@ -19,7 +19,7 @@ const formRef = ref<FormInstance>();
 const loading = ref(false);
 
 const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName'> = {
-  id: undefined,
+  id: '',
   type: '',
   title: '',
   summary: '',
@@ -134,7 +134,7 @@ function resetForm() {
           <div>
             <ElButton
               type="primary"
-              :icon="UploadFilled"
+              :icon="Check"
               :loading="loading"
               @click="submitForm"
             >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
+import { Delete, Edit, Position } from '@element-plus/icons-vue';
 import type { Article } from '@/components/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
@@ -96,24 +96,10 @@ function toggleTop(article: Article) {
  * @param article 文章信息
  */
 function deleteArticle(article: Article) {
-  ElMessageBox.confirm(
-    `确定要删除文章"${article.title}"吗？此操作不可恢复！`,
-    '删除确认',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    },
-  )
-    .then(() => {
-      asyncRequest(articleApiModule.apis.delete, {
-        pathParams: { id: article.id },
-      })
-        .then(() => {
-          successNotification('删除成功', '成功');
-          fetchArticleList();
-        });
-    });
+  asyncRequest(articleApiModule.apis.delete, { pathParams: { id: article.id } }).then(() => {
+    successNotification('删除成功', '成功');
+    fetchArticleList();
+  });
 }
 </script>
 
@@ -151,10 +137,17 @@ function deleteArticle(article: Article) {
         </ElTableColumn>
         <ElTableColumn label="操作" width="250" fixed="right">
           <template #default="{ row }">
-            <ElButton link type="primary" size="small" @click="editArticle(row)">
+            <ElButton
+              :icon="Edit"
+              link
+              type="primary"
+              size="small"
+              @click="editArticle(row)"
+            >
               修改
             </ElButton>
             <ElButton
+              :icon="Position"
               link
               type="primary"
               size="small"
@@ -163,9 +156,13 @@ function deleteArticle(article: Article) {
             >
               发布
             </ElButton>
-            <ElButton link type="danger" size="small" @click="deleteArticle(row)">
-              删除
-            </ElButton>
+            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="deleteArticle(row)">
+              <template #reference>
+                <ElButton :icon="Delete" type="danger" link size="small">
+                  删除
+                </ElButton>
+              </template>
+            </ElPopconfirm>
           </template>
         </ElTableColumn>
       </ElTable>

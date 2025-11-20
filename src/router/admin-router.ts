@@ -97,6 +97,22 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin/system/role',
+    component: AdminLayout,
+    meta: {
+      title: '角色管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'RoleManagement',
+        path: '',
+        component: () => import('@/views/admin/system/role/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/admin/blog/article',
     component: AdminLayout,
     meta: {

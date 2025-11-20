@@ -34,6 +34,12 @@ const menus = shallowRef([
     path: '/admin/system/menu',
   },
   {
+    id: 'role-management',
+    title: '角色管理',
+    icon: Setting,
+    path: '/admin/system/role',
+  },
+  {
     id: 'dict-management',
     title: '字典管理',
     icon: Notebook,
@@ -43,7 +49,7 @@ const menus = shallowRef([
     id: 'article-management',
     title: '文章管理',
     icon: Reading,
-    path: '/admin/article',
+    path: '/admin/blog/article',
   },
 ]);
 

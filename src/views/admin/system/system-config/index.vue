@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus';
+import { Check, Delete, Plus } from '@element-plus/icons-vue';
 import type { SystemConfig } from './metadata';
 import ConfigItem from './components/config-item.vue';
 import { useLoadDataOptions } from '@/uses/use-data-options';
@@ -103,14 +103,10 @@ function saveConfig(config: SystemConfig) {
  * @param config 配置项
  */
 function deleteConfig(config: SystemConfig) {
-  ElMessageBox.confirm('确定要删除该配置项吗？', '提示', {
-    type: 'warning',
-  }).then(() => {
-    asyncRequest(systemConfigApiModule.apis.delete, { params: { id: config.id } }).then(() => {
-      successMessage('删除成功');
-    });
-    loadSystemConfigs();
+  asyncRequest(systemConfigApiModule.apis.delete, { params: { id: config.id } }).then(() => {
+    successMessage('删除成功');
   });
+  loadSystemConfigs();
 }
 
 /**
@@ -172,7 +168,7 @@ function submitForm() {
           <template #header>
             <div class="flex justify-between items-center">
               <span>系统配置</span>
-              <ElButton type="primary" @click="clickAddConfig">
+              <ElButton :icon="Plus" type="primary" @click="clickAddConfig">
                 新增
               </ElButton>
             </div>
@@ -193,13 +189,17 @@ function submitForm() {
               </template>
             </ElTableColumn>
             <ElTableColumn label="操作" width="180px" fixed="right">
-              <template #default="scope">
-                <ElButton @click="saveConfig(scope.row)">
+              <template #default="{ row }">
+                <ElButton :icon="Check" @click="saveConfig(row)">
                   保存
                 </ElButton>
-                <ElButton @click="deleteConfig(scope.row)">
-                  删除
-                </ElButton>
+                <ElPopconfirm title="确定删除吗？" placement="top" @confirm="deleteConfig(row)">
+                  <template #reference>
+                    <ElButton :icon="Delete" type="danger">
+                      删除
+                    </ElButton>
+                  </template>
+                </ElPopconfirm>
               </template>
             </ElTableColumn>
           </ElTable>

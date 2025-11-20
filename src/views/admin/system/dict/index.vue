@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus';
+import { Delete, Edit, Plus, Refresh } from '@element-plus/icons-vue';
 import type { DictType } from './metadata';
 import dictTypeApiModule from '@/api/system/dict-type';
 import { asyncRequest } from '@/utils/request-util';
@@ -91,13 +91,9 @@ function handleEditDict(dict: DictType) {
  * 删除字典
  */
 function handleDeleteDict(dict: DictType) {
-  ElMessageBox.confirm(`确定删除字典"${dict.dictName}"吗？`, '提示', {
-    type: 'warning',
-  }).then(() => {
-    asyncRequest(dictTypeApiModule.apis.delete, { pathParams: { id: dict.id } }).then(() => {
-      successMessage('删除成功');
-      loadDictTypes();
-    });
+  asyncRequest(dictTypeApiModule.apis.delete, { pathParams: { id: dict.id } }).then(() => {
+    successMessage('删除成功');
+    loadDictTypes();
   });
 }
 
@@ -144,10 +140,10 @@ function handleDictKeyClick(dict: DictType) {
         <div class="flex justify-between items-center">
           <span class="text-lg font-medium">字典管理</span>
           <div class="flex gap-2">
-            <ElButton type="primary" @click="handleRefreshCache">
+            <ElButton :icon="Refresh" type="primary" @click="handleRefreshCache">
               刷新缓存
             </ElButton>
-            <ElButton type="primary" @click="handleAddDict">
+            <ElButton :icon="Plus" type="primary" @click="handleAddDict">
               新增字典
             </ElButton>
           </div>
@@ -168,12 +164,22 @@ function handleDictKeyClick(dict: DictType) {
         <ElTableColumn prop="createTime" label="创建时间" width="180" />
         <ElTableColumn label="操作" width="150">
           <template #default="{ row }">
-            <ElButton type="primary" link @click="handleEditDict(row)">
+            <ElButton
+              :icon="Edit"
+              type="primary"
+              size="small"
+              link
+              @click="handleEditDict(row)"
+            >
               修改
             </ElButton>
-            <ElButton type="danger" link @click="handleDeleteDict(row)">
-              删除
-            </ElButton>
+            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteDict(row)">
+              <template #reference>
+                <ElButton :icon="Delete" type="danger" size="small" link>
+                  删除
+                </ElButton>
+              </template>
+            </ElPopconfirm>
           </template>
         </ElTableColumn>
       </ElTable>

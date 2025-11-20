@@ -40,6 +40,8 @@ function toAdmin() {
  */
 function clickLogout() {
   authenticationStore.logout().then(message => {
+    // 刷新页面
+    location.reload();
     successNotification(message);
   });
 }
