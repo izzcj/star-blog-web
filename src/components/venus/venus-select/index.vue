@@ -12,7 +12,7 @@ const props = defineProps({
   ...venusSelectProps,
 });
 
-const model = defineModel<string | number | boolean | null>('value', { type: [String, Number, Boolean] });
+const model = defineModel<string | number | boolean | string[] | number[] | null>('value', { type: [String, Number, Boolean, Array] });
 
 const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
 </script>

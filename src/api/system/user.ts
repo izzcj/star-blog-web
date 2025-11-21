@@ -38,6 +38,13 @@ const userApiModule: ApiModule = {
       method: RequestMethod.PUT,
     },
     /**
+     * 重置密码
+     */
+    resetPassword: {
+      uri: '/system/user/{id}/password',
+      method: RequestMethod.PUT,
+    },
+    /**
      * 分页获取已授权的用户
      */
     fetchAllocatedPage: {

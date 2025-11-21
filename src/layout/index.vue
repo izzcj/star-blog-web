@@ -56,23 +56,25 @@ function containerLoadComplete() {
 </script>
 
 <template>
-  <!-- Loading -->
-  <Loading />
+  <div>
+    <!-- Loading -->
+    <Loading />
 
-  <!-- 背景图 -->
-  <ElImage class="h-dvh w-dvw fixed" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
+    <!-- 背景图 -->
+    <ElImage class="h-dvh w-dvw fixed" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
 
-  <!-- 页面主体 -->
-  <ElContainer v-if="isLoaded" ref="layoutRef" class="h-dvh w-dvw relative">
-    <ElHeader :class="isMobile ? '' : 'transition-colors duration-500 ease-in-out hover:bg-(--venus-menu-bg--color)'">
-      <NavBar />
-    </ElHeader>
-    <ElMain id="venus-main" class="w-dvw hidden-scrollbar">
-      <AppMain />
-      <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
-    </ElMain>
-    <ElFooter>Footer</ElFooter>
-  </ElContainer>
+    <!-- 页面主体 -->
+    <ElContainer v-if="isLoaded" ref="layoutRef" class="h-dvh w-dvw relative">
+      <ElHeader :class="isMobile ? '' : 'transition-colors duration-500 ease-in-out hover:bg-(--venus-menu-bg--color)'">
+        <NavBar />
+      </ElHeader>
+      <ElMain id="venus-main" class="w-dvw hidden-scrollbar">
+        <AppMain />
+        <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
+      </ElMain>
+      <ElFooter>Footer</ElFooter>
+    </ElContainer>
+  </div>
 </template>
 
 <style lang="scss" scoped>

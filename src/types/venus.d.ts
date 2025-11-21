@@ -263,6 +263,44 @@ declare global {
   }
 
   /**
+   * 系统用户
+   */
+  export interface User extends BaseEntity {
+    // 账号
+    account: string;
+    // 头像
+    avatar?: string;
+    // 昵称
+    nickname: string;
+    // 性别
+    sex: string;
+    // 手机号
+    mobile?: string;
+    // 邮箱
+    email?: string;
+    // 排序
+    sort: number;
+    // 角色ID列表
+    roleIds?: number[];
+  }
+
+  /**
+   * 用户简介
+   */
+  export interface UserProfile extends Omit<User, 'createTime' | 'updateTime' | 'sort'> {
+    // 是否是管理员
+    admin: boolean;
+    // 上次登录IP
+    lastLoginIp: string;
+    // 上次登录时间
+    lastLoginTime: string;
+    // 角色
+    roleIds: number[];
+    // 权限
+    permissions: string[];
+  }
+
+  /**
    * 数据选项
    */
   interface DataOption extends Recordable {

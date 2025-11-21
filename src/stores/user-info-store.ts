@@ -3,65 +3,21 @@ import { errorMessage, errorNotification } from '@/element-plus/notification';
 import { useInstantMessageStore } from '@/stores/instant-message-store';
 import { asyncRequest } from '@/utils/request-util';
 
-/**
- * 用户信息
- */
-export interface UserInfoState {
-  /**
-   * 用户ID
-   */
-  id: string;
-  /**
-   * 用户账号
-   */
-  account: string;
-  /**
-   * 用户昵称
-   */
-  nickname: string;
-  /**
-   * 用户头像
-   */
-  avatar: string;
-  /**
-   * 备注
-   */
-  remark: string;
-  /**
-   * 邮箱
-   */
-  email: string;
-  /**
-   * 上次登录时间
-   */
-  lastLoginIp: string;
-  /**
-   * 上次登录时间
-   */
-  lastLoginTime: string;
-  /**
-   * 是否是管理员
-   */
-  admin: boolean;
-  /**
-   * 权限信息
-   */
-  permissions: string[];
-}
-
 export const useUserInfoStore = defineStore({
   id: 'app-user-info',
-  state: (): UserInfoState => {
+  state: (): UserProfile => {
     return {
       id: '',
       account: '',
       nickname: '',
+      sex: '',
       avatar: '',
       remark: '',
       email: '',
       lastLoginIp: '',
       lastLoginTime: '',
       admin: false,
+      roleIds: [],
       permissions: [],
     };
   },
@@ -102,14 +58,14 @@ export const useUserInfoStore = defineStore({
      */
     async fetchUserInfo() {
       const instantMessageStore = useInstantMessageStore();
-      return asyncRequest<UserInfoState>(userApiModule.apis.info)
+      return asyncRequest<UserProfile>(userApiModule.apis.info)
         .then(resp => {
           this.$patch({
             ...resp.data,
           });
 
           // 连接IM
-          instantMessageStore.connectMessageServer(resp.data.id);
+          instantMessageStore.connectMessageServer(resp.data.id as string);
           return true;
         })
         .catch(e => {

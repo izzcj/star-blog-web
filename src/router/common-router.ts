@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { DefaultLayout } from '@/layout/index';
 import CommonRouterPath from '@/enum/common-router-path';
+import CommonRouterPathName from '@/enum/common-router-path-name';
 
 /**
  * 通用路由
@@ -13,6 +14,7 @@ const commonRouter: RouteRecordRaw[] = [
   // 登录
   {
     path: CommonRouterPath.LOGIN,
+    name: CommonRouterPathName.LOGIN,
     component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登录',

@@ -17,6 +17,13 @@ const roleApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
+     * 获取角色选项
+     */
+    fetchOptions: {
+      uri: '/system/role/options',
+      method: RequestMethod.GET,
+    },
+    /**
      * 创建角色
      */
     create: {

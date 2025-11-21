@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Edit, Delete, User, Refresh, Search, Plus } from '@element-plus/icons-vue';
 import type { FormRules } from 'element-plus';
-import type { Role } from './metadata';
+import type { Role, RoleQueryParams } from './metadata';
 import RoleAuthorization from './components/authorization/index.vue';
 import roleApiModule from '@/api/system/role';
 import { asyncRequest } from '@/utils/request-util';
@@ -13,7 +13,7 @@ defineOptions({
 });
 
 // 查询条件
-const queryForm = reactive({
+const queryForm = reactive<RoleQueryParams>({
   name: '',
   type: '',
 });
@@ -174,8 +174,8 @@ function handleAuthorizationChanged() {
 </script>
 
 <template>
-  <div class="role-management">
-    <ElCard class="role-card">
+  <div class="p-5">
+    <ElCard>
       <!-- 搜搜栏 -->
       <ElForm :model="queryForm" inline>
         <ElFormItem label="角色名称">
@@ -345,7 +345,4 @@ function handleAuthorizationChanged() {
 </template>
 
 <style scoped lang="scss">
-.role-management {
-  padding: 20px;
-}
 </style>

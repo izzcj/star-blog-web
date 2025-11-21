@@ -30,28 +30,58 @@ if (!isEmpty(dynamicRoutesStore.routes)) {
     routers.push(route);
   });
 }
-
-const currentRoute = useRoute();
-const selectedMenuIndex = ref();
 const logType = ref('TEXT');
 const logText = ref('StarBlog');
 const showUserInfo = ref(true);
+const currentRoute = useRoute();
 
-selectedMenuIndex.value = currentRoute.path;
+/**
+ * 获取当前路由应激活的菜单路径
+ * 处理子路由激活父菜单的场景
+ *
+ * @param currentPath 当前路由路径
+ * @param routes 菜单路由列表
+ * @returns 应激活的菜单路径
+ */
+function getActiveMenuPath(currentPath: string, routes: RouteRecordRaw[]): string {
+  let bestMatch = '';
 
-if (isEmpty(selectedMenuIndex.value)) {
-  selectedMenuIndex.value = CommonRouterPath.HOME;
+  for (const route of routes) {
+    // 跳过隐藏的顶级路由
+    if (route.meta?.hidden && route.meta?.topLevel) {
+      continue;
+    }
+
+    const routePath = route.path;
+
+    // 精确匹配
+    if (currentPath === routePath) {
+      return routePath;
+    }
+
+    // 前缀匹配
+    if (currentPath.startsWith(`${routePath}/`)) {
+      // 如果有子路由，递归查找
+      if (route.children && route.children.length > 0) {
+        const childMatch = getActiveMenuPath(currentPath, route.children);
+        if (childMatch !== currentPath) {
+          return childMatch;
+        }
+      }
+
+      // 更新最长匹配
+      if (routePath.length > bestMatch.length) {
+        bestMatch = routePath;
+      }
+    }
+  }
+
+  return bestMatch || currentPath;
 }
 
-// 更新 selectedMenuIndex
-watch(
-  () => currentRoute.path,
-  newPath => {
-    selectedMenuIndex.value = newPath;
-  },
-
-  { immediate: true },
-);
+const activeRoute = computed(() => {
+  return getActiveMenuPath(currentRoute.path, routers);
+});
 
 /**
  * 获取ElCol的Span
@@ -91,7 +121,7 @@ function clickMenuItem() {
           :ellipsis="false"
           mode="horizontal"
           :router="true"
-          :default-active="selectedMenuIndex"
+          :default-active="activeRoute"
           popper-class="glow-effect"
         >
           <template v-for="route of routers" :key="route.path">
@@ -117,7 +147,7 @@ function clickMenuItem() {
       <ElMenu
         :ellipsis="false"
         :router="true"
-        :default-active="selectedMenuIndex"
+        :default-active="activeRoute"
         class="header-menu header-menu_vertical"
       >
         <template v-for="route of routers" :key="route.path">

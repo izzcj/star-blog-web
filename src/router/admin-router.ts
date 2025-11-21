@@ -113,6 +113,22 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin/system/user',
+    component: AdminLayout,
+    meta: {
+      title: '用户管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'UserManagement',
+        path: '',
+        component: () => import('@/views/admin/system/user/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/admin/blog/article',
     component: AdminLayout,
     meta: {

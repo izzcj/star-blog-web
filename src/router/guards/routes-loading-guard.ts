@@ -18,7 +18,7 @@ export default (router: Router) => {
       .fetchMenus()
       .then(() => {
         try {
-          if (dynamicRouteStore.routes.length && dynamicRouteStore.routes[0]) {
+          if (dynamicRouteStore.routes.length) {
             dynamicRouteStore.addRouteRemover(
               router.addRoute({
                 name: CommonRouterPathName.HOME,

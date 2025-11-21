@@ -22,7 +22,7 @@ const emit = defineEmits<{
 const authorizedQueryForm = reactive({
   nickname: '',
 });
-const authorizedUsers = ref<any[]>([]);
+const authorizedUsers = ref<User[]>([]);
 const authorizedTotal = ref(0);
 const authorizedPagination = reactive({
   page: 1,
@@ -35,7 +35,7 @@ const selectUserDialogVisible = ref(false);
 const unauthorizedQueryForm = reactive({
   nickname: '',
 });
-const unauthorizedUsers = ref<any[]>([]);
+const unauthorizedUsers = ref<User[]>([]);
 const unauthorizedTotal = ref(0);
 const unauthorizedPagination = reactive({
   page: 1,

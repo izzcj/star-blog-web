@@ -11,3 +11,13 @@ export interface Role extends BaseEntity {
   // 是否默认角色
   defaultRole: boolean;
 }
+
+/**
+ * 角色查询参数
+ */
+export interface RoleQueryParams {
+  // 角色名称（模糊搜索）
+  name?: string;
+  // 角色类型
+  type?: string;
+}

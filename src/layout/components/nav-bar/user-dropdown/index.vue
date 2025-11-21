@@ -4,6 +4,7 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
 import { successNotification } from '@/element-plus/notification';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
+import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 
 defineOptions({
   name: 'UserDropdown',
@@ -12,6 +13,7 @@ defineOptions({
 const authenticationStore = useAuthenticationStore();
 const userInfoStore = useUserInfoStore();
 const appSettingsStore = useAppSettingsStore();
+const dynamicRouteStore = useDynamicRouteStore();
 const router = useRouter();
 const avatar = ref(userInfoStore.avatar);
 /**
@@ -25,6 +27,7 @@ function clickUserInfo() {
  * 登录点击事件
  */
 function clickLogin() {
+  dynamicRouteStore.resetFetched();
   router.push(CommonRouterPath.LOGIN);
 }
 

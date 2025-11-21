@@ -6,7 +6,6 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import CommonRouterPath from '@/enum/common-router-path';
 import LoginType from '@/enum/login-type';
 import loginBg from '@/assets/image/login-bg.png';
-import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 
 defineOptions({
   name: 'LoginPage',
@@ -18,7 +17,6 @@ const redirectUri = route.query.redirect;
 
 const formRef = shallowRef<FormInstance>();
 const authenticationStore = useAuthenticationStore();
-const dynamicRouteStore = useDynamicRouteStore();
 
 // 加载状态
 const loading = ref(false);
@@ -102,7 +100,6 @@ function login(formEl: FormInstance | undefined) {
             });
           }
         }
-        await dynamicRouteStore.fetchMenus();
       } catch {
         loading.value = false;
       }
@@ -219,7 +216,7 @@ function handleForgotPassword() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/common";
+@forward "@/styles/common";
 // Element Plus 输入框深层样式覆盖
 :deep(.login-input) {
   .el-input__wrapper {
