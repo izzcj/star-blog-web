@@ -21,4 +21,6 @@ export interface SystemConfig extends BaseEntity {
   dataSourceType: Nullable<DataOptionType>;
   // 数据源配置
   dataSourceConfig: Nullable<string>;
+  // 是否可删除
+  deletable: boolean;
 }

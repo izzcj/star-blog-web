@@ -20,14 +20,16 @@ const title = ref('夏至未至');
 // header 展开状态
 const isExpanded = ref(false);
 
-onMounted(() => {
-  loadMotto();
-});
-
-onBeforeRouteLeave(() => {
-  document.body.removeEventListener('wheel', preventScroll);
-  document.body.removeEventListener('touchmove', preventScroll);
-});
+/**
+ * 加载标题
+ */
+function loadTitle() {
+  asyncRequest<SystemConfig>(systemConfigApiModule.apis.fetchOne, {
+    params: { key: 'home-title' },
+  }).then(res => {
+    title.value = res.data.value as string;
+  });
+}
 
 /**
  * 加载 motto
@@ -119,6 +121,16 @@ function toggleExpand() {
 function preventScroll(event: Event) {
   event.preventDefault();
 }
+
+onMounted(() => {
+  loadTitle();
+  loadMotto();
+});
+
+onBeforeRouteLeave(() => {
+  document.body.removeEventListener('wheel', preventScroll);
+  document.body.removeEventListener('touchmove', preventScroll);
+});
 </script>
 
 <template>

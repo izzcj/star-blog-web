@@ -26,11 +26,11 @@ export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
 
   // 请求映射表
   const loaders: Record<string, (key: any) => Promise<{ data: T[] }>> = {
-    dict: (key: string) =>
+    DICT: (key: string) =>
       asyncRequest(dictDataApiModule.apis.fetchOptions, { params: { dictKey: key } }),
-    enum: (key: string) =>
+    ENUM: (key: string) =>
       asyncRequest(enumApiModule.apis.fetchOptions, { params: { class: key } }),
-    const: (list: T[]) =>
+    CONST: (list: T[]) =>
       Promise.resolve({
         data: list.map((item: any) => {
           // 如果已经是分组结构，直接返回

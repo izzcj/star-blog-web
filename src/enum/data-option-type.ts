@@ -5,15 +5,15 @@ enum DataOptionType {
   /**
    * 数据字典
    */
-  DICT = 'dict',
+  DICT = 'DICT',
   /**
    * 枚举
    */
-  ENUM = 'enum',
+  ENUM = 'ENUM',
   /**
    * 常量
    */
-  CONST = 'const',
+  CONST = 'CONST',
 }
 
 export default DataOptionType;

@@ -34,7 +34,7 @@ export const systemConfigApiModule: ApiModule = {
      * 删除系统配置
      */
     delete: {
-      uri: '/system/config',
+      uri: '/system/config/{id}',
       method: RequestMethod.DELETE,
     },
   },

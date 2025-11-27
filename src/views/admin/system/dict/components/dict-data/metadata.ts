@@ -12,8 +12,8 @@ export interface DictData extends BaseEntity {
   cssClass: string;
   // 表格回显样式
   listClass: string;
-  // 默认字典不允许修改
-  defaultFlag: boolean;
+  // 是否可删除
+  deletable: boolean;
   // 排序
   sort: number;
   // 是否启用

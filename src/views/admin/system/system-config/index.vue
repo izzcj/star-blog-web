@@ -21,7 +21,7 @@ const { data: configCategoryOptions } = useLoadDataOptions(DataOptionType.DICT, 
 const dialogVisible = ref(false);
 // 新增配置表单数据
 const formRef = ref();
-const formData = ref<Omit<SystemConfig, 'id' | 'createTime' | 'updateTime'>>({
+const formData = ref<Omit<SystemConfig, 'id' | 'deletable' | 'createTime' | 'updateTime'>>({
   category: '',
   sort: null,
   name: '',
@@ -103,10 +103,10 @@ function saveConfig(config: SystemConfig) {
  * @param config 配置项
  */
 function deleteConfig(config: SystemConfig) {
-  asyncRequest(systemConfigApiModule.apis.delete, { params: { id: config.id } }).then(() => {
+  asyncRequest(systemConfigApiModule.apis.delete, { pathParams: { id: config.id } }).then(() => {
     successMessage('删除成功');
+    loadSystemConfigs();
   });
-  loadSystemConfigs();
 }
 
 /**
@@ -177,14 +177,14 @@ function submitForm() {
             <ElTableColumn label="序号" prop="sort" width="80px" />
             <ElTableColumn label="配置项" prop="name" width="120px" />
             <ElTableColumn label="配置值" prop="value" min-width="400px">
-              <template #default="scope">
+              <template #default="{ row }">
                 <ConfigItem
-                  :key="scope.row.id"
-                  v-model:value="scope.row.value"
-                  :type="scope.row.type"
-                  :label="scope.row.name"
-                  :data-source-type="scope.row.dataSourceType"
-                  :data-source-config="scope.row.dataSourceConfig"
+                  :key="row.id"
+                  v-model:value="row.value"
+                  :type="row.type"
+                  :label="row.name"
+                  :data-source-type="row.dataSourceType"
+                  :data-source-config="row.dataSourceConfig"
                 />
               </template>
             </ElTableColumn>
@@ -195,7 +195,7 @@ function submitForm() {
                 </ElButton>
                 <ElPopconfirm title="确定删除吗？" placement="top" @confirm="deleteConfig(row)">
                   <template #reference>
-                    <ElButton size="small" :icon="Delete" type="danger">
+                    <ElButton v-if="row.deletable" size="small" :icon="Delete" type="danger">
                       删除
                     </ElButton>
                   </template>
@@ -230,7 +230,7 @@ function submitForm() {
         <ElFormItem label="配置类型" prop="type" required>
           <ElSelect v-model="formData.type" placeholder="请选择配置类型">
             <ElOption
-              v-for="(label, key) of SystemConfigType"
+              v-for="(key, label) of SystemConfigType"
               :key="key"
               :label="label"
               :value="key"
@@ -240,7 +240,7 @@ function submitForm() {
         <ElFormItem v-show="hasDataSource" label="数据源类型">
           <ElSelect v-model="formData.dataSourceType" placeholder="请选择数据源类型">
             <ElOption
-              v-for="(label, key) of DataOptionType"
+              v-for="(key, label) of DataOptionType"
               :key="key"
               :label="label"
               :value="key"

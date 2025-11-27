@@ -29,16 +29,15 @@ const dialogVisible = ref(false);
 const dialogTitle = ref('');
 const isEdit = ref(false);
 const formRef = ref();
-const formData = ref<DictData>({
+const formData = ref<Omit<DictData, 'id' | 'deletable'>>({
   dictLabel: '',
   dictValue: '',
   dictKey: '',
   cssClass: '',
   listClass: '',
-  defaultFlag: false,
   sort: 0,
   enabled: true,
-} as DictData);
+});
 
 watch(() => [pagination.page, pagination.size], () => {
   loadDictData();
@@ -87,10 +86,9 @@ function handleAddDictItem() {
     dictKey: props.dictKey,
     cssClass: '',
     listClass: '',
-    defaultFlag: false,
     sort: 0,
     enabled: true,
-  } as DictData;
+  };
   dialogVisible.value = true;
 }
 
@@ -191,7 +189,7 @@ function handleSubmit() {
             </ElButton>
             <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteDictItem(row)">
               <template #reference>
-                <ElButton :icon="Delete" type="danger" link size="small">
+                <ElButton v-if="row.deletable" :icon="Delete" type="danger" link size="small">
                   删除
                 </ElButton>
               </template>
