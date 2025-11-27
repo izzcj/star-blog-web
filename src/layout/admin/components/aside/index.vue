@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { Notebook, Reading, Setting, Menu, User } from '@element-plus/icons-vue';
+import { Notebook, Reading, Setting, Menu, User, UserFilled } from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
 
 defineOptions({
@@ -36,7 +36,7 @@ const menus = shallowRef([
   {
     id: 'role-management',
     title: '角色管理',
-    icon: Setting,
+    icon: UserFilled,
     path: '/admin/system/role',
   },
   {

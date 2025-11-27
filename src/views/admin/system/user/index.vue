@@ -7,6 +7,8 @@ import roleApiModule from '@/api/system/role';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
 import DataOptionType from '@/enum/data-option-type';
+import VenusAvatar from '@/components/venus/venus-avatar/index.vue';
+import { useUploadInfoStore } from '@/stores/upload-info-state';
 
 defineOptions({
   name: 'UserManagementPage',
@@ -34,6 +36,9 @@ const pagination = reactive({
 // 角色选项
 const roleOptions = ref<DataOption[]>([]);
 
+// 上传信息 Store
+const uploadInfoStore = useUploadInfoStore();
+
 // 新增/编辑弹窗
 const dialogVisible = ref(false);
 const dialogTitle = ref('');
@@ -54,11 +59,14 @@ const formData = ref<User>({
   remark: '',
 } as User);
 
+// 记录初始头像值，用于判断是否需要清理
+const initialAvatar = ref<string>('');
+
 // 表单验证规则
 const rules = computed<FormRules<User>>(() => ({
   account: [
     { required: true, message: '请输入账号', trigger: 'blur' },
-    { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' },
+    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' },
     { pattern: /^\w+$/, message: '仅支持字母、数字和下划线', trigger: 'blur' },
   ],
   nickname: [
@@ -155,6 +163,7 @@ function handleAddUser() {
     confirmPassword: '',
     remark: '',
   } as User;
+  initialAvatar.value = '';
   dialogVisible.value = true;
 }
 
@@ -165,6 +174,7 @@ function handleEditUser(user: User) {
   dialogTitle.value = '修改用户';
   isEdit.value = true;
   formData.value = { ...user };
+  initialAvatar.value = user.avatar || '';
   dialogVisible.value = true;
 }
 
@@ -206,6 +216,31 @@ function handleSubmit() {
       loadUsers();
     });
   });
+}
+
+/**
+ * 处理头像取消操作
+ * 当对话框关闭且头像有变更时清理临时文件
+ */
+async function handleAvatarCancel() {
+  if (!formData.value.avatar || formData.value.avatar === initialAvatar.value) {
+    return;
+  }
+
+  try {
+    await uploadInfoStore.removeTempObject('minio', formData.value.avatar);
+    formData.value.avatar = initialAvatar.value;
+  } catch (error) {
+    console.error('清理临时头像失败:', error);
+  }
+}
+
+/**
+ * 处理对话框关闭
+ */
+function handleDialogClose() {
+  handleAvatarCancel();
+  formRef.value?.resetFields();
 }
 </script>
 
@@ -269,10 +304,7 @@ function handleSubmit() {
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn prop="avatar" label="头像" width="80" align="center">
           <template #default="{ row }">
-            <VenusImage v-if="row.avatar" :src="row.avatar" />
-            <ElAvatar v-else>
-              {{ row.nickname.charAt(0) }}
-            </ElAvatar>
+            <VenusAvatar v-model:value="row.avatar" :disabled="true" size="auto" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="account" label="账号" />
@@ -340,7 +372,7 @@ function handleSubmit() {
       v-model="dialogVisible"
       :title="dialogTitle"
       width="600px"
-      @close="formRef?.resetFields()"
+      @close="handleDialogClose"
     >
       <ElForm
         ref="formRef"
@@ -349,7 +381,12 @@ function handleSubmit() {
         label-width="90px"
       >
         <ElFormItem label="头像" prop="avatar">
-          <VenusUpload v-model:value="formData.avatar" />
+          <VenusAvatar
+            v-model:value="formData.avatar"
+            size="default"
+            name="默认"
+            :on-cancel="handleAvatarCancel"
+          />
         </ElFormItem>
         <ElFormItem label="账号" prop="account">
           <ElInput

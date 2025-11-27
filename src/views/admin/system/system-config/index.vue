@@ -190,12 +190,12 @@ function submitForm() {
             </ElTableColumn>
             <ElTableColumn label="操作" width="180px" fixed="right">
               <template #default="{ row }">
-                <ElButton :icon="Check" @click="saveConfig(row)">
+                <ElButton size="small" :icon="Check" @click="saveConfig(row)">
                   保存
                 </ElButton>
                 <ElPopconfirm title="确定删除吗？" placement="top" @confirm="deleteConfig(row)">
                   <template #reference>
-                    <ElButton :icon="Delete" type="danger">
+                    <ElButton size="small" :icon="Delete" type="danger">
                       删除
                     </ElButton>
                   </template>
