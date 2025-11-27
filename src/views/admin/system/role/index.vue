@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Edit, Delete, User, Refresh, Search, Plus } from '@element-plus/icons-vue';
+import { Edit, Delete, User, Refresh, Search, Plus, Key } from '@element-plus/icons-vue';
 import type { FormRules } from 'element-plus';
 import type { Role, RoleQueryParams } from './metadata';
 import RoleAuthorization from './components/authorization/index.vue';
+import RolePermission from './components/permission/index.vue';
 import roleApiModule from '@/api/system/role';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
@@ -58,6 +59,10 @@ const rules: FormRules<Role> = {
 // 用户授权抽屉相关
 const drawerVisible = ref(false);
 const currentRole = ref<Role | null>(null);
+
+// 权限设置弹窗相关
+const permissionDialogVisible = ref(false);
+const currentPermissionRole = ref<Role | null>(null);
 
 onMounted(() => {
   loadRoles();
@@ -171,6 +176,21 @@ function handleAuthorize(role: Role) {
 function handleAuthorizationChanged() {
   loadRoles();
 }
+
+/**
+ * 打开权限设置弹窗
+ */
+function handleSetPermission(role: Role) {
+  currentPermissionRole.value = role;
+  permissionDialogVisible.value = true;
+}
+
+/**
+ * 权限变更处理
+ */
+function handlePermissionChanged() {
+  permissionDialogVisible.value = false;
+}
 </script>
 
 <template>
@@ -225,7 +245,7 @@ function handleAuthorizationChanged() {
         </ElTableColumn>
         <ElTableColumn prop="remark" label="备注" show-overflow-tooltip />
         <ElTableColumn prop="createTime" label="创建时间" width="180" />
-        <ElTableColumn label="操作" width="240" align="center" fixed="right">
+        <ElTableColumn label="操作" width="300" align="center" fixed="right">
           <template #default="{ row }">
             <ElButton
               :icon="User"
@@ -235,7 +255,17 @@ function handleAuthorizationChanged() {
               :disabled="row.id === '1'"
               @click="handleAuthorize(row)"
             >
-              调整授权
+              授权用户
+            </ElButton>
+            <ElButton
+              :icon="Key"
+              type="warning"
+              link
+              size="small"
+              :disabled="row.id === '1'"
+              @click="handleSetPermission(row)"
+            >
+              设置权限
             </ElButton>
             <ElButton
               :icon="Edit"
@@ -341,6 +371,19 @@ function handleAuthorizationChanged() {
         @authorization-changed="handleAuthorizationChanged"
       />
     </ElDrawer>
+
+    <!-- 权限设置弹窗 -->
+    <ElDialog
+      v-model="permissionDialogVisible"
+      :title="`权限设置 - ${currentPermissionRole?.name}`"
+      width="700px"
+    >
+      <RolePermission
+        v-if="currentPermissionRole"
+        :role-id="currentPermissionRole.id!"
+        @permission-changed="handlePermissionChanged"
+      />
+    </ElDialog>
   </div>
 </template>
 

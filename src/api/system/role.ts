@@ -24,6 +24,20 @@ const roleApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
+     * 获取角色菜单权限
+     */
+    fetchMenuPermissions: {
+      uri: '/system/role/{id}/menu',
+      method: RequestMethod.GET,
+    },
+    /**
+     * 保存角色菜单权限
+     */
+    saveMenuPermissions: {
+      uri: '/system/role/{id}/menu',
+      method: RequestMethod.POST,
+    },
+    /**
      * 创建角色
      */
     create: {
