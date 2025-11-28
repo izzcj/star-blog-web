@@ -68,7 +68,7 @@ const iconsPerRow = ref(18);
  */
 function updateIconsPerRow() {
   if (containerRef.value) {
-    const containerWidth = containerRef.value.offsetWidth;
+    const containerWidth = containerRef.value.scrollWidth;
     const iconItemWidth = 50;
     iconsPerRow.value = Math.max(1, Math.floor(containerWidth / iconItemWidth));
   }

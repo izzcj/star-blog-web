@@ -194,40 +194,40 @@ function handlePermissionChanged() {
 </script>
 
 <template>
-  <div class="p-5">
-    <ElCard>
+  <div>
+    <ElCard shadow="never" class="mb-3">
       <!-- 搜搜栏 -->
-      <ElForm :model="queryForm" inline>
-        <ElFormItem label="角色名称">
-          <ElInput
-            v-model="queryForm.name"
-            placeholder="请输入角色名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </ElFormItem>
-        <ElFormItem label="角色类型">
-          <VenusSelect
-            v-model:value="queryForm.type"
-            :option-type="DataOptionType.ENUM"
-            option-key="com.ale.starblog.admin.system.enums.RoleType"
-            placeholder="请选择角色类型"
-          />
-        </ElFormItem>
-        <ElFormItem>
-          <ElButton :icon="Search" type="primary" @click="handleQuery">
-            查询
-          </ElButton>
-          <ElButton :icon="Refresh" @click="handleReset">
-            重置
-          </ElButton>
-        </ElFormItem>
+      <ElForm :model="queryForm">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+          <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
+            <ElFormItem label="角色名称">
+              <ElInput
+                v-model="queryForm.name"
+                placeholder="请输入角色名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </ElFormItem>
+          </div>
+          <div class="flex items-center gap-2">
+            <ElFormItem>
+              <ElButton :icon="Search" type="primary" @click="handleQuery">
+                查询
+              </ElButton>
+              <ElButton :icon="Refresh" @click="handleReset">
+                重置
+              </ElButton>
+            </ElFormItem>
+          </div>
+        </div>
       </ElForm>
+    </ElCard>
 
+    <ElCard shadow="never">
       <!-- 操作按钮 -->
-      <div class="mb-4">
-        <ElButton :icon="Plus" type="primary" @click="handleAddRole">
-          新增角色
+      <div class="mb-4 flex justify-end">
+        <ElButton :icon="Plus" type="success" @click="handleAddRole">
+          新增
         </ElButton>
       </div>
 

@@ -245,30 +245,41 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="menu-management-page">
-    <ElCard>
+  <div>
+    <ElCard shadow="never" class="mb-3">
       <!-- 查询表单 -->
-      <ElForm inline :model="queryParams">
-        <ElFormItem label="菜单名称">
-          <ElInput
-            v-model="queryParams.name"
-            placeholder="请输入菜单名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </ElFormItem>
-        <ElFormItem>
-          <ElButton :icon="Search" type="primary" @click="handleQuery">
-            查询
-          </ElButton>
-          <ElButton :icon="Refresh" @click="handleReset">
-            重置
-          </ElButton>
-          <ElButton :icon="Plus" type="success" @click="handleAdd()">
-            新增
-          </ElButton>
-        </ElFormItem>
+      <ElForm :model="queryParams">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+          <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
+            <ElFormItem label="菜单名称">
+              <ElInput
+                v-model="queryParams.name"
+                placeholder="请输入菜单名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </ElFormItem>
+          </div>
+          <div class="flex items-center gap-2">
+            <ElFormItem>
+              <ElButton :icon="Search" type="primary" @click="handleQuery">
+                查询
+              </ElButton>
+              <ElButton :icon="Refresh" @click="handleReset">
+                重置
+              </ElButton>
+            </ElFormItem>
+          </div>
+        </div>
       </ElForm>
+    </ElCard>
+
+    <ElCard shadow="never">
+      <div class="mb-4 flex justify-end">
+        <ElButton :icon="Plus" type="success" @click="handleAdd()">
+          新增
+        </ElButton>
+      </div>
 
       <!-- 菜单树形表格 -->
       <ElTable
@@ -324,7 +335,7 @@ onMounted(() => {
           </template>
         </ElTableColumn>
 
-        <ElTableColumn prop="common" label="公共菜单" width="80" align="center">
+        <ElTableColumn prop="common" label="公共菜单" width="110" align="center">
           <template #default="{ row }">
             <ElTag v-if="row.hidden" type="warning" size="small">
               是
@@ -395,13 +406,4 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.menu-management-page {
-  padding: 20px;
-
-  :deep(.el-table) {
-    .el-icon {
-      vertical-align: middle;
-    }
-  }
-}
 </style>

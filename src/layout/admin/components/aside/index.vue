@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { Notebook, Reading, Setting, Menu, User, UserFilled } from '@element-plus/icons-vue';
+import {
+  Notebook,
+  Reading,
+  Setting,
+  Menu,
+  User,
+  UserFilled,
+  PriceTag,
+} from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
 
 defineOptions({
@@ -50,6 +58,12 @@ const menus = shallowRef([
     title: '字典管理',
     icon: Notebook,
     path: '/admin/system/dict',
+  },
+  {
+    id: 'tag-management',
+    title: '标签管理',
+    icon: PriceTag,
+    path: '/admin/blog/tag',
   },
   {
     id: 'article-management',

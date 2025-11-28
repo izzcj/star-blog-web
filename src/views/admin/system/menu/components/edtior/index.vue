@@ -198,21 +198,31 @@ defineExpose({
       />
     </ElFormItem>
 
-    <ElFormItem label="顶级菜单">
-      <ElSwitch v-model="formData.topLevel" />
-    </ElFormItem>
+    <ElRow>
+      <ElCol :span="12">
+        <ElFormItem label="顶级菜单">
+          <ElSwitch v-model="formData.topLevel" />
+        </ElFormItem>
+      </ElCol>
+      <ElCol :span="12">
+        <ElFormItem label="是否缓存">
+          <ElSwitch v-model="formData.keepAlive" />
+        </ElFormItem>
+      </ElCol>
+    </ElRow>
 
-    <ElFormItem label="是否缓存">
-      <ElSwitch v-model="formData.keepAlive" />
-    </ElFormItem>
-
-    <ElFormItem label="是否启用">
-      <ElSwitch v-model="formData.enabled" />
-    </ElFormItem>
-
-    <ElFormItem label="是否隐藏">
-      <ElSwitch v-model="formData.hidden" />
-    </ElFormItem>
+    <ElRow>
+      <ElCol :span="12">
+        <ElFormItem label="是否启用">
+          <ElSwitch v-model="formData.enabled" />
+        </ElFormItem>
+      </ElCol>
+      <ElCol :span="12">
+        <ElFormItem label="是否隐藏">
+          <ElSwitch v-model="formData.hidden" />
+        </ElFormItem>
+      </ElCol>
+    </ElRow>
 
     <ElFormItem label="公共菜单">
       <ElSwitch v-model="formData.common" />

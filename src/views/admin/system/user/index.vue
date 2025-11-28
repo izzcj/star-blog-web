@@ -245,57 +245,40 @@ function handleDialogClose() {
 </script>
 
 <template>
-  <div class="p-5">
-    <ElCard class="user-card">
+  <div>
+    <ElCard shadow="never" class="mb-3">
       <!-- 搜索栏 -->
-      <ElForm :model="queryForm" inline>
-        <ElFormItem label="账号">
-          <ElInput
-            v-model="queryForm.account"
-            placeholder="请输入账号"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </ElFormItem>
-        <ElFormItem label="昵称">
-          <ElInput
-            v-model="queryForm.nickname"
-            placeholder="请输入昵称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </ElFormItem>
-        <ElFormItem label="手机号">
-          <ElInput
-            v-model="queryForm.mobile"
-            placeholder="请输入手机号"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </ElFormItem>
-        <ElFormItem label="性别">
-          <VenusSelect
-            v-model:value="queryForm.sex"
-            :option-type="DataOptionType.DICT"
-            option-key="sex"
-            placeholder="请选择性别"
-            clearable
-          />
-        </ElFormItem>
-        <ElFormItem>
-          <ElButton :icon="Search" type="primary" @click="handleQuery">
-            查询
-          </ElButton>
-          <ElButton :icon="Refresh" @click="handleReset">
-            重置
-          </ElButton>
-        </ElFormItem>
+      <ElForm :model="queryForm">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+          <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
+            <ElFormItem label="账号">
+              <ElInput
+                v-model="queryForm.account"
+                placeholder="请输入账号"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </ElFormItem>
+          </div>
+          <div class="flex items-center gap-2">
+            <ElFormItem>
+              <ElButton :icon="Search" type="primary" @click="handleQuery">
+                查询
+              </ElButton>
+              <ElButton :icon="Refresh" @click="handleReset">
+                重置
+              </ElButton>
+            </ElFormItem>
+          </div>
+        </div>
       </ElForm>
+    </ElCard>
 
+    <ElCard shadow="never">
       <!-- 操作按钮 -->
-      <div class="mb-4">
-        <ElButton :icon="Plus" type="primary" @click="handleAddUser">
-          新增用户
+      <div class="mb-4 flex justify-end">
+        <ElButton :icon="Plus" type="success" @click="handleAddUser">
+          新增
         </ElButton>
       </div>
 

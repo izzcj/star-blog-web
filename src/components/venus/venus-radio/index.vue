@@ -12,7 +12,9 @@ const props = defineProps({
 
 const model = defineModel<string | number | boolean | null>('value', { type: [String, Number, Boolean] });
 
-const { data: options } = useLoadDataOptions(props.optionType, props.optionKey);
+const optionType = computed(() => props.optionType);
+const optionKey = computed(() => props.optionKey);
+const { data: options } = useLoadDataOptions(optionType, optionKey);
 </script>
 
 <template>

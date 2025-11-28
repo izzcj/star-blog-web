@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { Delete, Edit, Position } from '@element-plus/icons-vue';
+import { Delete, Edit, Position, Refresh, Search } from '@element-plus/icons-vue';
 import type { Article } from '@/components/article/metadata';
+import type { ArticleQueryParams } from '@/views/admin/blog/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
+import DataOptionType from '@/enum/data-option-type';
 
 defineOptions({
   name: 'ArticleManagementPage',
@@ -12,6 +14,12 @@ defineOptions({
 
 const router = useRouter();
 const articleList = ref<Article[]>([]);
+const queryParams = reactive<ArticleQueryParams>({
+  type: '',
+  title: '',
+  status: '',
+});
+
 const loading = ref(false);
 const total = ref(0);
 const pagination = reactive({
@@ -20,21 +28,24 @@ const pagination = reactive({
 });
 
 onMounted(() => {
-  fetchArticleList();
+  loadArticleList();
 });
 
 watch(() => [pagination.page, pagination.size], () => {
-  fetchArticleList();
+  loadArticleList();
 });
 
 /**
- * 获取文章列表
+ * 加载文章列表
  *
  */
-function fetchArticleList() {
+function loadArticleList() {
   loading.value = true;
   asyncRequest(articleApiModule.apis.fetchPage, {
     params: {
+      type: queryParams.type || undefined,
+      title: queryParams.title || undefined,
+      status: queryParams.status || undefined,
       page: pagination.page,
       size: pagination.size,
     },
@@ -46,6 +57,24 @@ function fetchArticleList() {
     .finally(() => {
       loading.value = false;
     });
+}
+
+/**
+ * 查询
+ */
+function handleQuery() {
+  pagination.page = 1;
+  loadArticleList();
+}
+
+/**
+ * 重置查询条件
+ */
+function handleReset() {
+  queryParams.title = '';
+  queryParams.status = '';
+  queryParams.type = '';
+  loadArticleList();
 }
 
 /**
@@ -68,7 +97,7 @@ function publishArticle(article: Article) {
   })
     .then(() => {
       successNotification('发布成功', '成功');
-      fetchArticleList();
+      loadArticleList();
     });
 }
 
@@ -86,7 +115,7 @@ function toggleTop(article: Article) {
         `${article.top ? '取消置顶' : '置顶'}成功`,
         '成功',
       );
-      fetchArticleList();
+      loadArticleList();
     });
 }
 
@@ -98,29 +127,63 @@ function toggleTop(article: Article) {
 function deleteArticle(article: Article) {
   asyncRequest(articleApiModule.apis.delete, { pathParams: { id: article.id } }).then(() => {
     successNotification('删除成功', '成功');
-    fetchArticleList();
+    loadArticleList();
   });
 }
 </script>
 
 <template>
-  <div class="blog-management-page">
-    <ElCard class="min-h-full">
-      <template #header>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">文章管理</span>
-          <ElButton type="primary" @click="router.push('/admin/blog/article/create')">
-            写文章
-          </ElButton>
+  <div>
+    <ElCard shadow="never" class="mb-3">
+      <ElForm :model="queryParams">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+          <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
+            <ElFormItem label="分类">
+              <VenusSelect
+                v-model:value="queryParams.type"
+                :option-type="DataOptionType.DICT"
+                option-key="article-type"
+                placeholder="请选择分类"
+              />
+            </ElFormItem>
+            <ElFormItem label="标题">
+              <ElInput
+                v-model="queryParams.title"
+                placeholder="请输入标题"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </ElFormItem>
+            <ElFormItem label="状态">
+              <VenusSelect
+                v-model:value="queryParams.status"
+                :option-type="DataOptionType.ENUM"
+                option-key="com.ale.starblog.admin.blog.enums.ArticleStatus"
+                placeholder="请选择状态"
+              />
+            </ElFormItem>
+          </div>
+          <div class="flex items-center gap-2">
+            <ElFormItem>
+              <ElButton :icon="Search" type="primary" @click="handleQuery">
+                查询
+              </ElButton>
+              <ElButton :icon="Refresh" @click="handleReset">
+                重置
+              </ElButton>
+            </ElFormItem>
+          </div>
         </div>
-      </template>
+      </ElForm>
+    </ElCard>
+    <ElCard shadow="never">
+      <div class="mb-4 flex justify-end">
+        <ElButton type="primary" @click="router.push('/admin/blog/article/create')">
+          写文章
+        </ElButton>
+      </div>
 
-      <ElTable
-        v-loading="loading"
-        :data="articleList"
-        stripe
-        class="w-full"
-      >
+      <ElTable v-loading="loading" :data="articleList" border>
         <ElTableColumn prop="title" label="标题" min-width="200" show-overflow-tooltip />
         <ElTableColumn prop="typeName" label="类型" width="100" />
         <ElTableColumn prop="viewCount" label="浏览量" width="100" />
@@ -182,9 +245,4 @@ function deleteArticle(article: Article) {
 </template>
 
 <style scoped lang="scss">
-.blog-management-page {
-  :deep(.el-card__body) {
-    padding: 20px;
-  }
-}
 </style>

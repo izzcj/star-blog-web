@@ -1,3 +1,4 @@
+import type { Tag } from '@/views/admin/blog/tag/metadata';
 /**
  * 文章类型定义
  */
@@ -21,7 +22,7 @@ export interface Article extends BaseEntity {
   // 创建人
   createByName: string;
   // 标签
-  tags: Recordable[];
+  tags: Tag[];
 }
 
 /**

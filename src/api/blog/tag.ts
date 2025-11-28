@@ -10,6 +10,13 @@ const tagApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
+     * 获取标签选项
+     */
+    fetchOptions: {
+      uri: '/blog/tag/options',
+      method: RequestMethod.GET,
+    },
+    /**
      * 获取标签详情
      */
     fetchDetail: {

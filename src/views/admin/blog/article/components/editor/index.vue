@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { Check, Refresh } from '@element-plus/icons-vue';
 import type { ArticleDetail } from '@/components/article/metadata';
 import articleApiModule from '@/api/blog/article';
+import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
 import DataOptionType from '@/enum/data-option-type';
@@ -18,20 +19,23 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName'> = {
+// 修改初始表单数据结构，使 tags 只存储 ID 数组
+const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName' | 'tags'> & { tagIds: string[] } = {
   id: '',
   type: '',
   title: '',
   summary: '',
   content: '',
   coverImage: '',
-  tags: [] as Recordable[],
+  tagIds: [],
 };
 
 // 文章表单数据
 const articleForm = ref({
   ...initialFormData,
 });
+
+const tagOptions = ref<DataOption[]>([]);
 
 // 表单验证规则
 const rules = reactive<FormRules>({
@@ -56,7 +60,17 @@ onMounted(() => {
   if (blogId) {
     fetchArticleDetail(blogId);
   }
+  loadTagOptions();
 });
+
+/**
+ * 加载标签选项
+ */
+function loadTagOptions() {
+  asyncRequest<DataOption[]>(tagApiModule.apis.fetchOptions).then(res => {
+    tagOptions.value = res.data;
+  });
+}
 
 /**
  * 获取文章详情
@@ -67,7 +81,11 @@ function fetchArticleDetail(id: string) {
   loading.value = true;
   asyncRequest<ArticleDetail>(articleApiModule.apis.fetchDetail, { pathParams: { id } })
     .then(res => {
-      articleForm.value = res.data;
+      // 转换 tags 数据，只保留 ID
+      articleForm.value = {
+        ...res.data,
+        tagIds: res.data.tags.map(tag => tag.id as string),
+      };
     })
     .finally(() => {
       loading.value = false;
@@ -94,19 +112,18 @@ function submitForm() {
  */
 function saveArticle() {
   loading.value = true;
+  console.log('articleForm:', articleForm);
   asyncRequest(
     articleForm.value.id ? articleApiModule.apis.modify : articleApiModule.apis.create,
     {
       data: {
-        ...articleForm,
-        // 简化处理标签
-        tags: articleForm.value.tags.map(tag => ({ name: tag.name })),
+        ...articleForm.value,
       },
     },
   )
     .then(() => {
       successNotification('保存成功', '成功');
-      router.push('/admin/blog');
+      router.push('/admin/blog/article');
     })
     .finally(() => {
       loading.value = false;
@@ -125,7 +142,7 @@ function resetForm() {
 
 <template>
   <div class="h-full flex flex-col">
-    <ElCard class="blog-card h-full flex flex-col flex-1">
+    <ElCard shadow="never" class="blog-card h-full flex flex-col flex-1">
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">
@@ -160,14 +177,43 @@ function resetForm() {
           label-width="80px"
           class="max-w-[80%] mx-auto"
         >
-          <!-- 标题 -->
-          <ElFormItem label="标题" prop="title">
-            <ElInput
-              v-model="articleForm.title"
-              placeholder="请输入标题"
-              clearable
-            />
-          </ElFormItem>
+          <ElRow :guid="20" justify="space-between">
+            <ElCol :span="7">
+              <!-- 标题 -->
+              <ElFormItem label="标题" prop="title">
+                <ElInput
+                  v-model="articleForm.title"
+                  placeholder="请输入标题"
+                  clearable
+                />
+              </ElFormItem>
+            </ElCol>
+            <ElCol :span="7">
+              <!-- 分类 -->
+              <ElFormItem label="分类" prop="type">
+                <VenusSelect
+                  v-model:value="articleForm.type"
+                  :option-type="DataOptionType.DICT"
+                  option-key="article-type"
+                  placeholder="请选择分类"
+                />
+              </ElFormItem>
+            </ElCol>
+            <ElCol :span="7">
+              <!-- 标签 -->
+              <ElFormItem label="标签" prop="tags">
+                <VenusSelect
+                  v-model:value="articleForm.tagIds"
+                  :option-type="DataOptionType.CONST"
+                  :option-key="tagOptions"
+                  placeholder="请选择标签"
+                  multiple
+                  collapse-tags
+                  collapse-tags-tooltip
+                />
+              </ElFormItem>
+            </ElCol>
+          </ElRow>
 
           <!-- 摘要 -->
           <ElFormItem label="摘要" prop="summary">
@@ -178,16 +224,6 @@ function resetForm() {
               placeholder="请输入摘要"
               maxlength="200"
               show-word-limit
-            />
-          </ElFormItem>
-
-          <!-- 标签 -->
-          <ElFormItem label="分类" prop="type">
-            <VenusSelect
-              v-model:value="articleForm.type"
-              :option-type="DataOptionType.DICT"
-              option-key="article-type"
-              placeholder="请选择分类"
             />
           </ElFormItem>
 
@@ -208,6 +244,18 @@ function resetForm() {
 
 <style scoped lang="scss">
 .blog-card {
+  :deep(.el-card) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :deep(.el-card__body) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
   :deep(.el-card__body) {
     display: flex;
     flex-direction: column;

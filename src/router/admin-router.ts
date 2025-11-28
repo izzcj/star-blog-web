@@ -166,6 +166,22 @@ export const adminRouter: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/admin/blog/tag',
+    component: AdminLayout,
+    meta: {
+      title: '标签管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'TagManagement',
+        path: '',
+        component: () => import('@/views/admin/blog/tag/index.vue'),
+      },
+    ],
+  },
 ];
 
 export default adminRouter;

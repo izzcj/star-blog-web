@@ -27,19 +27,19 @@ onMounted(() => {
           </p>
         </div>
       </div>
-      <ElContainer v-else class="h-dvh w-dvw relative bg-slate-200">
+      <ElContainer v-else class="h-dvh w-dvw relative">
         <ElCard>
           <ElAside width="200px">
             <AdminAside />
           </ElAside>
         </ElCard>
         <ElMain class="admin-main">
-          <ElCard class="h-dvh">
-            <div class="pb-3">
+          <div>
+            <div class="pb-3 sticky top-0 z-10">
               <AdminNavBar />
             </div>
             <AppMain />
-          </ElCard>
+          </div>
         </ElMain>
       </ElContainer>
     </Transition>
@@ -49,18 +49,5 @@ onMounted(() => {
 <style scoped lang="scss">
 .admin-main {
   --el-main-padding: 0 0 0 10px;
-
-  :deep(.el-card) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  :deep(.el-card__body) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
 }
 </style>

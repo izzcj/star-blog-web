@@ -18,22 +18,24 @@ function toHome() {
 </script>
 
 <template>
-  <ElRow>
-    <ElCol :span="2" :offset="22">
-      <div class="cursor-pointer pt-[5px] venus-center">
-        <ElDropdown>
-          <ElAvatar :size="50" :src="avatar" />
-          <template #dropdown>
-            <ElDropdownMenu>
-              <ElDropdownItem @click="toHome">
-                返回首页
-              </ElDropdownItem>
-            </ElDropdownMenu>
-          </template>
-        </ElDropdown>
-      </div>
-    </ElCol>
-  </ElRow>
+  <ElCard shadow="never">
+    <ElRow>
+      <ElCol :span="2" :offset="22">
+        <div class="cursor-pointer pt-[5px] venus-center">
+          <ElDropdown>
+            <ElAvatar :size="50" :src="avatar" />
+            <template #dropdown>
+              <ElDropdownMenu>
+                <ElDropdownItem @click="toHome">
+                  返回首页
+                </ElDropdownItem>
+              </ElDropdownMenu>
+            </template>
+          </ElDropdown>
+        </div>
+      </ElCol>
+    </ElRow>
+  </ElCard>
 </template>
 
 <style scoped lang="scss">

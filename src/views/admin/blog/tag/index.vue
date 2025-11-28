@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { Delete, Edit, Plus, Refresh, Search } from '@element-plus/icons-vue';
-import type { DictType, DictTypeQueryParams } from './metadata';
-import dictTypeApiModule from '@/api/system/dict-type';
+import type { FormRules } from 'element-plus';
+import type { Tag, TagQueryParams } from './metadata';
+import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
 
 defineOptions({
-  name: 'DictManagementPage',
+  name: 'TagManagementPage',
 });
 
-const router = useRouter();
-
-const dictList = ref<DictType[]>([]);
-const queryParams = reactive<DictTypeQueryParams>({
-  dictName: '',
+// 查询条件
+const queryForm = reactive<TagQueryParams>({
+  name: '',
 });
 
+// 标签列表
+const tagList = ref<Tag[]>([]);
 const total = ref(0);
+
 // 分页相关
 const pagination = reactive({
   page: 1,
@@ -28,41 +30,45 @@ const dialogVisible = ref(false);
 const dialogTitle = ref('');
 const isEdit = ref(false);
 const formRef = ref();
-const formData = ref<DictType>({
-  dictName: '',
-  dictKey: '',
-  sort: 0,
-} as DictType);
+const formData = ref<Tag>({
+  name: '',
+  color: '#409EFF',
+  description: '',
+} as Tag);
+
+// 表单验证规则
+const rules: FormRules<Tag> = {
+  name: [
+    { required: true, message: '请输入标签名称', trigger: 'blur' },
+    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
+  ],
+  color: [
+    { required: true, message: '请选择标签颜色', trigger: 'change' },
+  ],
+};
 
 onMounted(() => {
-  loadDictTypes();
+  loadTags();
 });
 
 watch(() => [pagination.page, pagination.size], () => {
-  loadDictTypes();
+  loadTags();
 });
 
 /**
- * 加载字典数据
+ * 加载标签列表
  */
-function loadDictTypes() {
-  asyncRequest(dictTypeApiModule.apis.fetchPage, {
+function loadTags() {
+  asyncRequest(tagApiModule.apis.fetchPage, {
     params: {
-      dictName: queryParams.dictName || undefined,
       page: pagination.page,
       size: pagination.size,
+      name: queryForm.name || undefined,
     },
   }).then(res => {
-    dictList.value = res.data.data;
+    tagList.value = res.data.data;
     total.value = Number(res.data.total);
   });
-}
-
-/**
- * 重置查询条件
- */
-function handleReset() {
-  queryParams.dictName = '';
 }
 
 /**
@@ -70,50 +76,48 @@ function handleReset() {
  */
 function handleQuery() {
   pagination.page = 1;
-  loadDictTypes();
+  loadTags();
 }
 
 /**
- * 刷新缓存
+ * 重置查询条件
  */
-function handleRefreshCache() {
-  asyncRequest(dictTypeApiModule.apis.refreshCache).then(() => {
-    successMessage('刷新成功');
-    loadDictTypes();
-  });
+function handleReset() {
+  queryForm.name = '';
+  handleQuery();
 }
 
 /**
- * 新增字典
+ * 新增标签
  */
-function handleAddDict() {
-  dialogTitle.value = '新增字典';
+function handleAddTag() {
+  dialogTitle.value = '新增标签';
   isEdit.value = false;
   formData.value = {
-    dictName: '',
-    dictKey: '',
-    sort: 0,
-  } as DictType;
+    name: '',
+    color: '#409EFF',
+    description: '',
+  } as Tag;
   dialogVisible.value = true;
 }
 
 /**
- * 修改字典
+ * 修改标签
  */
-function handleEditDict(dict: DictType) {
-  dialogTitle.value = '修改字典';
+function handleEditTag(tag: Tag) {
+  dialogTitle.value = '修改标签';
   isEdit.value = true;
-  formData.value = { ...dict };
+  formData.value = { ...tag };
   dialogVisible.value = true;
 }
 
 /**
- * 删除字典
+ * 删除标签
  */
-function handleDeleteDict(dict: DictType) {
-  asyncRequest(dictTypeApiModule.apis.delete, { pathParams: { id: dict.id } }).then(() => {
+function handleDeleteTag(tag: Tag) {
+  asyncRequest(tagApiModule.apis.delete, { pathParams: { id: tag.id } }).then(() => {
     successMessage('删除成功');
-    loadDictTypes();
+    loadTags();
   });
 }
 
@@ -127,28 +131,14 @@ function handleSubmit() {
     }
 
     const request = isEdit.value
-      ? asyncRequest(dictTypeApiModule.apis.modify, { data: formData.value })
-      : asyncRequest(dictTypeApiModule.apis.create, { data: formData.value });
+      ? asyncRequest(tagApiModule.apis.modify, { data: formData.value })
+      : asyncRequest(tagApiModule.apis.create, { data: formData.value });
 
     request.then(() => {
       successMessage(isEdit.value ? '修改成功' : '新增成功');
       dialogVisible.value = false;
-      loadDictTypes();
+      loadTags();
     });
-  });
-}
-
-/**
- * 点击字典key
- *
- * @param dict 字典
- */
-function handleDictKeyClick(dict: DictType) {
-  router.push({
-    name: 'DictData',
-    params: {
-      dictKey: dict.dictKey,
-    },
   });
 }
 </script>
@@ -156,14 +146,14 @@ function handleDictKeyClick(dict: DictType) {
 <template>
   <div>
     <ElCard shadow="never" class="mb-3">
-      <!-- 查询表单 -->
-      <ElForm :model="queryParams">
+      <!-- 搜索栏 -->
+      <ElForm :model="queryForm">
         <div class="flex flex-col md:flex-row md:items-center gap-4">
           <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
-            <ElFormItem label="字典名称">
+            <ElFormItem label="标签名称">
               <ElInput
-                v-model="queryParams.dictName"
-                placeholder="请输入字典名称"
+                v-model="queryForm.name"
+                placeholder="请输入标签名称"
                 clearable
                 @keyup.enter="handleQuery"
               />
@@ -184,40 +174,44 @@ function handleDictKeyClick(dict: DictType) {
     </ElCard>
 
     <ElCard shadow="never">
+      <!-- 操作按钮 -->
       <div class="mb-4 flex justify-end">
-        <ElButton :icon="Refresh" type="primary" @click="handleRefreshCache">
-          刷新缓存
-        </ElButton>
-        <ElButton :icon="Plus" type="success" @click="handleAddDict()">
+        <ElButton :icon="Plus" type="success" @click="handleAddTag">
           新增
         </ElButton>
       </div>
-      <ElTable :data="dictList" border>
-        <ElTableColumn prop="sort" label="排序" width="80" align="center" />
-        <ElTableColumn prop="dictName" label="字典名称" />
-        <ElTableColumn prop="dictKey" label="字典key">
+
+      <!-- 标签列表表格 -->
+      <ElTable :data="tagList" border>
+        <ElTableColumn prop="name" label="标签名称" />
+        <ElTableColumn prop="color" label="标签颜色" width="200">
           <template #default="{ row }">
-            <ElLink type="primary" @click="handleDictKeyClick(row)">
-              {{ row.dictKey }}
-            </ElLink>
+            <ElTag :color="row.color" effect="dark">
+              {{ row.name }}
+            </ElTag>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="remark" label="备注" />
+        <ElTableColumn prop="description" label="描述" show-overflow-tooltip />
         <ElTableColumn prop="createTime" label="创建时间" width="180" />
-        <ElTableColumn label="操作" width="150">
+        <ElTableColumn label="操作" width="150" align="center" fixed="right">
           <template #default="{ row }">
             <ElButton
               :icon="Edit"
               type="primary"
-              size="small"
               link
-              @click="handleEditDict(row)"
+              size="small"
+              @click="handleEditTag(row)"
             >
               修改
             </ElButton>
-            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteDict(row)">
+            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteTag(row)">
               <template #reference>
-                <ElButton :icon="Delete" type="danger" size="small" link>
+                <ElButton
+                  :icon="Delete"
+                  type="danger"
+                  link
+                  size="small"
+                >
                   删除
                 </ElButton>
               </template>
@@ -226,6 +220,7 @@ function handleDictKeyClick(dict: DictType) {
         </ElTableColumn>
       </ElTable>
 
+      <!-- 分页组件 -->
       <div class="flex justify-end mt-4">
         <ElPagination
           v-model:current-page="pagination.page"
@@ -238,7 +233,7 @@ function handleDictKeyClick(dict: DictType) {
       </div>
     </ElCard>
 
-    <!-- 字典编辑弹窗 -->
+    <!-- 标签编辑弹窗 -->
     <ElDialog
       v-model="dialogVisible"
       :title="dialogTitle"
@@ -248,20 +243,22 @@ function handleDictKeyClick(dict: DictType) {
       <ElForm
         ref="formRef"
         :model="formData"
-        label-width="80px"
-        :rules="{
-          dictName: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
-          dictKey: [{ required: true, message: '请输入字典key', trigger: 'blur' }],
-        }"
+        :rules="rules"
+        label-width="90px"
       >
-        <ElFormItem label="字典名称" prop="dictName">
-          <ElInput v-model="formData.dictName" placeholder="请输入字典名称" />
+        <ElFormItem label="标签名称" prop="name">
+          <ElInput v-model="formData.name" placeholder="请输入标签名称" />
         </ElFormItem>
-        <ElFormItem label="字典key" prop="dictKey">
-          <ElInput v-model="formData.dictKey" :disabled="isEdit" placeholder="请输入字典key" />
+        <ElFormItem label="标签颜色" prop="color">
+          <ElColorPicker v-model="formData.color" :show-alpha="false" />
         </ElFormItem>
-        <ElFormItem label="排序" prop="sort">
-          <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
+        <ElFormItem label="描述" prop="description">
+          <ElInput
+            v-model="formData.description"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入描述"
+          />
         </ElFormItem>
       </ElForm>
 
@@ -278,5 +275,4 @@ function handleDictKeyClick(dict: DictType) {
 </template>
 
 <style scoped lang="scss">
-
 </style>

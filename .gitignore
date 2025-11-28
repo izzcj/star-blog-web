@@ -21,6 +21,7 @@ pnpm-debug.log*
 # Editor directories and files
 .idea
 .vscode
+.claude
 .scannerwork
 *.suo
 *.ntvs*
@@ -32,6 +33,7 @@ pnpm-debug.log*
 types/auto-imports.d.ts
 types/components.d.ts
 types/auto-apis.d.ts
-
+CLAUDE.md
+DEV_GUIDE.md
 
 .specstory/

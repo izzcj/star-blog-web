@@ -11,8 +11,8 @@ import type DataOptionType from '@/enum/data-option-type';
  * @param autoLoad   是否在参数变化时自动加载，默认 true
  */
 export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
-  optionType: DataOptionType,
-  optionKey: string | T[] | undefined,
+  optionType: ComputedRef<DataOptionType>,
+  optionKey: ComputedRef<string | T[] | undefined>,
   autoLoad = true,
 ) {
   const data: Ref<T[]> = ref([]);
@@ -55,21 +55,26 @@ export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
 
   // 加载数据函数
   const loadData = async () => {
-    if (!optionType || !optionKey) {
+    if (!optionType || optionKey.value === undefined || optionKey.value === null) {
       data.value = [];
       return;
     }
 
-    const keyString = JSON.stringify(optionKey);
-    // 参数相同不重复加载
-    if (lastParams.type === optionType && lastParams.key === keyString) {
+    // 对于空数组的处理：只有非 CONST 类型才返回空
+    if (Array.isArray(optionKey.value) && optionKey.value.length === 0 && optionType.value !== 'CONST') {
+      data.value = [];
       return;
     }
-    lastParams = { type: optionType, key: keyString };
 
-    const loader = loaders[optionType];
+    const keyString = JSON.stringify(optionKey.value);
+    // 参数相同不重复加载
+    if (lastParams.type === optionType.value && lastParams.key === keyString) {
+      return;
+    }
+    lastParams = { type: optionType.value, key: keyString };
+
+    const loader = loaders[optionType.value];
     if (!loader) {
-      console.warn(`[useLoadDataOptions] 未知的数据类型: ${optionType}`);
       data.value = [];
       return;
     }
@@ -78,7 +83,7 @@ export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
     loading.value = true;
     error.value = null;
     try {
-      const res = await loader(optionKey as any);
+      const res = await loader(optionKey.value as any);
 
       // 若在等待期间参数已更新，则放弃旧请求结果
       if (requestId !== currentRequestId) {
@@ -110,7 +115,7 @@ export function useLoadDataOptions<T extends DataOption | DataOptionsGroup>(
   // 自动监听参数变化
   if (autoLoad) {
     watch(
-      () => [optionType, optionKey],
+      [optionType, optionKey],
       () => {
         void loadData();
       },

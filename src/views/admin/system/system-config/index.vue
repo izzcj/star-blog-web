@@ -14,8 +14,10 @@ defineOptions({
 });
 
 const currentConfigCategory = ref('');
+const optionType = computed(() => DataOptionType.DICT);
+const optionKey = computed(() => 'system-config-category');
 // 获取配置类型字典
-const { data: configCategoryOptions } = useLoadDataOptions(DataOptionType.DICT, 'system-config-category');
+const { data: configCategoryOptions } = useLoadDataOptions(optionType, optionKey);
 
 // 控制新增配置对话框显示状态
 const dialogVisible = ref(false);
@@ -168,7 +170,7 @@ function submitForm() {
           <template #header>
             <div class="flex justify-between items-center">
               <span>系统配置</span>
-              <ElButton :icon="Plus" type="primary" @click="clickAddConfig">
+              <ElButton :icon="Plus" type="success" @click="clickAddConfig">
                 新增
               </ElButton>
             </div>
