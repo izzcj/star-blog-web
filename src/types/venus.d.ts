@@ -143,28 +143,6 @@ declare global {
   }
 
   /**
-   * 基本实体
-   */
-  interface BaseEntity {
-    /**
-     * ID
-     */
-    id: string | undefined;
-    /**
-     * 创建时间
-     */
-    createTime?: string;
-    /**
-     * 更新时间
-     */
-    updateTime?: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-  }
-
-  /**
    * 即时消息
    */
   interface InstantMessage {
@@ -187,6 +165,50 @@ declare global {
   }
 
   /**
+   * 数据选项
+   */
+  interface DataOption extends Recordable {
+    /**
+     * 名称
+     */
+    label: string;
+    /**
+     * 名称拼音
+     */
+    labelPinyin?: string;
+    /**
+     * 值
+     */
+    value: string | number | boolean;
+    /**
+     * 描述
+     */
+    description?: string;
+    /**
+     * 是否禁用
+     */
+    disabled?: boolean;
+  }
+
+  /**
+   * 分组数据选项
+   */
+  interface DataOptionsGroup extends Recordable {
+    /**
+     * 分组名称
+     */
+    label: string;
+    /**
+     * 分组唯一标识
+     */
+    key: string | number;
+    /**
+     * 分组下面的选项
+     */
+    options: DataOption[];
+  }
+
+  /**
    * 登录数据
    */
   interface LoginData {
@@ -202,6 +224,24 @@ declare global {
      * 登录类型
      */
     loginType: string;
+  }
+
+  /**
+   * 基本实体
+   */
+  interface BaseEntity {
+    /**
+     * ID
+     */
+    id: Undefinable<string>;
+    /**
+     * 创建时间
+     */
+    createTime?: string;
+    /**
+     * 更新时间
+     */
+    updateTime?: string;
   }
 
   /**
@@ -257,6 +297,10 @@ declare global {
      */
     sort: number;
     /**
+     * 备注
+     */
+    remark?: string;
+    /**
      * 路由参数
      */
     params?: string[];
@@ -301,46 +345,86 @@ declare global {
   }
 
   /**
-   * 数据选项
+   * 文章
    */
-  interface DataOption extends Recordable {
-    /**
-     * 名称
-     */
-    label: string;
-    /**
-     * 名称拼音
-     */
-    labelPinyin?: string;
-    /**
-     * 值
-     */
-    value: string | number | boolean;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 是否禁用
-     */
-    disabled?: boolean;
+  export interface Article extends BaseEntity {
+    // 类型
+    type: string;
+    // 类型名称
+    typeName: string;
+    // 标题
+    title: string;
+    // 概要
+    summary: string;
+    // 封面
+    coverImage: string;
+    // 浏览数
+    viewCount: number;
+    // 是否置顶
+    top: boolean;
+    // 发布时间
+    publishTime: string;
+    // 创建人
+    createByName: string;
   }
 
   /**
-   * 分组数据选项
+   * 文章详情
    */
-  interface DataOptionsGroup extends Recordable {
-    /**
-     * 分组名称
-     */
-    label: string;
-    /**
-     * 分组唯一标识
-     */
-    key: string | number;
-    /**
-     * 分组下面的选项
-     */
-    options: DataOption[];
+  export interface ArticleDetail extends Article {
+    // 内容
+    content: string;
+    // 标签
+    tags: Tag[];
+  }
+
+  /**
+   * 标签
+   */
+  export interface Tag extends BaseEntity {
+    // 标签名
+    name: string;
+    // 标签颜色
+    color: string;
+    // 标签描述
+    description: string;
+  }
+
+  /**
+   * 评论
+   */
+  export interface Comment extends BaseEntity {
+    // 文章ID
+    articleId: string;
+    // 根评论ID
+    rootId: string;
+    // 父级评论ID
+    parentId: string;
+    // 评论内容
+    content: string;
+    // 点赞数
+    likeCount: number;
+    // 状态
+    status: string;
+    // 评论人
+    userId: string;
+    // 回复目标用户ID
+    replyUserId: string;
+  }
+
+  /**
+   * 评论详情
+   */
+  export interface CommentDetail extends Comment {
+    // 是否点赞
+    liked: boolean;
+    // 评论人昵称
+    userName: string;
+    // 评论人头像
+    userAvatar: string;
+    // 回复目标用户昵称
+    replyUserName: string;
+    // 回复数
+    replyCount: number;
   }
 }

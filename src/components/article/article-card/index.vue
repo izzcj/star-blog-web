@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Avatar, Clock, View } from '@element-plus/icons-vue';
-import type { Article } from '@/components/article/metadata';
 
 defineOptions({
   name: 'ArticleCard',

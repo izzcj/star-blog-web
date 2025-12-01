@@ -68,7 +68,7 @@ function containerLoadComplete() {
       <ElHeader :class="isMobile ? '' : 'transition-colors duration-500 ease-in-out hover:bg-(--venus-menu-bg--color)'">
         <NavBar />
       </ElHeader>
-      <ElMain id="venus-main" class="w-dvw hidden-scrollbar">
+      <ElMain id="venus-main" class="default-main w-dvw hidden-scrollbar">
         <AppMain />
         <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
       </ElMain>
@@ -78,4 +78,7 @@ function containerLoadComplete() {
 </template>
 
 <style lang="scss" scoped>
+.default-main {
+  --el-main-padding: 0 20px;
+}
 </style>

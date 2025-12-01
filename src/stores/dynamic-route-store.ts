@@ -191,7 +191,6 @@ export const useDynamicRouteStore = defineStore({
      */
     resetFetched() {
       this.isFetched = false;
-      console.log('重置菜单获取状态');
     },
     /**
      * 清空菜单

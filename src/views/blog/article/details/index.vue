@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
-import type { ArticleDetail } from '@/components/article/metadata';
+import CommentSection from './components/comment-section/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import articleApiModule from '@/api/blog/article';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
@@ -96,13 +96,17 @@ function goBack() {
             {{ tag.name }}
           </ElTag>
         </div>
+        <!-- 评论区 -->
+        <div v-if="articleDetail" class="mt-4">
+          <CommentSection :article-id="articleDetail.id as string" />
+        </div>
+
+        <!-- 加载状态 -->
+        <div v-else class="p-5">
+          <ElSkeleton :rows="10" animated />
+        </div>
       </div>
     </ElCard>
-
-    <!-- 加载状态 -->
-    <div v-else class="p-5">
-      <ElSkeleton :rows="10" animated />
-    </div>
   </div>
 </template>
 

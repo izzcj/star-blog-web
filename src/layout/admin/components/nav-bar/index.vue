@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserInfoStore } from '@/stores/user-info-store';
+import CommonRouterPath from '@/enum/common-router-path';
 
 defineOptions({
   name: 'AdminNavBar',
@@ -13,7 +14,7 @@ const router = useRouter();
  * 进入首页
  */
 function toHome() {
-  router.push('/home');
+  router.push(CommonRouterPath.HOME);
 }
 </script>
 

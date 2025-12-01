@@ -2,7 +2,6 @@
 import { useRouter } from 'vue-router';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
-import type { Article } from '@/components/article/metadata';
 
 defineOptions({
   name: 'HotArticle',

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Article } from '@/components/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Delete, Edit, Plus, Refresh, Search } from '@element-plus/icons-vue';
 import type { FormRules } from 'element-plus';
-import type { Tag, TagQueryParams } from './metadata';
+import type { TagQueryParams } from './metadata';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';

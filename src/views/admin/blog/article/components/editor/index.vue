@@ -2,7 +2,6 @@
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 import { Check, Refresh } from '@element-plus/icons-vue';
-import type { ArticleDetail } from '@/components/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
@@ -19,7 +18,6 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-// 修改初始表单数据结构，使 tags 只存储 ID 数组
 const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName' | 'tags'> & { tagIds: string[] } = {
   id: '',
   type: '',
