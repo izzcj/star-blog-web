@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ArticleCard from './components/article-card/index.vue';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 

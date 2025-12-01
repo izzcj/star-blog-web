@@ -3,8 +3,8 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeft, Lock, User } from '@element-plus/icons-vue';
 import { frameworkConfig } from '@/config/framework.config';
 import { useAuthenticationStore } from '@/stores/authentication-store';
-import CommonRouterPath from '@/enum/common-router-path';
-import LoginType from '@/enum/login-type';
+import CommonRouterPath from '@/enums/common-router-path';
+import LoginType from '@/enums/login-type';
 import loginBg from '@/assets/image/login-bg.png';
 
 defineOptions({

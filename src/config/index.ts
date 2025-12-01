@@ -1,4 +1,4 @@
-import CommonRouterPathName from '@/enum/common-router-path-name';
+import CommonRouterPathName from '@/enums/common-router-path-name';
 
 export default {
   /**

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
@@ -18,6 +18,6 @@
     "types/*.d.ts",
     "src/utils/env-util.ts",
     "src/types/venus.d.ts",
-    "src/enum/request-method.ts"
+    "src/enums/request-method.ts"
   ]
 }

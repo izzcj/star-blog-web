@@ -5,7 +5,7 @@ import MenuItem from './menu-item/index.vue';
 import Logo from './logo/index.vue';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
-import CommonRouterPath from '@/enum/common-router-path';
+import CommonRouterPath from '@/enums/common-router-path';
 import commonRouters from '@/router/common-router';
 import UserDropdown from '@/layout/components/nav-bar/user-dropdown/index.vue';
 

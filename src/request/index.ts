@@ -1,13 +1,13 @@
 import type { AxiosResponse } from 'axios';
 import axios, { CanceledError } from 'axios';
 import qs from 'qs';
-import RequestHeader from '@/enum/request-header';
+import RequestHeader from '@/enums/request-header';
 import { getAppConfig } from '@/utils/env-util';
 import { warningNotification, infoNotification, errorNotification } from '@/element-plus/notification';
-import CommonRouterPath from '@/enum/common-router-path';
-import CommonRouterPathName from '@/enum/common-router-path-name';
+import CommonRouterPath from '@/enums/common-router-path';
+import CommonRouterPathName from '@/enums/common-router-path-name';
 import router from '@/router';
-import ApiResultCode from '@/enum/api-result-code';
+import ApiResultCode from '@/enums/api-result-code';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 
 const instance = axios.create({

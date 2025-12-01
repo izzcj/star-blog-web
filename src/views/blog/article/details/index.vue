@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
-import CommentSection from './components/comment-section/index.vue';
+import CommentSection from '@/views/blog/article/components/comment-section/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import articleApiModule from '@/api/blog/article';
 import { useAppSettingsStore } from '@/stores/app-settings-store';

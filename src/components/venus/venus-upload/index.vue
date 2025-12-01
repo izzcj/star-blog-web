@@ -8,7 +8,7 @@ import { venusUploadProps } from './props';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
-import RequestHeader from '@/enum/request-header';
+import RequestHeader from '@/enums/request-header';
 import { errorNotification } from '@/element-plus/notification';
 
 defineOptions({

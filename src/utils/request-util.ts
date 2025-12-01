@@ -1,5 +1,5 @@
 import type { AxiosResponse, RawAxiosRequestHeaders } from 'axios';
-import RequestMethod from '@/enum/request-method';
+import RequestMethod from '@/enums/request-method';
 import instance from '@/request';
 import { replaceTemplate } from '@/utils/string-util';
 

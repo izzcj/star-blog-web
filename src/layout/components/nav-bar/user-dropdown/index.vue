@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CommonRouterPath from '@/enum/common-router-path';
+import CommonRouterPath from '@/enums/common-router-path';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
 import { successNotification } from '@/element-plus/notification';

@@ -1,4 +1,4 @@
-import RequestMethod from '@/enum/request-method';
+import RequestMethod from '@/enums/request-method';
 
 export const uploadApiModule: ApiModule = {
   apis: {

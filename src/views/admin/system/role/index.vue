@@ -7,7 +7,7 @@ import RolePermission from './components/permission/index.vue';
 import roleApiModule from '@/api/system/role';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
-import DataOptionType from '@/enum/data-option-type';
+import DataOptionType from '@/enums/data-option-type';
 
 defineOptions({
   name: 'RoleManagementPage',

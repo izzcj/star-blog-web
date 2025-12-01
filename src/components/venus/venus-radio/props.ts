@@ -1,5 +1,5 @@
 import { array, bool, oneOf, oneOfType, string } from 'vue-types';
-import DataOptionType from '@/enum/data-option-type';
+import DataOptionType from '@/enums/data-option-type';
 
 export const venusRadioProps = {
   // 是否禁用

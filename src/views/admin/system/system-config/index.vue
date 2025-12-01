@@ -3,10 +3,10 @@ import { Check, Delete, Plus } from '@element-plus/icons-vue';
 import type { SystemConfig } from './metadata';
 import ConfigItem from './components/config-item.vue';
 import { useLoadDataOptions } from '@/uses/use-data-options';
-import DataOptionType from '@/enum/data-option-type';
+import DataOptionType from '@/enums/data-option-type';
 import { asyncRequest } from '@/utils/request-util';
 import { systemConfigApiModule } from '@/api/system/system-config';
-import SystemConfigType from '@/enum/systme-config-type';
+import SystemConfigType from '@/enums/systme-config-type';
 import { successMessage } from '@/element-plus/notification';
 
 defineOptions({

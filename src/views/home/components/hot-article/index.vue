@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import ArticleCard from '@/views/blog/article/components/article-card/index.vue';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 

@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { DefaultLayout } from '@/layout/index';
-import CommonRouterPath from '@/enum/common-router-path';
-import CommonRouterPathName from '@/enum/common-router-path-name';
+import CommonRouterPath from '@/enums/common-router-path';
+import CommonRouterPathName from '@/enums/common-router-path-name';
 
 /**
  * 通用路由

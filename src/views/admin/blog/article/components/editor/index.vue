@@ -6,7 +6,7 @@ import articleApiModule from '@/api/blog/article';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
-import DataOptionType from '@/enum/data-option-type';
+import DataOptionType from '@/enums/data-option-type';
 
 defineOptions({
   name: 'ArticleEditor',

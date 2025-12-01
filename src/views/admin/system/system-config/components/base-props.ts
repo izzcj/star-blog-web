@@ -1,6 +1,6 @@
 import { object, oneOf, string, oneOfType, array, number, bool } from 'vue-types';
-import DataOptionType from '@/enum/data-option-type';
-import SystemConfigType from '@/enum/systme-config-type';
+import DataOptionType from '@/enums/data-option-type';
+import SystemConfigType from '@/enums/systme-config-type';
 
 export const configItemProps = {
   /**

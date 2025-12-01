@@ -1,5 +1,5 @@
 import type { RawAxiosRequestHeaders } from 'axios';
-import type RequestMethod from '@/enum/request-method';
+import type RequestMethod from '@/enums/request-method';
 
 declare global {
   /**

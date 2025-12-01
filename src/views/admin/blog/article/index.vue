@@ -5,7 +5,7 @@ import type { ArticleQueryParams } from '@/views/admin/blog/article/metadata';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import { successNotification } from '@/element-plus/notification';
-import DataOptionType from '@/enum/data-option-type';
+import DataOptionType from '@/enums/data-option-type';
 
 defineOptions({
   name: 'ArticleManagementPage',

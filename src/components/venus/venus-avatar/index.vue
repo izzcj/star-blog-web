@@ -9,8 +9,8 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
 import { errorNotification, successNotification } from '@/element-plus/notification';
 import request from '@/request';
-import RequestMethod from '@/enum/request-method';
-import RequestHeader from '@/enum/request-header';
+import RequestMethod from '@/enums/request-method';
+import RequestHeader from '@/enums/request-header';
 
 defineOptions({
   name: 'VenusAvatar',

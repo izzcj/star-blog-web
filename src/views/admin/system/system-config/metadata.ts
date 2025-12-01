@@ -1,5 +1,5 @@
-import type SystemConfigType from '@/enum/systme-config-type';
-import type DataOptionType from '@/enum/data-option-type';
+import type SystemConfigType from '@/enums/systme-config-type';
+import type DataOptionType from '@/enums/data-option-type';
 
 /**
  * 系统配置

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserInfoStore } from '@/stores/user-info-store';
-import CommonRouterPath from '@/enum/common-router-path';
+import CommonRouterPath from '@/enums/common-router-path';
 
 defineOptions({
   name: 'AdminNavBar',

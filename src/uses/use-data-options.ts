@@ -1,7 +1,7 @@
 import { asyncRequest } from '@/utils/request-util';
 import dictDataApiModule from '@/api/system/dict-data';
 import enumApiModule from '@/api/enum';
-import type DataOptionType from '@/enum/data-option-type';
+import type DataOptionType from '@/enums/data-option-type';
 
 /**
  * 数据选项加载 Composable

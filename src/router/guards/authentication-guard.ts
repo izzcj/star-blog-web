@@ -1,8 +1,8 @@
 import type { Router } from 'vue-router';
 
 import config from '@/config';
-import CommonRouterPath from '@/enum/common-router-path';
-import CommonRouterPathName from '@/enum/common-router-path-name';
+import CommonRouterPath from '@/enums/common-router-path';
+import CommonRouterPathName from '@/enums/common-router-path-name';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
 

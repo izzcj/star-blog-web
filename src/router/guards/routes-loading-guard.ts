@@ -3,8 +3,8 @@ import type { Router } from 'vue-router';
 import { frameworkConfig } from '@/config/framework.config';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import { errorMessage } from '@/element-plus/notification';
-import CommonRouterPathName from '@/enum/common-router-path-name';
-import CommonRouterPath from '@/enum/common-router-path';
+import CommonRouterPathName from '@/enums/common-router-path-name';
+import CommonRouterPath from '@/enums/common-router-path';
 
 export default (router: Router) => {
   router.beforeEach((to, _, next) => {
