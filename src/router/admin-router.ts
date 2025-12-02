@@ -182,6 +182,22 @@ export const adminRouter: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/admin/blog/comment',
+    component: AdminLayout,
+    meta: {
+      title: '评论管理',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'CommentManagement',
+        path: '',
+        component: () => import('@/views/admin/blog/comment/index.vue'),
+      },
+    ],
+  },
 ];
 
 export default adminRouter;

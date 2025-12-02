@@ -94,7 +94,7 @@ function handleReply() {
   emit('reply', {
     userId: props.reply.userId,
     userName: props.reply.userName,
-    commentId: props.reply.id as string,
+    commentId: props.reply.id,
   });
 }
 </script>

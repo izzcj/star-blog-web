@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Check, Delete, Plus } from '@element-plus/icons-vue';
+import type { FormRules } from 'element-plus';
 import type { SystemConfig } from './metadata';
 import ConfigItem from './components/config-item.vue';
 import { useLoadDataOptions } from '@/uses/use-data-options';
@@ -23,7 +24,8 @@ const { data: configCategoryOptions } = useLoadDataOptions(optionType, optionKey
 const dialogVisible = ref(false);
 // 新增配置表单数据
 const formRef = ref();
-const formData = ref<Omit<SystemConfig, 'id' | 'deletable' | 'createTime' | 'updateTime'>>({
+type SystemConfigFormData = Omit<SystemConfig, 'id' | 'deletable' | 'createTime' | 'updateTime'>;
+const formData = ref<SystemConfigFormData>({
   category: '',
   sort: null,
   name: '',
@@ -33,6 +35,19 @@ const formData = ref<Omit<SystemConfig, 'id' | 'deletable' | 'createTime' | 'upd
   dataSourceType: null,
   dataSourceConfig: null,
 });
+
+// 表单验证规则
+const rules: FormRules<SystemConfigFormData> = {
+  name: [
+    { required: true, message: '请输入配置名称', trigger: 'blur' },
+  ],
+  key: [
+    { required: true, message: '请输入配置key', trigger: 'blur' },
+  ],
+  type: [
+    { required: true, message: '请选择配置类型', trigger: 'change' },
+  ],
+};
 
 const hasDataSource = computed(() => {
   return formData.value.type === SystemConfigType.SELECT
@@ -195,9 +210,9 @@ function submitForm() {
                 <ElButton size="small" :icon="Check" @click="saveConfig(row)">
                   保存
                 </ElButton>
-                <ElPopconfirm title="确定删除吗？" placement="top" @confirm="deleteConfig(row)">
+                <ElPopconfirm v-if="row.deletable" title="确定删除吗？" placement="top" @confirm="deleteConfig(row)">
                   <template #reference>
-                    <ElButton v-if="row.deletable" size="small" :icon="Delete" type="danger">
+                    <ElButton size="small" :icon="Delete" type="danger">
                       删除
                     </ElButton>
                   </template>
@@ -218,36 +233,33 @@ function submitForm() {
       <ElForm
         ref="formRef"
         :model="formData"
+        :rules="rules"
         label-width="100px"
       >
-        <ElFormItem label="配置名称" prop="name" required>
+        <ElFormItem label="配置名称" prop="name">
           <ElInput v-model="formData.name" placeholder="请输入配置名称" />
         </ElFormItem>
-        <ElFormItem label="配置键名" prop="key" required>
+        <ElFormItem label="配置键名" prop="key">
           <ElInput v-model="formData.key" placeholder="请输入配置键名" />
         </ElFormItem>
         <ElFormItem label="排序" prop="sort">
           <ElInputNumber v-model="formData.sort" placeholder="请输入排序" />
         </ElFormItem>
-        <ElFormItem label="配置类型" prop="type" required>
-          <ElSelect v-model="formData.type" placeholder="请选择配置类型">
-            <ElOption
-              v-for="(key, label) of SystemConfigType"
-              :key="key"
-              :label="label"
-              :value="key"
-            />
-          </ElSelect>
+        <ElFormItem label="配置类型" prop="type">
+          <VenusSelect
+            v-model:value="formData.type"
+            :option-type="DataOptionType.ENUM"
+            option-key="com.ale.starblog.admin.system.enums.SystemConfigType"
+            placeholder="请选择配置类型"
+          />
         </ElFormItem>
         <ElFormItem v-show="hasDataSource" label="数据源类型">
-          <ElSelect v-model="formData.dataSourceType" placeholder="请选择数据源类型">
-            <ElOption
-              v-for="(key, label) of DataOptionType"
-              :key="key"
-              :label="label"
-              :value="key"
-            />
-          </ElSelect>
+          <VenusSelect
+            v-model:value="formData.dataSourceType"
+            :option-type="DataOptionType.ENUM"
+            option-key="com.ale.starblog.admin.system.enums.SystemConfigDataSourceType"
+            placeholder="请选择数据源类型"
+          />
         </ElFormItem>
         <ElFormItem v-show="hasDataSource" label="数据源配置">
           <ElInput v-model="formData.dataSourceConfig" placeholder="请输入数据源配置" />

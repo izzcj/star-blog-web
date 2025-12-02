@@ -6,6 +6,8 @@ export interface Role extends BaseEntity {
   name: string;
   // 角色类型
   type: string;
+  // 备注
+  remark?: string;
   // 排序
   sort: number;
   // 是否默认角色

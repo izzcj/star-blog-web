@@ -7,7 +7,6 @@ import roleApiModule from '@/api/system/role';
 import { asyncRequest } from '@/utils/request-util';
 import { successMessage } from '@/element-plus/notification';
 import DataOptionType from '@/enums/data-option-type';
-import VenusAvatar from '@/components/venus/venus-avatar/index.vue';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 
 defineOptions({

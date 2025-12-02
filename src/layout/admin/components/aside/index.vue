@@ -8,6 +8,7 @@ import {
   User,
   UserFilled,
   PriceTag,
+  ChatDotRound,
 } from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
 
@@ -70,6 +71,12 @@ const menus = shallowRef([
     title: '文章管理',
     icon: Reading,
     path: '/admin/blog/article',
+  },
+  {
+    id: 'comment-management',
+    title: '评论管理',
+    icon: ChatDotRound,
+    path: '/admin/blog/comment',
   },
 ]);
 

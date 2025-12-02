@@ -98,7 +98,7 @@ function goBack() {
         </div>
         <!-- 评论区 -->
         <div v-if="articleDetail" class="mt-4">
-          <CommentSection :article-id="articleDetail.id as string" />
+          <CommentSection :article-id="articleDetail.id" />
         </div>
 
         <!-- 加载状态 -->

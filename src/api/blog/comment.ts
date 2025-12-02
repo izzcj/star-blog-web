@@ -45,20 +45,6 @@ const commentApiModule: ApiModule = {
       method: RequestMethod.DELETE,
     },
     /**
-     * 审核通过
-     */
-    auditPass: {
-      uri: '/blog/comment/{id}/audit/pass',
-      method: RequestMethod.PUT,
-    },
-    /**
-     * 审核拒绝
-     */
-    auditReject: {
-      uri: '/blog/comment/{id}/audit/reject',
-      method: RequestMethod.PUT,
-    },
-    /**
      * 批量审核
      */
     batchAudit: {

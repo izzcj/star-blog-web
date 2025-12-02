@@ -38,9 +38,13 @@ const handleUpdateValue = (val: any) => emit('update:value', val);
 <template>
   <component
     :is="component"
+    v-if="component"
     v-bind="props"
     @update:value="handleUpdateValue"
   />
+  <div v-else class="text-red-500 p-2 border border-dashed border-gray-300">
+    未知的配置项类型: {{ props.type }}
+  </div>
 </template>
 
 <style scoped lang="scss">

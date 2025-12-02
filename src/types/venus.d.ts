@@ -233,7 +233,7 @@ declare global {
     /**
      * ID
      */
-    id: Undefinable<string>;
+    id: string;
     /**
      * 创建时间
      */
@@ -324,6 +324,8 @@ declare global {
     email?: string;
     // 排序
     sort: number;
+    // 备注
+    remark?: string;
     // 角色ID列表
     roleIds?: number[];
   }
@@ -416,6 +418,8 @@ declare global {
    * 评论详情
    */
   export interface CommentDetail extends Comment {
+    // 状态名称
+    statusName: string;
     // 是否点赞
     liked: boolean;
     // 评论人昵称
