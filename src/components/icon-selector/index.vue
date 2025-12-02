@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import * as ElementPlusIcons from '@element-plus/icons-vue';
 import { ArrowDown, Search } from '@element-plus/icons-vue';
-import SmartIconRender from './components/SmartIconRender.vue';
-import IconPanel from './components/IconPanel.vue';
+import SmartIconRender from '../icon-render/index.vue';
+import IconPanel from './components/icon-panel/index.vue';
 import type { IconType } from '@/utils/icon-utils';
 import {
   parseIconValue,

@@ -17,6 +17,13 @@ const tagApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
+     * 获取热门标签
+     */
+    fetchHot: {
+      uri: '/blog/tag/hot',
+      method: RequestMethod.GET,
+    },
+    /**
      * 获取标签详情
      */
     fetchDetail: {

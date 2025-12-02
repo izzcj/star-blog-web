@@ -2,7 +2,7 @@
 import { Search } from '@element-plus/icons-vue';
 import { RecycleScroller } from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
-import SmartIconRender from './SmartIconRender.vue';
+import SmartIconRender from '../../../icon-render/index.vue';
 import type { IconItem } from '@/utils/icon-utils';
 import { searchIcons } from '@/utils/icon-utils';
 
@@ -11,6 +11,10 @@ interface Props {
   type: 'ep' | 'svg';
   modelValue: string;
 }
+
+defineOptions({
+  name: 'IconPanel',
+});
 
 const props = defineProps<Props>();
 

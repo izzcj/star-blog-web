@@ -386,6 +386,8 @@ declare global {
   export interface Tag extends BaseEntity {
     // 标签名
     name: string;
+    // 标签图标
+    icon: string;
     // 标签颜色
     color: string;
     // 标签描述

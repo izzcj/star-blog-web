@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import type { MenuItemRegistered } from 'element-plus';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import MenuItem from '@/layout/components/nav-bar/menu-item/index.vue';
-import SmartIconRender from '@/components/icon-selector/components/SmartIconRender.vue';
+import SmartIconRender from '@/components/icon-render/index.vue';
 
 defineOptions({
   name: 'MenuItem',

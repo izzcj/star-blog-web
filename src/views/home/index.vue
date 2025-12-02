@@ -6,12 +6,14 @@ import HotArticle from '@/views/home/components/hot-article/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import { systemConfigApiModule } from '@/api/system/system-config';
 import type { SystemConfig } from '@/views/admin/system/system-config/metadata';
+import tagApiModule from '@/api/blog/tag';
 
 defineOptions({
   name: 'HomePage',
 });
 
 let mottoList: string[] = [];
+const hotsTags = ref<Tag[]>([]);
 
 const currentMottoIndex = ref(0);
 const currentMotto = ref(mottoList[currentMottoIndex.value]);
@@ -42,6 +44,15 @@ function loadMotto() {
         currentMotto.value = mottoList[0];
       }
     });
+}
+
+/**
+ * 加载热门标签
+ */
+function loadHotTags() {
+  asyncRequest<Tag[]>(tagApiModule.apis.fetchHot).then(res => {
+    hotsTags.value = res.data;
+  });
 }
 
 /**
@@ -125,6 +136,7 @@ function preventScroll(event: Event) {
 onMounted(() => {
   loadTitle();
   loadMotto();
+  loadHotTags();
 });
 
 onBeforeRouteLeave(() => {
@@ -178,15 +190,11 @@ onBeforeRouteLeave(() => {
                 </div>
               </template>
               <div class="flex flex-wrap gap-2">
-                <ElTag
-                  v-for="tag of ['Vue', 'React', 'JavaScript', 'TypeScript', 'CSS', 'HTML']"
-                  :key="tag"
-                  class="hot-tag"
-                  type="success"
-                  effect="dark"
-                >
-                  {{ tag }}
-                </ElTag>
+                <VenusTag
+                  v-for="tag of hotsTags"
+                  :key="tag.id"
+                  :tag="tag"
+                />
               </div>
             </ElCard>
           </div>

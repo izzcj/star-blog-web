@@ -86,15 +86,12 @@ function goBack() {
 
         <!-- 标签 -->
         <div v-if="articleDetail.tags && articleDetail.tags.length > 0" class="blog-tags">
-          <ElTag
+          <VenusTag
             v-for="tag of articleDetail.tags"
             :key="tag.id"
-            :color="tag.color"
-            size="small"
+            :tag="tag"
             class="tag-item"
-          >
-            {{ tag.name }}
-          </ElTag>
+          />
         </div>
         <!-- 评论区 -->
         <div v-if="articleDetail" class="mt-4">

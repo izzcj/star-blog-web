@@ -209,6 +209,7 @@ function isRowSelectable(row: CommentDetail): boolean {
                 :option-type="DataOptionType.ENUM"
                 option-key="com.ale.starblog.admin.blog.enums.CommentStatus"
                 placeholder="请选择状态"
+                clearable
               />
             </ElFormItem>
 
@@ -266,17 +267,17 @@ function isRowSelectable(row: CommentDetail): boolean {
         <ElTableColumn prop="content" label="评论内容" min-width="200" show-overflow-tooltip />
 
         <!-- 评论用户头像 -->
-        <ElTableColumn prop="userAvatar" label="用户头像" width="80" align="center">
+        <ElTableColumn prop="userAvatar" label="头像" width="80">
           <template #default="{ row }">
             <VenusAvatar v-model:value="row.userAvatar" size="auto" />
           </template>
         </ElTableColumn>
 
         <!-- 评论用户昵称 -->
-        <ElTableColumn prop="userName" label="用户昵称" width="120" />
+        <ElTableColumn prop="userName" label="昵称" width="120" />
 
         <!-- 状态 -->
-        <ElTableColumn prop="status" label="状态" width="100" align="center">
+        <ElTableColumn prop="status" label="状态" width="100">
           <template #default="{ row }">
             <ElTag :type="statusTypeMap[row.status]">
               {{ row.statusName }}

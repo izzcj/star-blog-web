@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as ElementPlusIcons from '@element-plus/icons-vue';
 import { QuestionFilled } from '@element-plus/icons-vue';
-import SvgIcon from '@/components/svg-icon/index.vue';
+import SvgIcon from '@/components/icon-render/components/svg-icon/index.vue';
 import { parseIconValue, normalizeIconValue } from '@/utils/icon-utils';
 
 interface Props {
@@ -14,6 +14,10 @@ interface Props {
   // 图标类名
   className?: string;
 }
+
+defineOptions({
+  name: 'SmartIconRender',
+});
 
 const props = withDefaults(defineProps<Props>(), {
   iconValue: '',

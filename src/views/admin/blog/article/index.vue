@@ -137,14 +137,6 @@ function deleteArticle(article: Article) {
       <ElForm :model="queryParams">
         <div class="flex flex-col md:flex-row md:items-center gap-4">
           <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
-            <ElFormItem label="分类">
-              <VenusSelect
-                v-model:value="queryParams.type"
-                :option-type="DataOptionType.DICT"
-                option-key="article-type"
-                placeholder="请选择分类"
-              />
-            </ElFormItem>
             <ElFormItem label="标题">
               <ElInput
                 v-model="queryParams.title"
@@ -153,12 +145,22 @@ function deleteArticle(article: Article) {
                 @keyup.enter="handleQuery"
               />
             </ElFormItem>
+            <ElFormItem label="分类">
+              <VenusSelect
+                v-model:value="queryParams.type"
+                :option-type="DataOptionType.DICT"
+                option-key="article-type"
+                placeholder="请选择分类"
+                clearable
+              />
+            </ElFormItem>
             <ElFormItem label="状态">
               <VenusSelect
                 v-model:value="queryParams.status"
                 :option-type="DataOptionType.ENUM"
                 option-key="com.ale.starblog.admin.blog.enums.ArticleStatus"
                 placeholder="请选择状态"
+                clearable
               />
             </ElFormItem>
           </div>

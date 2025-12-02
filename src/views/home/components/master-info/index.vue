@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserInfoState } from '@/stores/user-info-store';
+import { Message } from '@element-plus/icons-vue';
 import { asyncRequest } from '@/utils/request-util';
 import userApiModule from '@/api/system/user';
 
@@ -7,10 +7,11 @@ defineOptions({
   name: 'MasterInfo',
 });
 
-const masterInfo: Pick<UserInfoState, 'nickname' | 'avatar' | 'remark'> = reactive({
+const masterInfo: Pick<UserProfile, 'nickname' | 'avatar' | 'remark' | 'email'> = reactive({
   nickname: '',
   avatar: '',
   remark: '',
+  email: '',
 });
 const textShineRef = ref<HTMLElement | null>(null);
 onMounted(() => {
@@ -32,7 +33,7 @@ onMounted(() => {
 <template>
   <div class="card-wrapper">
     <ElCard class="card mb-2.5 rounded-xl shadow-xl">
-      <div class="venus-center flex-col">
+      <div class="flex-col">
         <ElAvatar
           :src="masterInfo.avatar"
           :size="100"
@@ -42,6 +43,12 @@ onMounted(() => {
         </p>
         <p class="pt-3">
           {{ masterInfo.remark }}
+        </p>
+        <p>
+          <ElIcon class="text-gray-500">
+            <Message />
+          </ElIcon>
+          {{ masterInfo.email }}
         </p>
       </div>
     </ElCard>

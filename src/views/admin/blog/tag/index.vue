@@ -184,11 +184,9 @@ function handleSubmit() {
       <!-- 标签列表表格 -->
       <ElTable :data="tagList" border>
         <ElTableColumn prop="name" label="标签名称" />
-        <ElTableColumn prop="color" label="标签颜色" width="200">
+        <ElTableColumn prop="color" label="标签样式" width="200">
           <template #default="{ row }">
-            <ElTag :color="row.color" effect="dark">
-              {{ row.name }}
-            </ElTag>
+            <VenusTag :tag="row" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="description" label="描述" show-overflow-tooltip />
@@ -248,6 +246,9 @@ function handleSubmit() {
       >
         <ElFormItem label="标签名称" prop="name">
           <ElInput v-model="formData.name" placeholder="请输入标签名称" />
+        </ElFormItem>
+        <ElFormItem label="标签图标" prop="icon">
+          <IconSelector v-model="formData.icon" />
         </ElFormItem>
         <ElFormItem label="标签颜色" prop="color">
           <ElColorPicker v-model="formData.color" :show-alpha="false" />
