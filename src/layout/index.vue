@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es';
+import { useTemplateRef } from 'vue';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
 import Loading from '@/components/loading/index.vue';
@@ -14,8 +14,8 @@ defineOptions({
 const currentWindowHeight = ref(window.innerHeight);
 const visibilityHeight = computed(() => currentWindowHeight.value * 0.4);
 const containerLoadTimeout = ref<any>();
+const isScrolled = ref(false);
 
-const layoutRef = ref<HTMLElement | null>(null);
 const appStatusStore = useAppStatusStore();
 const appSettingsStore = useAppSettingsStore();
 
@@ -27,23 +27,39 @@ const isMobile = computed<boolean>({
   set: bool => appSettingsStore.isMobile = bool,
 });
 
-onMounted(() => {
-  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
-  window.addEventListener('resize', debounce(handleResize, 100));
-  containerLoadComplete();
-});
+const mainRef = useTemplateRef<any>('mainRef');
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize);
+/**
+ * 导航栏动态类名
+ * PC端：根据滚动状态和hover效果动态应用背景
+ * 移动端：保持原样
+ */
+const headerClass = computed(() => {
+  if (isMobile.value) {
+    return '';
+  }
+
+  const baseClass = 'transition-colors duration-500 ease-in-out';
+  return isScrolled.value ? `${baseClass} bg-(--venus-menu-bg--color)` : `${baseClass} hover:bg-(--venus-menu-bg--color)`;
 });
 
 /**
  * 处理窗口大小改变
  */
-function handleResize() {
+const handleResize = debounce(() => {
   currentWindowHeight.value = window.innerHeight;
   isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
-}
+}, 100);
+
+/**
+ * 处理主区域滚动
+ * 当滚动距离超过阈值时，更新导航栏背景状态
+ */
+const handleScroll = debounce(() => {
+  if (mainRef.value) {
+    isScrolled.value = mainRef.value.$el.scrollTop > visibilityHeight.value;
+  }
+}, 20);
 
 /**
  * 容器加载完毕
@@ -53,6 +69,19 @@ function containerLoadComplete() {
     appStatusStore.setResourceLoadStatus(true);
   }, 1500);
 }
+
+useEventListener(window, 'resize', () => {
+  handleResize();
+});
+
+useEventListener(mainRef, 'scroll', () => {
+  handleScroll();
+});
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
+  containerLoadComplete();
+});
 </script>
 
 <template>
@@ -64,13 +93,13 @@ function containerLoadComplete() {
     <ElImage class="h-dvh w-dvw fixed" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
 
     <!-- 页面主体 -->
-    <ElContainer v-if="isLoaded" ref="layoutRef" class="h-dvh w-dvw relative">
-      <ElHeader :class="isMobile ? '' : 'transition-colors duration-500 ease-in-out hover:bg-(--venus-menu-bg--color)'">
+    <ElContainer v-if="isLoaded" class="h-dvh w-dvw relative">
+      <ElHeader :class="headerClass">
         <NavBar />
       </ElHeader>
-      <ElMain id="venus-main" class="default-main w-dvw hidden-scrollbar">
+      <ElMain ref="mainRef" class="default-main w-dvw hidden-scrollbar">
         <AppMain />
-        <ElBacktop :bottom="100" target="#venus-main" :visibility-height="visibilityHeight" />
+        <ElBacktop :bottom="100" target=".default-main" :visibility-height="visibilityHeight" />
       </ElMain>
       <ElFooter>Footer</ElFooter>
     </ElContainer>

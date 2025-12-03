@@ -34,9 +34,7 @@ function loadArticles() {
 <template>
   <ElCard class="min-h-full">
     <div class="flex flex-wrap gap-4 justify-center w-full mx-auto 2xl:max-w-[900px]">
-      <ElCard v-for="article of articleList" :key="article.id" class="flex-1 cursor-pointer min-w-[300px] 2xl:max-w-[400px]" body-class="flex flex-col min-h-full">
-        <ArticleCard :article="article" />
-      </ElCard>
+      <ArticleCard v-for="article of articleList" :key="article.id" :article="article" />
     </div>
   </ElCard>
 </template>

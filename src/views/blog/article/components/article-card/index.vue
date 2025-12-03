@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Avatar, Clock, View } from '@element-plus/icons-vue';
+import { formatViewCount } from '@/utils/format-util';
 
 defineOptions({
   name: 'ArticleCard',
@@ -25,18 +26,16 @@ function clickArticle(article: Article) {
 </script>
 
 <template>
-  <div @click="clickArticle(article)">
-    <div v-if="article.coverImage" class="rounded-[8px] shadow-xl overflow-hidden">
+  <ElCard class="rounded-[10px] cursor-pointer overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-1.5 hover:shadow-xl" shadow="hover" @click="clickArticle(article)">
+    <div class="rounded-[8px] shadow-xl overflow-hidden">
       <VenusImage :src="article.coverImage" :alt="article.title" class="transition duration-500 ease-in-out hover:scale-125" />
     </div>
-    <div class="pt-2">
-      <span class="mr-auto text-[20px] font-bold">
-        {{ article.title }}
-      </span>
-    </div>
-    <span v-if="article.summary" class="mt-auto text-[12px] text-black/75">
+    <ElText class="block pt-2 text-[20px] font-bold" truncated>
+      {{ article.title }}
+    </ElText>
+    <ElText v-if="article.summary" class="block pt-2 text-[14px] text-black/75" truncated :line-clamp="2">
       {{ article.summary }}
-    </span>
+    </ElText>
     <div class="pt-5 text-[13px] text-black/40">
       <div class="mr-auto flex flex-wrap">
         <div class="venus-center">
@@ -52,7 +51,7 @@ function clickArticle(article: Article) {
             <View />
           </ElIcon>
           <span class="pl-1">
-            {{ article.viewCount }}
+            {{ formatViewCount(article.viewCount) }}
           </span>
         </div>
       </div>
@@ -67,7 +66,7 @@ function clickArticle(article: Article) {
         </div>
       </div>
     </div>
-  </div>
+  </ElCard>
 </template>
 
 <style scoped lang="scss">

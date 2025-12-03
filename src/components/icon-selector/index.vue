@@ -3,13 +3,13 @@ import * as ElementPlusIcons from '@element-plus/icons-vue';
 import { ArrowDown, Search } from '@element-plus/icons-vue';
 import SmartIconRender from '../icon-render/index.vue';
 import IconPanel from './components/icon-panel/index.vue';
-import type { IconType } from '@/utils/icon-utils';
+import type { IconType } from '@/utils/icon-util';
 import {
   parseIconValue,
   formatIconValue,
   getLocalSvgIcons,
   convertToIconItems,
-} from '@/utils/icon-utils';
+} from '@/utils/icon-util';
 
 interface Props {
   modelValue?: string;

@@ -102,12 +102,6 @@ const handleLike = debounce(async () => {
  * 切换回复区域
  */
 function toggleReplySection() {
-  // 检查登录
-  if (!authStore.isLoggedIn) {
-    warningNotification('请先登录后再回复');
-    return;
-  }
-
   showReplySection.value = !showReplySection.value;
 }
 

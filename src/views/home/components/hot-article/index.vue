@@ -32,35 +32,62 @@ async function loadHotArticle() {
 </script>
 
 <template>
-  <ElCard class="hot-blog-card">
+  <ElCard class="hot-blog-card" body-class="p-4">
     <template #header>
       <div class="flex items-center justify-between">
-        <span class="font-bold">热门文章</span>
+        <span class="text-base font-bold text-gray-700">热门文章</span>
         <ElButton text type="primary" size="small" @click="goArticleList">
-          查看更多
+          查看更多 →
         </ElButton>
       </div>
     </template>
-    <div class="flex flex-wrap gap-4 justify-center w-full mx-auto 2xl:max-w-[900px]">
+    <div class="w-full">
       <template v-if="hotArticle.length">
-        <ElCard
-          v-for="article of hotArticle"
-          :key="article.id"
-          class="mb-1 cursor-pointer min-w-[300px] 2xl:max-w-[400px]"
-          body-class="p-2"
-        >
-          <ArticleCard :article="article" />
-        </ElCard>
+        <div class="article-grid">
+          <ArticleCard
+            v-for="article of hotArticle"
+            :key="article.id"
+            :article="article"
+          />
+        </div>
       </template>
-      <ElEmpty v-else description="暂无热门文章" />
+      <ElEmpty v-else description="暂无热门文章" :image-size="80" />
     </div>
   </ElCard>
 </template>
 
 <style scoped lang="scss">
 .hot-blog-card {
-  .el-card__header {
-    padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.article-grid {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+
+  // 移动端：1列
+  grid-template-columns: 1fr;
+
+  // 平板：2列
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // PC端(lg)：在12列布局中显示2列
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // 超大屏(2xl)：显示3列
+  @media (min-width: 1536px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>

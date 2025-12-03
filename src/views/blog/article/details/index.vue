@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import { Avatar, Back, View } from '@element-plus/icons-vue';
 import CommentSection from '@/views/blog/article/components/comment-section/index.vue';
 import { asyncRequest } from '@/utils/request-util';
+import { formatViewCount } from '@/utils/format-util';
 import articleApiModule from '@/api/blog/article';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 
@@ -68,7 +69,7 @@ function goBack() {
               <ElIcon>
                 <View />
               </ElIcon>
-              {{ articleDetail.viewCount }}
+              {{ formatViewCount(articleDetail.viewCount) }}
             </span>
             <span class="meta-item">
               {{ articleDetail.publishTime }}

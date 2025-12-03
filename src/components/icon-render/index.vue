@@ -2,7 +2,7 @@
 import * as ElementPlusIcons from '@element-plus/icons-vue';
 import { QuestionFilled } from '@element-plus/icons-vue';
 import SvgIcon from '@/components/icon-render/components/svg-icon/index.vue';
-import { parseIconValue, normalizeIconValue } from '@/utils/icon-utils';
+import { parseIconValue, normalizeIconValue } from '@/utils/icon-util';
 
 interface Props {
   // 图标值

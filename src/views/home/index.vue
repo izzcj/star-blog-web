@@ -3,17 +3,24 @@ import anime from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-util';
 import MasterInfo from '@/views/home/components/master-info/index.vue';
 import HotArticle from '@/views/home/components/hot-article/index.vue';
+import WebsiteStats from '@/views/home/components/website-stats/index.vue';
+import LatestActivity from '@/views/home/components/latest-activity/index.vue';
+import CategoryNav from '@/views/home/components/category-nav/index.vue';
+import HotTags from '@/views/home/components/hot-tags/index.vue';
+import RecommendArticle from '@/views/home/components/recommend-article/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import { systemConfigApiModule } from '@/api/system/system-config';
 import type { SystemConfig } from '@/views/admin/system/system-config/metadata';
-import tagApiModule from '@/api/blog/tag';
+import { useScrollAnimation } from '@/uses/use-scroll-animation';
 
 defineOptions({
   name: 'HomePage',
 });
 
+// 滚动动画
+const { observeElements, fadeInUpConfig, fadeInLeftConfig, fadeInRightConfig } = useScrollAnimation();
+
 let mottoList: string[] = [];
-const hotsTags = ref<Tag[]>([]);
 
 const currentMottoIndex = ref(0);
 const currentMotto = ref(mottoList[currentMottoIndex.value]);
@@ -44,15 +51,6 @@ function loadMotto() {
         currentMotto.value = mottoList[0];
       }
     });
-}
-
-/**
- * 加载热门标签
- */
-function loadHotTags() {
-  asyncRequest<Tag[]>(tagApiModule.apis.fetchHot).then(res => {
-    hotsTags.value = res.data;
-  });
 }
 
 /**
@@ -133,10 +131,49 @@ function preventScroll(event: Event) {
   event.preventDefault();
 }
 
+/**
+ * 初始化滚动动画
+ */
+function initScrollAnimations() {
+  // 使用setTimeout确保所有子组件都已渲染
+  nextTick(() => {
+    setTimeout(() => {
+      // 检查元素是否存在
+      const leftElements = document.querySelectorAll('.left-sidebar-col > .sidebar-content > *');
+      const rightElements = document.querySelectorAll('.right-sidebar-col > .sidebar-content > *');
+      const mainElements = document.querySelectorAll('.main-col > .main-content > *');
+
+      if (leftElements.length > 0) {
+        // 左侧栏淡入左移
+        observeElements('.left-sidebar-col > .sidebar-content > *', {
+          ...fadeInLeftConfig,
+          delay: anime.stagger(100),
+        });
+      }
+
+      if (rightElements.length > 0) {
+        // 右侧栏淡入右移
+        observeElements('.right-sidebar-col > .sidebar-content > *', {
+          ...fadeInRightConfig,
+          delay: anime.stagger(100),
+        });
+      }
+
+      if (mainElements.length > 0) {
+        // 中间内容淡入上移
+        observeElements('.main-col > .main-content > *', {
+          ...fadeInUpConfig,
+          delay: 200,
+        });
+      }
+    }, 100);
+  });
+}
+
 onMounted(() => {
   loadTitle();
   loadMotto();
-  loadHotTags();
+  initScrollAnimations();
 });
 
 onBeforeRouteLeave(() => {
@@ -165,38 +202,28 @@ onBeforeRouteLeave(() => {
 
     <div class="home-body">
       <ElRow :gutter="20" justify="center" class="home-content">
-        <!-- 左侧区域 -->
-        <ElCol :span="24" :md="4">
-          <div class="affix-content">
-            <ElCard class="home-card">
-              <span>广告招租位</span>
-            </ElCard>
+        <!-- 左侧栏 -->
+        <ElCol :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="sidebar-col left-sidebar-col">
+          <div class="sidebar-content">
+            <MasterInfo />
+            <WebsiteStats />
+            <LatestActivity />
           </div>
         </ElCol>
 
-        <!-- 中间区域 -->
-        <ElCol :span="24" :md="12">
-          <HotArticle />
+        <!-- 中间主内容区 -->
+        <ElCol :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="main-col">
+          <div class="main-content">
+            <HotArticle />
+          </div>
         </ElCol>
 
-        <!-- 右侧区域 -->
-        <ElCol :span="24" :md="4">
-          <div class="affix-content">
-            <MasterInfo />
-            <ElCard class="home-card">
-              <template #header>
-                <div class="card-header">
-                  热门标签
-                </div>
-              </template>
-              <div class="flex flex-wrap gap-2">
-                <VenusTag
-                  v-for="tag of hotsTags"
-                  :key="tag.id"
-                  :tag="tag"
-                />
-              </div>
-            </ElCard>
+        <!-- 右侧栏 -->
+        <ElCol :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="sidebar-col right-sidebar-col">
+          <div class="sidebar-content">
+            <CategoryNav />
+            <HotTags />
+            <RecommendArticle />
           </div>
         </ElCol>
       </ElRow>
@@ -263,47 +290,81 @@ onBeforeRouteLeave(() => {
 
 .home-body {
   background-color: rgba(255, 255, 255);
-  padding: 20px;
+  padding: 24px 20px;
   margin: 0 auto;
   box-sizing: border-box;
   max-width: 100%;
+  min-height: calc(100vh - 40dvh);
 }
 
 .home-content {
-  @media (max-width: 768px) {
-    .el-col {
-      width: 100% !important;
-    }
+  margin: 0 auto;
 
-    .el-col:nth-child(1) {
+  // 移动端响应式布局
+  @media (max-width: 1023px) {
+    // 移动端：博主信息 → 热门文章 → 其他组件
+    .left-sidebar-col {
       order: 1;
     }
 
-    .el-col:nth-child(2) {
-      order: 3;
+    .main-col {
+      order: 2;
     }
 
-    .el-col:nth-child(3) {
-      order: 2;
+    .right-sidebar-col {
+      order: 3;
     }
   }
 }
 
-.affix-content {
-  max-height: calc(100dvh - 40px);
-  overflow-y: auto;
-  padding-right: 5px;
+// 侧边栏
+.sidebar-col {
+  @media (min-width: 1024px) {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+  }
 }
 
-.home-card {
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+.sidebar-content {
+  @media (min-width: 1024px) {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding-right: 5px;
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #a8a8a8;
+      }
+    }
+  }
+
+  // 初始隐藏，等待动画
+  > * {
+    opacity: 0;
+  }
 }
 
-.card-header {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
+.main-content {
+  width: 100%;
+
+  // 初始隐藏，等待动画
+  > * {
+    opacity: 0;
+  }
 }
 </style>

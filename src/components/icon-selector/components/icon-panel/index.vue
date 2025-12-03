@@ -3,8 +3,8 @@ import { Search } from '@element-plus/icons-vue';
 import { RecycleScroller } from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 import SmartIconRender from '../../../icon-render/index.vue';
-import type { IconItem } from '@/utils/icon-utils';
-import { searchIcons } from '@/utils/icon-utils';
+import type { IconItem } from '@/utils/icon-util';
+import { searchIcons } from '@/utils/icon-util';
 
 interface Props {
   icons: IconItem[];
