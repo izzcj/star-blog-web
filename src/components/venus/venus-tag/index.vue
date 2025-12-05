@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { venusTagProps } from './props';
-import SmartIconRender from '@/components/icon-render/index.vue';
 
 defineOptions({
   name: 'VenusTag',
@@ -53,7 +52,7 @@ function handleClose(event: Event) {
     @close="handleClose"
   >
     <div class="inline-flex items-center gap-1">
-      <SmartIconRender
+      <IconRender
         v-if="iconValue"
         :icon-value="iconValue"
         :size="iconSize"

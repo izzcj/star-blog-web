@@ -4,7 +4,6 @@ import type { RouteRecordRaw } from 'vue-router';
 import type { MenuItemRegistered } from 'element-plus';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import MenuItem from '@/layout/components/nav-bar/menu-item/index.vue';
-import SmartIconRender from '@/components/icon-render/index.vue';
 
 defineOptions({
   name: 'MenuItem',
@@ -79,13 +78,13 @@ function clickMenuItem(item: MenuItemRegistered) {
 <template>
   <ElMenuItem v-if="showMenuItem()" :index="resolvePath()" :route="route.path" @click="clickMenuItem">
     <template #title>
-      <SmartIconRender :icon-value="route.meta?.icon || onlyOneChild?.meta?.icon" size="18px" />
+      <IconRender :icon-value="route.meta?.icon || onlyOneChild?.meta?.icon" size="18px" />
       <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title || onlyOneChild?.meta?.title }}</span>
     </template>
   </ElMenuItem>
   <ElSubMenu v-else :index="resolvePath()">
     <template #title>
-      <SmartIconRender :icon-value="route.meta?.icon" size="18px" />
+      <IconRender :icon-value="route.meta?.icon" size="18px" />
       <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title }}</span>
     </template>
     <MenuItem v-for="child of route?.children" :key="child.path" :route="child" :base-path="resolvePath()" @click="clickMenuItem" />

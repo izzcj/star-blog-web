@@ -27,15 +27,12 @@ const src = computed(() => {
   }
   return baseUrl + props.src;
 });
-
-uploadInfoStore.fetchOssBaseUrls()?.then(() => {
-  src.effect.run();
-});
+uploadInfoStore.fetchOssBaseUrls();
 </script>
 
 <template>
   <ElImage
-    class="block"
+    class="block!"
     :src="src"
     :alt="props.alt"
     :fit="props.fit"

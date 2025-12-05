@@ -53,8 +53,8 @@ const relativeTime = computed(() => {
 // 点赞图标类名
 const likeIconClass = computed(() => {
   return localComment.value.liked
-    ? 'text-red-500'
-    : 'text-gray-400 hover:text-red-500';
+    ? 'text-red-500!'
+    : 'text-gray-400! hover:text-red-500!';
 });
 
 // 头像尺寸
@@ -135,7 +135,7 @@ function handleReplyCountChange(count: number) {
 </script>
 
 <template>
-  <div class="comment-item">
+  <div class="py-4 border-b border-solid border-[#e8e8e8] last:border-none">
     <!-- 评论头部 -->
     <div class="flex gap-3">
       <!-- 头像 -->
@@ -161,7 +161,8 @@ function handleReplyCountChange(count: number) {
         <!-- 操作栏 -->
         <div class="flex items-center gap-4 text-xs text-gray-500">
           <!-- 点赞 -->
-          <button
+          <ElButton
+            type="text"
             class="flex items-center gap-1 transition-colors cursor-pointer"
             :class="likeIconClass"
             @click="handleLike"
@@ -170,18 +171,19 @@ function handleReplyCountChange(count: number) {
               <Icon icon="ant-design:like-outlined" />
             </ElIcon>
             <span>{{ localComment.likeCount }}</span>
-          </button>
+          </ElButton>
 
           <!-- 回复 -->
-          <button
-            class="flex items-center gap-1 text-gray-400 hover:text-blue-500 transition-colors cursor-pointer"
+          <ElButton
+            type="text"
+            class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
             @click="showReplyInputHandler"
           >
             <ElIcon>
               <ChatDotRound />
             </ElIcon>
             <span>回复</span>
-          </button>
+          </ElButton>
 
           <!-- 回复数量 -->
           <span v-if="replyCount > 0" class="text-blue-500 cursor-pointer" @click="toggleReplySection">
@@ -205,18 +207,4 @@ function handleReplyCountChange(count: number) {
 </template>
 
 <style scoped lang="scss">
-.comment-item {
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-button {
-  background: none;
-  border: none;
-  padding: 0;
-}
 </style>

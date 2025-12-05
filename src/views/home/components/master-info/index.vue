@@ -31,24 +31,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="card-wrapper">
-    <ElCard class="master-card">
-      <div class="master-content">
-        <div class="avatar-wrapper">
-          <ElAvatar :src="masterInfo.avatar" :size="100" class="master-avatar" />
+  <div class="group card-wrapper">
+    <ElCard class="rounded-xl!" body-class="p-6!">
+      <div class="flex flex-col items-center text-center">
+        <div class="relative mb-4">
+          <VenusAvatar
+            v-model:value="masterInfo.avatar"
+            :custom-size="100"
+            :disabled="true"
+            class="transition-transform duration-300 ease-out group-hover:scale-105 group-hover:rotate-[5deg]"
+          />
           <div class="avatar-ring" />
         </div>
-        <p ref="textShineRef" class="master-name text-shine">
+        <p ref="textShineRef" class="mb-3 text-xl text-shine">
           {{ masterInfo.nickname }}
         </p>
-        <p class="master-remark">
+        <p class="mb-4 text-[14px] leading-normal text-[#666] max-w-[200px]">
           {{ masterInfo.remark }}
         </p>
-        <div class="master-email">
-          <ElIcon :size="16" class="email-icon">
+        <div class="group flex items-center gap-1.5 text-sm text-gray-500 px-4 py-2 bg-gray-100 rounded-full transition duration-200 hover:bg-gray-200 hover:text-blue-500">
+          <ElIcon :size="16" class="text-gray-500 transition-colors duration-200 group-hover:text-blue-500">
             <Message />
           </ElIcon>
-          <span class="email-text">{{ masterInfo.email }}</span>
+          <span class="font-medium">{{ masterInfo.email }}</span>
         </div>
       </div>
     </ElCard>
@@ -62,33 +67,9 @@ onMounted(() => {
   padding: 3px;
   margin-bottom: 16px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-    transform: rotate(45deg);
-    animation: shimmer 3s infinite;
-  }
 
   &:hover {
-    transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(146, 118, 253, 0.4);
-
-    .master-avatar {
-      transform: scale(1.05) rotate(5deg);
-    }
 
     .avatar-ring {
       transform: scale(1.2);
@@ -96,48 +77,6 @@ onMounted(() => {
     }
   }
 }
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
-}
-
-.master-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: none;
-  border: none;
-  transition: all 0.3s;
-
-  :deep(.el-card__body) {
-    padding: 24px;
-  }
-}
-
-.master-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.avatar-wrapper {
-  position: relative;
-  margin-bottom: 16px;
-}
-
-.master-avatar {
-  position: relative;
-  z-index: 2;
-  border: 3px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .avatar-ring {
   position: absolute;
   top: 50%;
@@ -149,11 +88,6 @@ onMounted(() => {
   border: 2px solid rgba(146, 118, 253, 0.3);
   z-index: 1;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.master-name {
-  margin: 0 0 12px 0;
-  font-size: 20px;
 }
 
 .text-shine {
@@ -176,14 +110,6 @@ onMounted(() => {
   }
 }
 
-.master-remark {
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
-  max-width: 200px;
-}
-
 .master-email {
   display: flex;
   align-items: center;
@@ -203,14 +129,5 @@ onMounted(() => {
       color: #409eff;
     }
   }
-}
-
-.email-icon {
-  color: #888;
-  transition: color 0.2s;
-}
-
-.email-text {
-  font-weight: 500;
 }
 </style>

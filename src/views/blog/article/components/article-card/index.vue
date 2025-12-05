@@ -26,14 +26,14 @@ function clickArticle(article: Article) {
 </script>
 
 <template>
-  <ElCard class="rounded-[10px] cursor-pointer overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-1.5 hover:shadow-xl" shadow="hover" @click="clickArticle(article)">
+  <ElCard class="rounded-[10px]! cursor-pointer overflow-hidden transition duration-300 ease-in-out hover:-translate-y-1.5 hover:shadow-xl!" shadow="hover" @click="clickArticle(article)">
     <div class="rounded-[8px] shadow-xl overflow-hidden">
       <VenusImage :src="article.coverImage" :alt="article.title" class="transition duration-500 ease-in-out hover:scale-125" />
     </div>
-    <ElText class="block pt-2 text-[20px] font-bold" truncated>
+    <ElText class="block! pt-2! text-[20px]! font-bold!" truncated>
       {{ article.title }}
     </ElText>
-    <ElText v-if="article.summary" class="block pt-2 text-[14px] text-black/75" truncated :line-clamp="2">
+    <ElText v-if="article.summary" class="block! pt-2! text-[14px]! text-black/75!" truncated :line-clamp="2">
       {{ article.summary }}
     </ElText>
     <div class="pt-5 text-[13px] text-black/40">

@@ -32,6 +32,7 @@ const isEdit = ref(false);
 const formRef = ref();
 const formData = ref<Tag>({
   name: '',
+  icon: '',
   color: '#409EFF',
   description: '',
 } as Tag);
@@ -95,6 +96,7 @@ function handleAddTag() {
   isEdit.value = false;
   formData.value = {
     name: '',
+    icon: '',
     color: '#409EFF',
     description: '',
   } as Tag;

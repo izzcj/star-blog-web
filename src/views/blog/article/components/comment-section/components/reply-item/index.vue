@@ -45,8 +45,8 @@ const relativeTime = computed(() => {
 // 点赞图标类名
 const likeIconClass = computed(() => {
   return localReply.value.liked
-    ? 'text-red-500'
-    : 'text-gray-400 hover:text-red-500';
+    ? 'text-red-500!'
+    : 'text-gray-400! hover:text-red-500!';
 });
 
 /**
@@ -100,7 +100,7 @@ function handleReply() {
 </script>
 
 <template>
-  <div class="reply-item">
+  <div class="py-3 border-b border-solid border-[#e8e8e8] last:border-none">
     <div class="flex gap-3">
       <!-- 头像 -->
       <AvatarDisplay
@@ -119,8 +119,8 @@ function handleReply() {
 
         <!-- 回复内容 -->
         <div class="reply-content text-sm text-gray-700 mb-2">
-          <span v-if="localReply.replyUserName" class="text-[#409EFF] font-medium mr-1">
-            @{{ localReply.replyUserName }}
+          <span v-if="localReply.replyUserName" class="text-[#bbb] font-medium mr-1">
+            回复：{{ localReply.replyUserName }}
           </span>
           {{ localReply.content }}
         </div>
@@ -128,7 +128,8 @@ function handleReply() {
         <!-- 操作栏 -->
         <div class="reply-actions flex items-center gap-4 text-xs text-gray-500">
           <!-- 点赞 -->
-          <button
+          <ElButton
+            type="text"
             class="flex items-center gap-1 transition-colors cursor-pointer"
             :class="likeIconClass"
             @click="handleLike"
@@ -137,18 +138,19 @@ function handleReply() {
               <Icon icon="ant-design:like-outlined" />
             </ElIcon>
             <span>{{ localReply.likeCount }}</span>
-          </button>
+          </ElButton>
 
           <!-- 回复 -->
-          <button
-            class="flex items-center gap-1 text-gray-400 hover:text-blue-500 transition-colors cursor-pointer"
+          <ElButton
+            type="text"
+            class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
             @click="handleReply"
           >
             <ElIcon>
               <ChatDotRound />
             </ElIcon>
             <span>回复</span>
-          </button>
+          </ElButton>
         </div>
       </div>
     </div>
@@ -156,18 +158,4 @@ function handleReply() {
 </template>
 
 <style scoped lang="scss">
-.reply-item {
-  padding: 12px 0;
-  border-bottom: 1px solid #e8e8e8;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-button {
-  background: none;
-  border: none;
-  padding: 0;
-}
 </style>

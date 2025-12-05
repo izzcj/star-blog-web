@@ -88,7 +88,6 @@ function handleDelete(event: Event) {
         <!-- 删除按钮 -->
         <ElIcon
           v-if="props.hasAvatar"
-          class="action-icon text-white cursor-pointer hover:text-red-400 transition-colors"
           :size="24"
           @click="handleDelete"
         >

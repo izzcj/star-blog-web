@@ -210,7 +210,7 @@ function handleRemove(file: VenusUploadFile) {
       :before-remove="beforeRemove"
     >
       <div v-if="!props.multiple && fileList.length === 1" class="el-upload-list--picture-card">
-        <img :src="singleImage.url" class="object-cover transition-all duration-500 ease-in-out transform animate-fade-in" alt="" />
+        <img :src="singleImage.url" class="object-cover transition duration-500 ease-in-out transform animate-fade-in" alt="" />
         <span class="el-upload-list__item-actions" @click.stop>
           <span class="el-upload-list__item-delete" @click="handleRemove(singleImage)">
             <ElIcon>

@@ -118,14 +118,14 @@ function handleForgotPassword() {
 <template>
   <div class="relative w-dvw h-dvh overflow-hidden flex items-center justify-center">
     <!-- 背景图片 -->
-    <ElImage :src="loginBg" class="fixed top-0 left-0 w-dvw h-dvh z-[-2]" fit="cover" />
+    <ElImage :src="loginBg" class="fixed! top-0 left-0 w-dvw h-dvh" fit="cover" />
 
     <!-- 渐变蒙版 -->
     <div class="gradient-overlay" />
 
     <!-- 返回按钮 -->
     <div class="absolute top-5 left-5 z-10">
-      <ElButton class="text-white/90 text-base transition-all duration-300 ease-in-out hover:text-white hover:-translate-x-1" text @click="router.back()">
+      <ElButton class="text-white/90! text-base transition duration-300 ease-in-out hover:text-white hover:-translate-x-1" text @click="router.back()">
         <ElIcon class="mr-1">
           <ArrowLeft />
         </ElIcon>

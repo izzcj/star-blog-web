@@ -16,7 +16,7 @@ interface Props {
 }
 
 defineOptions({
-  name: 'SmartIconRender',
+  name: 'IconRender',
 });
 
 const props = withDefaults(defineProps<Props>(), {

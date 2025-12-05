@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { User, ChatDotRound, Clock, Document } from '@element-plus/icons-vue';
+import HomeComponentCard from '../home-component-card.vue';
 
 defineOptions({
   name: 'WebsiteStats',
@@ -25,12 +26,12 @@ const displayRunningDays = useTransition(runningDays, {
   duration: animationDuration,
 });
 
-const statsRef = ref<HTMLElement | null>(null);
-
+const loading = ref(false);
 /**
  * 加载统计数据
  */
 function loadStats() {
+  loading.value = true;
   // Mock数据，后续对接API
   visitorCount.value = 1245;
   articleCount.value = 156;
@@ -41,6 +42,7 @@ function loadStats() {
   const today = new Date();
   const diffTime = Math.abs(today.getTime() - startDate.getTime());
   runningDays.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  loading.value = false;
 }
 
 onMounted(() => {
@@ -49,12 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ElCard ref="statsRef" class="stats-card">
-    <template #header>
-      <div class="card-header">
-        <span class="text-base font-bold text-gray-700">网站统计</span>
-      </div>
-    </template>
+  <HomeComponentCard v-loading="loading" title="网站统计">
     <div class="grid grid-cols-2 gap-3">
       <!-- 访客数 -->
       <div class="stat-item">
@@ -112,36 +109,10 @@ onMounted(() => {
         </ElStatistic>
       </div>
     </div>
-  </ElCard>
+  </HomeComponentCard>
 </template>
 
 <style scoped lang="scss">
-.stats-card {
-  margin-bottom: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  }
-
-  :deep(.el-card__header) {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  :deep(.el-card__body) {
-    padding: 16px;
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .stat-item {
   display: flex;
   align-items: center;

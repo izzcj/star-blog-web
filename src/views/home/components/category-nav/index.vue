@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import HomeComponentCard from '../home-component-card.vue';
 
 defineOptions({
   name: 'CategoryNav',
@@ -78,12 +79,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ElCard v-loading="loading" class="category-card">
-    <template #header>
-      <div class="card-header">
-        <span class="text-base font-bold text-gray-700">分类导航</span>
-      </div>
-    </template>
+  <HomeComponentCard v-loading="loading" title="分类导航">
     <div class="category-grid">
       <div
         v-for="category of categories"
@@ -105,36 +101,10 @@ onMounted(() => {
       </div>
       <ElEmpty v-if="!loading && categories.length === 0" description="暂无分类" :image-size="60" />
     </div>
-  </ElCard>
+  </HomeComponentCard>
 </template>
 
 <style scoped lang="scss">
-.category-card {
-  margin-bottom: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  }
-
-  :deep(.el-card__header) {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  :deep(.el-card__body) {
-    padding: 16px;
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .category-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

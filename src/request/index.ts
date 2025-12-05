@@ -12,7 +12,7 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 
 const instance = axios.create({
   baseURL: getAppConfig().apiBaseUrl,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     [RequestHeader.CONTENT_TYPE]: RequestHeader.CONTENT_TYPE_APPLICATION_JSON,
   },

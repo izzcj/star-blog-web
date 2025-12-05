@@ -1,5 +1,5 @@
-import { onUnmounted, ref } from 'vue';
-import anime from 'animejs';
+import type { AnimationParams } from 'animejs';
+import { animate } from 'animejs';
 
 /**
  * 滚动动画Hook
@@ -16,15 +16,14 @@ export function useScrollAnimation() {
    */
   function observeElement(
     el: HTMLElement,
-    animationConfig: anime.AnimeParams,
+    animationConfig: AnimationParams,
     threshold = 0.1,
   ) {
     observer.value = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            anime({
-              targets: entry.target,
+            animate(entry.target, {
               ...animationConfig,
             });
             observer.value?.unobserve(entry.target);
@@ -46,7 +45,7 @@ export function useScrollAnimation() {
    */
   function observeElements(
     selector: string,
-    animationConfig: anime.AnimeParams,
+    animationConfig: AnimationParams,
     threshold = 0.1,
   ) {
     const elements = document.querySelectorAll(selector);
@@ -61,51 +60,51 @@ export function useScrollAnimation() {
   /**
    * 淡入上移动画配置
    */
-  const fadeInUpConfig: anime.AnimeParams = {
+  const fadeInUpConfig: AnimationParams = {
     opacity: [0, 1],
     translateY: [30, 0],
     duration: 800,
-    easing: 'easeOutCubic',
+    ease: 'easeOutCubic',
   };
 
   /**
    * 淡入下移动画配置
    */
-  const fadeInDownConfig: anime.AnimeParams = {
+  const fadeInDownConfig: AnimationParams = {
     opacity: [0, 1],
     translateY: [-30, 0],
     duration: 800,
-    easing: 'easeOutCubic',
+    ease: 'easeOutCubic',
   };
 
   /**
    * 淡入左移动画配置
    */
-  const fadeInLeftConfig: anime.AnimeParams = {
+  const fadeInLeftConfig: AnimationParams = {
     opacity: [0, 1],
     translateX: [-30, 0],
     duration: 800,
-    easing: 'easeOutCubic',
+    ease: 'easeOutCubic',
   };
 
   /**
    * 淡入右移动画配置
    */
-  const fadeInRightConfig: anime.AnimeParams = {
+  const fadeInRightConfig: AnimationParams = {
     opacity: [0, 1],
     translateX: [30, 0],
     duration: 800,
-    easing: 'easeOutCubic',
+    ease: 'easeOutCubic',
   };
 
   /**
    * 缩放淡入动画配置
    */
-  const scaleInConfig: anime.AnimeParams = {
+  const scaleInConfig: AnimationParams = {
     opacity: [0, 1],
     scale: [0.8, 1],
     duration: 600,
-    easing: 'easeOutBack',
+    ease: 'easeOutCubic',
   };
 
   /**

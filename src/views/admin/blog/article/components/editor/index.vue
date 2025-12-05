@@ -139,127 +139,104 @@ function resetForm() {
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
-    <ElCard shadow="never" class="blog-card h-full flex flex-col flex-1">
-      <template #header>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">
-            {{ articleForm.id ? '编辑文章' : '写文章' }}
-          </span>
-          <div>
-            <ElButton
-              type="primary"
-              :icon="Check"
-              :loading="loading"
-              @click="submitForm"
-            >
-              保存
-            </ElButton>
-            <ElButton
-              :icon="Refresh"
-              class="ml-2"
-              @click="resetForm"
-            >
-              重置
-            </ElButton>
-          </div>
+  <ElCard shadow="never" body-class="max-h-dvh">
+    <template #header>
+      <div class="flex items-center justify-between">
+        <span class="text-lg font-semibold">
+          {{ articleForm.id ? '编辑文章' : '写文章' }}
+        </span>
+        <div>
+          <ElButton
+            type="primary"
+            :icon="Check"
+            :loading="loading"
+            @click="submitForm"
+          >
+            保存
+          </ElButton>
+          <ElButton
+            :icon="Refresh"
+            class="ml-2"
+            @click="resetForm"
+          >
+            重置
+          </ElButton>
         </div>
-      </template>
-
-      <div class="overflow-y-auto pb-[30px]">
-        <ElForm
-          ref="formRef"
-          :model="articleForm"
-          :rules="rules"
-          label-position="top"
-          label-width="80px"
-          class="max-w-[80%] mx-auto"
-        >
-          <ElRow :guid="20" justify="space-between">
-            <ElCol :span="7">
-              <!-- 标题 -->
-              <ElFormItem label="标题" prop="title">
-                <ElInput
-                  v-model="articleForm.title"
-                  placeholder="请输入标题"
-                  clearable
-                />
-              </ElFormItem>
-            </ElCol>
-            <ElCol :span="7">
-              <!-- 分类 -->
-              <ElFormItem label="分类" prop="type">
-                <VenusSelect
-                  v-model:value="articleForm.type"
-                  :option-type="DataOptionType.DICT"
-                  option-key="article-type"
-                  placeholder="请选择分类"
-                />
-              </ElFormItem>
-            </ElCol>
-            <ElCol :span="7">
-              <!-- 标签 -->
-              <ElFormItem label="标签" prop="tags">
-                <VenusSelect
-                  v-model:value="articleForm.tagIds"
-                  :option-type="DataOptionType.CONST"
-                  :option-key="tagOptions"
-                  placeholder="请选择标签"
-                  multiple
-                  collapse-tags
-                  collapse-tags-tooltip
-                />
-              </ElFormItem>
-            </ElCol>
-          </ElRow>
-
-          <!-- 摘要 -->
-          <ElFormItem label="摘要" prop="summary">
-            <ElInput
-              v-model="articleForm.summary"
-              type="textarea"
-              :rows="3"
-              placeholder="请输入摘要"
-              maxlength="200"
-              show-word-limit
-            />
-          </ElFormItem>
-
-          <!-- 封面图 -->
-          <ElFormItem label="封面图">
-            <VenusUpload v-model:value="articleForm.coverImage" />
-          </ElFormItem>
-
-          <!-- 内容 -->
-          <ElFormItem class="" label="内容" prop="content">
-            <VenusMdEditor v-model:value="articleForm.content" />
-          </ElFormItem>
-        </ElForm>
       </div>
-    </ElCard>
-  </div>
+    </template>
+
+    <div class="pb-[30px]">
+      <ElForm
+        ref="formRef"
+        :model="articleForm"
+        :rules="rules"
+        label-position="top"
+        label-width="80px"
+        class="max-w-[80%] mx-auto"
+      >
+        <ElRow :guid="20" justify="space-between">
+          <ElCol :span="7">
+            <!-- 标题 -->
+            <ElFormItem label="标题" prop="title">
+              <ElInput
+                v-model="articleForm.title"
+                placeholder="请输入标题"
+                clearable
+              />
+            </ElFormItem>
+          </ElCol>
+          <ElCol :span="7">
+            <!-- 分类 -->
+            <ElFormItem label="分类" prop="type">
+              <VenusSelect
+                v-model:value="articleForm.type"
+                :option-type="DataOptionType.DICT"
+                option-key="article-type"
+                placeholder="请选择分类"
+              />
+            </ElFormItem>
+          </ElCol>
+          <ElCol :span="7">
+            <!-- 标签 -->
+            <ElFormItem label="标签" prop="tags">
+              <VenusSelect
+                v-model:value="articleForm.tagIds"
+                :option-type="DataOptionType.CONST"
+                :option-key="tagOptions"
+                placeholder="请选择标签"
+                multiple
+                collapse-tags
+                collapse-tags-tooltip
+              />
+            </ElFormItem>
+          </ElCol>
+        </ElRow>
+
+        <!-- 摘要 -->
+        <ElFormItem label="摘要" prop="summary">
+          <ElInput
+            v-model="articleForm.summary"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入摘要"
+            maxlength="200"
+            show-word-limit
+          />
+        </ElFormItem>
+
+        <!-- 封面图 -->
+        <ElFormItem label="封面图">
+          <VenusUpload v-model:value="articleForm.coverImage" />
+        </ElFormItem>
+
+        <!-- 内容 -->
+        <ElFormItem class="" label="内容" prop="content">
+          <VenusMdEditor v-model:value="articleForm.content" />
+        </ElFormItem>
+      </ElForm>
+    </div>
+  </ElCard>
 </template>
 
 <style scoped lang="scss">
-.blog-card {
-  :deep(.el-card) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  :deep(.el-card__body) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
-  :deep(.el-card__body) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-    padding: 0;
-  }
-}
 </style>

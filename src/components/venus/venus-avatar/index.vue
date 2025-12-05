@@ -183,7 +183,7 @@ async function handleDelete() {
         v-if="uploading"
         class="border-inherit absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-inherit"
       >
-        <ElIcon class="animate-spin text-white" :size="computedSize * 0.3">
+        <ElIcon class="animate-spin text-white" :size="computedSize ?? 24 * 0.3">
           <Loading />
         </ElIcon>
       </div>

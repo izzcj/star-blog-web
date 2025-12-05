@@ -6,7 +6,7 @@ import { DefaultLayout } from '@/layout/index';
 import dynamicRouters from '@/router/dynamic-router';
 import { asyncRequest } from '@/utils/request-util';
 import menuApiModule from '@/api/system/menu';
-import { errorMessage, warningMessage } from '@/element-plus/notification';
+import { errorMessage } from '@/element-plus/notification';
 
 type MenuRouterInfo = Omit<Menu, 'enabled' | 'sort' | 'createTime' | 'updateTime'> & {
   // 子级
@@ -177,9 +177,6 @@ export const useDynamicRouteStore = defineStore({
         .then(res => {
           this.menus = res.data;
           this.isFetched = true;
-          if (!isArray(this.menus) || !this.menus.length) {
-            warningMessage('获取到菜单信息为空，请联系管理员授权！');
-          }
         })
         .catch(() => {
           errorMessage('系统菜单加载失败，请刷新页面重试！');

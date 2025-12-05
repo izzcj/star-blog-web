@@ -26,7 +26,7 @@ defineOptions({
 const props = withDefaults(defineProps<AvatarDisplayProps>(), {
   src: null,
   name: '',
-  size: null,
+  size: 48,
   shape: 'circle',
   textColor: '#ffffff',
   bgColor: '',
@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<AvatarDisplayProps>(), {
 // 图片加载失败状态
 const imageLoadError = ref(false);
 
+console.log(props.size);
 // 容器样式
 const containerStyle = computed(() => {
   return {
@@ -44,6 +45,7 @@ const containerStyle = computed(() => {
     borderRadius: props.shape === 'circle' ? '50%' : '8px',
   };
 });
+console.log(containerStyle.value);
 
 // 文字头像文本
 const avatarText = computed(() => {

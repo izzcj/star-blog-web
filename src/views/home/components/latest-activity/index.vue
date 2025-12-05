@@ -2,6 +2,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useRouter } from 'vue-router';
+import HomeComponentCard from '@/views/home/components/home-component-card.vue';
 
 defineOptions({
   name: 'LatestActivity',
@@ -146,176 +147,42 @@ onMounted(() => {
 </script>
 
 <template>
-  <ElCard v-loading="loading" class="activity-card">
-    <template #header>
-      <div class="card-header">
-        <span class="text-base font-bold text-gray-700">最新动态</span>
-      </div>
-    </template>
-    <div class="activity-list">
+  <HomeComponentCard v-loading="loading" title="最新动态" body-class="p-0! custom-scrollbar max-h-[400px] overflow-y-auto">
+    <div class="flex flex-col">
       <div
         v-for="activity of activities"
         :key="activity.id"
-        class="activity-item"
+        class="group cursor-pointer flex py-3 px-4 border-b-[1px_solid_#f5f5f5] last:border-b-0 transition-colors duration-200 hover:bg-gray-100"
         @click="goToArticle(activity.articleId)"
       >
-        <div class="activity-icon">
+        <div class="w-6 h-6 text-xl mr-3 shrink-0 flex items-center justify-center">
           {{ getActivityIcon(activity.type) }}
         </div>
-        <div class="activity-content">
-          <div class="activity-header">
-            <ElAvatar :src="activity.userAvatar" :size="24" class="activity-avatar" />
-            <span class="activity-username">{{ activity.userName }}</span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center mb-1.5">
+            <ElAvatar :src="activity.userAvatar" :size="24" class="mr-2 shrink-0" />
+            <span class="text-[14px] text-[#333] font-semibold">{{ activity.userName }}</span>
           </div>
-          <div class="activity-text">
+          <div class="text-[13px] text-[#333] mb-1 leading-normal">
             <template v-if="activity.type === 'comment' || activity.type === 'reply'">
-              评论了《<span class="article-title">{{ activity.articleTitle }}</span>》
+              评论了《<span class="text-[#bbb] font-medium transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
             </template>
             <template v-else-if="activity.type === 'article'">
-              发表了新文章《<span class="article-title">{{ activity.articleTitle }}</span>》
+              发表了新文章《<span class="text-[#333] font-medium transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
             </template>
           </div>
-          <div v-if="activity.content" class="activity-detail">
+          <div v-if="activity.content" class="text-xs text-[#999] leading-normal mb-1 py-1.5 px-2.5 bg-[#f5f7fa] rounded-md truncate">
             {{ activity.content }}
           </div>
-          <div class="activity-time">
+          <div class="text-xs text-[#999]">
             {{ formatRelativeTime(activity.createTime) }}
           </div>
         </div>
       </div>
       <ElEmpty v-if="!loading && activities.length === 0" description="暂无动态" :image-size="60" />
     </div>
-  </ElCard>
+  </HomeComponentCard>
 </template>
 
 <style scoped lang="scss">
-.activity-card {
-  margin-bottom: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  }
-
-  :deep(.el-card__header) {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  :deep(.el-card__body) {
-    padding: 0;
-    max-height: 400px;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #ddd;
-      border-radius: 3px;
-
-      &:hover {
-        background: #bbb;
-      }
-    }
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.activity-item {
-  display: flex;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f5f5f5;
-  transition: background-color 0.2s;
-  cursor: pointer;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background-color: #f9f9f9;
-
-    .article-title {
-      color: #409eff;
-    }
-  }
-}
-
-.activity-icon {
-  font-size: 20px;
-  margin-right: 12px;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.activity-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.activity-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.activity-avatar {
-  margin-right: 8px;
-  flex-shrink: 0;
-}
-
-.activity-username {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.activity-text {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 4px;
-  line-height: 1.5;
-}
-
-.article-title {
-  color: #409eff;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.activity-detail {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 4px;
-  padding: 6px 10px;
-  background-color: #f5f7fa;
-  border-radius: 6px;
-  line-height: 1.5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.activity-time {
-  font-size: 12px;
-  color: #999;
-}
 </style>

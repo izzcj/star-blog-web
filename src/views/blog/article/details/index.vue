@@ -52,26 +52,30 @@ function goBack() {
           </h1>
 
           <!-- 文章元信息 -->
-          <div class="flex flex-wrap justify-center gap-4 text-[14px] text-[#666] border-b border-solid border-[#eee] pb-[15px]">
-            <span v-if="articleDetail.top" class="meta-item text-[#ff4d4f] font-bold">
+          <div class="flex flex-wrap justify-center gap-3 border-b border-solid border-[#eee] pb-4 text-sm text-gray-600">
+            <ElTag v-if="articleDetail.top" type="danger">
               置顶
-            </span>
-            <span class="meta-item">
+            </ElTag>
+
+            <ElTag>
               {{ articleDetail.typeName }}
-            </span>
-            <span class="meta-item">
+            </ElTag>
+
+            <span class="flex items-center gap-1">
               <ElIcon>
                 <Avatar />
               </ElIcon>
               {{ articleDetail.createByName }}
             </span>
-            <span class="meta-item">
+
+            <span class="flex items-center gap-1">
               <ElIcon>
                 <View />
               </ElIcon>
               {{ formatViewCount(articleDetail.viewCount) }}
             </span>
-            <span class="meta-item">
+
+            <span class="flex items-center gap-1">
               {{ articleDetail.publishTime }}
             </span>
           </div>
@@ -86,12 +90,12 @@ function goBack() {
         <VenusMdEditor v-model:value="articleDetail.content" :is-read="true" />
 
         <!-- 标签 -->
-        <div v-if="articleDetail.tags && articleDetail.tags.length > 0" class="blog-tags">
+        <div v-if="articleDetail.tags && articleDetail.tags.length > 0" class="mt-7 pt-5 border-t border-t-[#eee]">
           <VenusTag
             v-for="tag of articleDetail.tags"
             :key="tag.id"
             :tag="tag"
-            class="tag-item"
+            class="mr-2.5 mb-2.5"
           />
         </div>
         <!-- 评论区 -->
@@ -109,23 +113,6 @@ function goBack() {
 </template>
 
 <style scoped lang="scss">
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.blog-tags {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-
-  .tag-item {
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-}
-
 // Element Plus 按钮样式覆盖
 :deep(.el-button.is-text:hover) {
   background-color: transparent;

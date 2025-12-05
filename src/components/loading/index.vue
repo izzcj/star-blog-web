@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import anime from 'animejs';
+import { animate } from 'animejs';
 import { useAppStatusStore } from '@/stores/app-status-store';
 
 defineOptions({
@@ -15,14 +15,13 @@ const siteNameRef = ref();
 onMounted(() => {
   const letters = siteNameRef.value.querySelectorAll('.letter');
 
-  anime({
-    targets: letters,
+  animate(letters, {
     // 上下浮动
     translateY: () => [0, -6, 0],
     duration: 1500,
     // 每个字延迟
     delay: (_, i) => i * 150,
-    easing: 'easeInOutSine',
+    ease: 'easeInOutSine',
     loop: true,
   });
 });
