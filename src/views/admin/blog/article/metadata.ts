@@ -3,7 +3,7 @@
  */
 export interface ArticleQueryParams {
   // 分类
-  type?: string;
+  category?: string;
   // 标题（模糊搜索）
   title?: string;
   // 状态

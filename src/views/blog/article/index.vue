@@ -25,7 +25,7 @@ onMounted(() => {
  * 加载文章数据
  */
 function loadArticles() {
-  asyncRequest(articleApiModule.apis.fetchPage, { params }).then(res => {
+  asyncRequest<PageData<Article>>(articleApiModule.apis.fetchPage, { params }).then(res => {
     articleList.value = res.data.data;
   });
 }

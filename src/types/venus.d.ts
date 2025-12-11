@@ -127,7 +127,7 @@ declare global {
     /**
      * API查询参数
      */
-    params?: Recordable<Undefinable<string | number>>;
+    params?: Recordable<Undefinable<string | number | boolean>>;
     /**
      * 路径参数
      */
@@ -162,6 +162,28 @@ declare global {
      * 消息属性
      */
     attributes: Recordable;
+  }
+
+  /**
+   * 分页数据
+   */
+  interface PageData<T extends Recordable = Recordable> {
+    /**
+     * 当前页码
+     */
+    page: number;
+    /**
+     * 每页数量
+     */
+    size: number;
+    /**
+     * 总数
+     */
+    total: string;
+    /**
+     * 数据
+     */
+    data: T[];
   }
 
   /**
@@ -351,9 +373,9 @@ declare global {
    */
   export interface Article extends BaseEntity {
     // 类型
-    type: string;
+    category: string;
     // 类型名称
-    typeName: string;
+    categoryName: string;
     // 标题
     title: string;
     // 概要
@@ -364,6 +386,8 @@ declare global {
     viewCount: number;
     // 是否置顶
     top: boolean;
+    // 是否推荐
+    recommended: boolean;
     // 发布时间
     publishTime: string;
     // 创建人
@@ -425,11 +449,11 @@ declare global {
     // 是否点赞
     liked: boolean;
     // 评论人昵称
-    userName: string;
+    userNickname: string;
     // 评论人头像
     userAvatar: string;
     // 回复目标用户昵称
-    replyUserName: string;
+    replyUserNickname: string;
     // 回复数
     replyCount: number;
   }

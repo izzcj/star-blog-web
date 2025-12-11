@@ -73,7 +73,7 @@ const inputPlaceholder = computed(() => {
 async function loadReplies() {
   replyState.loading = true;
   try {
-    const response = await asyncRequest(commentApiModule.apis.fetchPage, {
+    const response = await asyncRequest<PageData<CommentDetail>>(commentApiModule.apis.fetchPage, {
       params: {
         rootId: props.commentId,
         page: replyState.currentPage,

@@ -45,6 +45,34 @@ const commonRouter: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/blog/article',
+    component: DefaultLayout,
+    meta: {
+      title: '文章',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'Article',
+        path: '',
+        component: () => import('@/views/blog/article/index.vue'),
+      },
+      {
+        name: 'ArticleDetails',
+        path: 'details/:id',
+        props: true,
+        meta: {
+          title: '文章详情',
+          keepAlive: false,
+          topLevel: false,
+          hidden: true,
+        },
+        component: () => import('@/views/blog/article/details/index.vue'),
+      },
+    ],
+  },
   // 个人信息
   {
     path: '/user',

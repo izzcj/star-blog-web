@@ -34,7 +34,7 @@ const commentState = reactive({
 async function loadComments(append = false) {
   commentState.loading = true;
   try {
-    const response = await asyncRequest(commentApiModule.apis.fetchPage, {
+    const response = await asyncRequest<PageData<CommentDetail>>(commentApiModule.apis.fetchPage, {
       params: {
         articleId: props.articleId,
         rootId: '0',

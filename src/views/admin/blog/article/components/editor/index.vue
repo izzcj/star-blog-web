@@ -18,13 +18,15 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-const initialFormData: Omit<ArticleDetail, 'typeName' | 'viewCount' | 'top' | 'publishTime' | 'createByName' | 'tags'> & { tagIds: string[] } = {
+const initialFormData: Omit<ArticleDetail, 'categoryName' | 'viewCount' | 'publishTime' | 'createByName' | 'tags'> & { tagIds: string[] } = {
   id: '',
-  type: '',
+  category: '',
   title: '',
   summary: '',
   content: '',
   coverImage: '',
+  top: false,
+  recommended: false,
   tagIds: [],
 };
 
@@ -45,7 +47,7 @@ const rules = reactive<FormRules>({
     { required: false, message: '请输入摘要', trigger: 'blur' },
     { max: 200, message: '摘要长度不能超过 200 个字符', trigger: 'blur' },
   ],
-  type: [
+  category: [
     { required: true, message: '请选择分类', trigger: 'change' },
   ],
   content: [
@@ -170,12 +172,11 @@ function resetForm() {
         ref="formRef"
         :model="articleForm"
         :rules="rules"
-        label-position="top"
         label-width="80px"
         class="max-w-[80%] mx-auto"
       >
-        <ElRow :guid="20" justify="space-between">
-          <ElCol :span="7">
+        <ElRow :guid="20">
+          <ElCol :span="8">
             <!-- 标题 -->
             <ElFormItem label="标题" prop="title">
               <ElInput
@@ -185,18 +186,18 @@ function resetForm() {
               />
             </ElFormItem>
           </ElCol>
-          <ElCol :span="7">
+          <ElCol :span="8">
             <!-- 分类 -->
-            <ElFormItem label="分类" prop="type">
+            <ElFormItem label="分类" prop="category">
               <VenusSelect
-                v-model:value="articleForm.type"
+                v-model:value="articleForm.category"
                 :option-type="DataOptionType.DICT"
-                option-key="article-type"
+                option-key="article-category"
                 placeholder="请选择分类"
               />
             </ElFormItem>
           </ElCol>
-          <ElCol :span="7">
+          <ElCol :span="8">
             <!-- 标签 -->
             <ElFormItem label="标签" prop="tags">
               <VenusSelect
@@ -208,6 +209,19 @@ function resetForm() {
                 collapse-tags
                 collapse-tags-tooltip
               />
+            </ElFormItem>
+          </ElCol>
+        </ElRow>
+
+        <ElRow :guid="20">
+          <ElCol :span="8">
+            <ElFormItem label="置顶" prop="top">
+              <ElSwitch v-model="articleForm.top" />
+            </ElFormItem>
+          </ElCol>
+          <ElCol :span="8">
+            <ElFormItem label="推荐" prop="recommended">
+              <ElSwitch v-model="articleForm.recommended" />
             </ElFormItem>
           </ElCol>
         </ElRow>

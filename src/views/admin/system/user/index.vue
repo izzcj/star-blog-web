@@ -96,7 +96,7 @@ onMounted(() => {
  */
 function loadUsers() {
   loading.value = true;
-  asyncRequest(userApiModule.apis.fetchPage, {
+  asyncRequest<PageData<User>>(userApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,
@@ -119,7 +119,7 @@ function loadUsers() {
  * 加载角色选项
  */
 function loadRoleOptions() {
-  asyncRequest(roleApiModule.apis.fetchOptions).then(res => {
+  asyncRequest<DataOption[]>(roleApiModule.apis.fetchOptions).then(res => {
     roleOptions.value = res.data;
   });
 }

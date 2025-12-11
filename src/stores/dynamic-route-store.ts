@@ -173,7 +173,7 @@ export const useDynamicRouteStore = defineStore({
      * 获取登录用户菜单
      */
     async fetchMenus() {
-      return asyncRequest(menuApiModule.apis.fetchRoutes)
+      return asyncRequest<MenuRouterInfo[]>(menuApiModule.apis.fetchRoutes)
         .then(res => {
           this.menus = res.data;
           this.isFetched = true;

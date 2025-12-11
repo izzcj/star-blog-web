@@ -10,7 +10,7 @@ export const venusImageProps = {
   // 图片高度
   height: string().def('100%'),
   // 图片填充方式
-  fit: oneOf(['fill', 'contain', 'cover', 'none', 'scale-down'] as const).def('contain'),
+  fit: oneOf(['fill', 'contain', 'cover', 'none', 'scale-down'] as const).def('cover'),
   // 是否可以通过点击遮罩层关闭 preview
   hideOnClickModal: bool().def(false),
   // 是否可以通过按下 ESC 键关闭 preview

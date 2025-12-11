@@ -76,7 +76,7 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载角色列表
  */
 function loadRoles() {
-  asyncRequest(roleApiModule.apis.fetchPage, {
+  asyncRequest<PageData<Role>>(roleApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,

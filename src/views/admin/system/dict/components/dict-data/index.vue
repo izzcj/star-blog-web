@@ -62,7 +62,7 @@ function loadDictData() {
     return;
   }
 
-  asyncRequest(dictDataApiModule.apis.fetchPage, {
+  asyncRequest<PageData<DictData>>(dictDataApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,
@@ -187,9 +187,9 @@ function handleSubmit() {
             >
               修改
             </ElButton>
-            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteDictItem(row)">
+            <ElPopconfirm v-if="row.deletable" title="确定删除吗？" placement="top" @confirm="handleDeleteDictItem(row)">
               <template #reference>
-                <ElButton v-if="row.deletable" :icon="Delete" type="danger" link size="small">
+                <ElButton :icon="Delete" type="danger" link size="small">
                   删除
                 </ElButton>
               </template>
@@ -229,8 +229,14 @@ function handleSubmit() {
         <ElFormItem label="字典标签" prop="dictLabel">
           <ElInput v-model="formData.dictLabel" placeholder="请输入字典标签" />
         </ElFormItem>
-        <ElFormItem label="字典键值" prop="dictValue">
+        <ElFormItem label="字典键值" prop="dictValue" :disabled="isEdit">
           <ElInput v-model="formData.dictValue" placeholder="请输入字典键值" />
+        </ElFormItem>
+        <ElFormItem label="字典样式" prop="cssClass">
+          <ElInput v-model="formData.cssClass" placeholder="请输入字典样式" />
+        </ElFormItem>
+        <ElFormItem label="列表样式" prop="listClass">
+          <ElInput v-model="formData.listClass" placeholder="请输入列表样式" />
         </ElFormItem>
         <ElFormItem label="排序" prop="sort">
           <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />

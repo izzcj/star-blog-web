@@ -42,14 +42,21 @@ const articleApiModule: ApiModule = {
      */
     publish: {
       uri: '/blog/article/{id}/publish',
-      method: RequestMethod.POST,
+      method: RequestMethod.PUT,
     },
     /**
-     * 置顶文章
+     * 切换置顶状态
      */
-    top: {
-      uri: '/blog/article/{id}/top',
-      method: RequestMethod.POST,
+    toggleTop: {
+      uri: '/blog/article/{id}/toggle-top',
+      method: RequestMethod.PUT,
+    },
+    /**
+     * 切换推荐状态
+     */
+    toggleRecommend: {
+      uri: '/blog/article/{id}/toggle-recommended',
+      method: RequestMethod.PUT,
     },
     /**
      * 删除文章
@@ -61,8 +68,15 @@ const articleApiModule: ApiModule = {
     /**
      * 获取热门文章
      */
-    hotArticles: {
+    fetchHotArticles: {
       uri: '/blog/article/hot',
+      method: RequestMethod.GET,
+    },
+    /**
+     * 获取文章分类导航栏
+     */
+    fetchCategoryNavbar: {
+      uri: '/blog/article/category-navbar',
       method: RequestMethod.GET,
     },
   },

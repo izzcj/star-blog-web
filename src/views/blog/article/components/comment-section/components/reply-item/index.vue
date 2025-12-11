@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es';
-import { formatDistanceToNow } from 'date-fns';
 import { Icon } from '@iconify/vue';
-import { zhCN } from 'date-fns/locale';
 import { ChatDotRound } from '@element-plus/icons-vue';
 import { asyncRequest } from '@/utils/request-util';
 import commentApiModule from '@/api/blog/comment';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { errorNotification, warningNotification } from '@/element-plus/notification';
 import AvatarDisplay from '@/components/venus/venus-avatar/components/avatar-display/index.vue';
+import { formatRelativeTime } from '@/utils/date-util';
 
 interface ReplyItemProps {
   // 回复数据
@@ -26,21 +24,13 @@ defineOptions({
 const props = defineProps<ReplyItemProps>();
 
 const emit = defineEmits<{
-  reply: [target: { userId: string; userName: string; commentId: string }];
+  reply: [target: { userId: string; userNickname: string; commentId: string }];
 }>();
 
 const authStore = useAuthenticationStore();
 
 // 本地状态
 const localReply = ref({ ...props.reply });
-
-// 相对时间
-const relativeTime = computed(() => {
-  return formatDistanceToNow(new Date(props.reply.createTime as string), {
-    addSuffix: true,
-    locale: zhCN,
-  });
-});
 
 // 点赞图标类名
 const likeIconClass = computed(() => {
@@ -93,7 +83,7 @@ function handleReply() {
 
   emit('reply', {
     userId: props.reply.userId,
-    userName: props.reply.userName,
+    userNickname: props.reply.userNickname,
     commentId: props.reply.id,
   });
 }
@@ -105,7 +95,7 @@ function handleReply() {
       <!-- 头像 -->
       <AvatarDisplay
         :src="localReply.userAvatar"
-        :name="localReply.userName"
+        :name="localReply.userNickname"
         :size="32"
         shape="circle"
       />
@@ -113,14 +103,14 @@ function handleReply() {
       <div class="flex-1">
         <!-- 用户名和时间 -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="font-semibold text-sm">{{ localReply.userName }}</span>
-          <span class="text-xs text-gray-400">{{ relativeTime }}</span>
+          <span class="font-semibold text-sm">{{ localReply.userNickname }}</span>
+          <span class="text-xs text-gray-400">{{ formatRelativeTime(localReply.createTime as string) }}</span>
         </div>
 
         <!-- 回复内容 -->
         <div class="reply-content text-sm text-gray-700 mb-2">
-          <span v-if="localReply.replyUserName" class="text-[#bbb] font-medium mr-1">
-            回复：{{ localReply.replyUserName }}
+          <span v-if="localReply.replyUserNickname" class="text-[#bbb] font-medium mr-1">
+            回复：{{ localReply.replyUserNickname }}
           </span>
           {{ localReply.content }}
         </div>
@@ -129,9 +119,9 @@ function handleReply() {
         <div class="reply-actions flex items-center gap-4 text-xs text-gray-500">
           <!-- 点赞 -->
           <ElButton
-            type="text"
-            class="flex items-center gap-1 transition-colors cursor-pointer"
+            class="flex items-center gap-1 transition-colors"
             :class="likeIconClass"
+            text
             @click="handleLike"
           >
             <ElIcon>
@@ -142,8 +132,8 @@ function handleReply() {
 
           <!-- 回复 -->
           <ElButton
-            type="text"
             class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
+            text
             @click="handleReply"
           >
             <ElIcon>

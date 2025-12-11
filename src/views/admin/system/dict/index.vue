@@ -46,7 +46,7 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载字典数据
  */
 function loadDictTypes() {
-  asyncRequest(dictTypeApiModule.apis.fetchPage, {
+  asyncRequest<PageData<DictType>>(dictTypeApiModule.apis.fetchPage, {
     params: {
       dictName: queryParams.dictName || undefined,
       page: pagination.page,

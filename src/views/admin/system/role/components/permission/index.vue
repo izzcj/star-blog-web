@@ -45,8 +45,8 @@ async function loadData() {
   try {
     // 并行请求菜单树和角色已分配菜单
     const [menuTreeRes, roleMenusRes] = await Promise.all([
-      asyncRequest(menuApiModule.apis.fetchTreeList),
-      asyncRequest(roleApiModule.apis.fetchMenuPermissions, {
+      asyncRequest<MenuTree[]>(menuApiModule.apis.fetchTreeList),
+      asyncRequest<string[]>(roleApiModule.apis.fetchMenuPermissions, {
         pathParams: { id: props.roleId },
       }),
     ]);

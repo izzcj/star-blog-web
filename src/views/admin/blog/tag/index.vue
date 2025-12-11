@@ -60,7 +60,7 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载标签列表
  */
 function loadTags() {
-  asyncRequest(tagApiModule.apis.fetchPage, {
+  asyncRequest<PageData<Tag>>(tagApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,

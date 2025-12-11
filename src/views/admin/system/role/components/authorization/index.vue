@@ -62,7 +62,7 @@ watch(() => [unauthorizedPagination.page, unauthorizedPagination.size], () => {
  * 加载已授权用户列表
  */
 function loadAuthorizedUsers() {
-  asyncRequest(userApiModule.apis.fetchAllocatedPage, {
+  asyncRequest<PageData<User>>(userApiModule.apis.fetchAllocatedPage, {
     pathParams: { roleId: props.roleId },
     params: {
       page: authorizedPagination.page,
@@ -151,7 +151,7 @@ function handleOpenSelectUser() {
  * 加载未授权用户列表
  */
 function loadUnauthorizedUsers() {
-  asyncRequest(userApiModule.apis.fetchUnallocatedPage, {
+  asyncRequest<PageData<User>>(userApiModule.apis.fetchUnallocatedPage, {
     pathParams: { roleId: props.roleId },
     params: {
       page: unauthorizedPagination.page,

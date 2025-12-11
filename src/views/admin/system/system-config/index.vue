@@ -79,8 +79,15 @@ watch(
  * 加载系统配置项
  */
 function loadSystemConfigs() {
-  asyncRequest(systemConfigApiModule.apis.fetchList, { params: { category: currentConfigCategory.value } }).then(res => {
-    systemConfigs.value = res.data;
+  asyncRequest<SystemConfig[]>(systemConfigApiModule.apis.fetchList, { params: { category: currentConfigCategory.value } }).then(res => {
+    systemConfigs.value = res.data.map(config => {
+      if (config.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
+        if (config.value) {
+          config.value = JSON.parse(config.value);
+        }
+      }
+      return config;
+    });
   });
 }
 
@@ -99,6 +106,11 @@ function handleConfigCategoryChange(category: string) {
  * @param config 配置项
  */
 function saveConfig(config: SystemConfig) {
+  if (config.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
+    if (config.value) {
+      config.value = JSON.stringify(config.value);
+    }
+  }
   // 检查是否是新增的配置项（没有id）
   if (!config.id) {
     // 新增配置项
@@ -192,7 +204,7 @@ function submitForm() {
           </template>
           <ElTable :data="systemConfigs">
             <ElTableColumn label="序号" prop="sort" width="80px" />
-            <ElTableColumn label="配置项" prop="name" width="120px" />
+            <ElTableColumn label="配置项" prop="name" width="150px" />
             <ElTableColumn label="配置值" prop="value" min-width="400px">
               <template #default="{ row }">
                 <ConfigItem

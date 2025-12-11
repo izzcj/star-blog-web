@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { formatDistanceToNow } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
 import { useRouter } from 'vue-router';
 import HomeComponentCard from '@/views/home/components/home-component-card.vue';
+import ActivityType from '@/enums/activity-type';
+import { asyncRequest } from '@/utils/request-util';
+import activityApiModule from '@/api/blog/activity';
+import { formatRelativeTime } from '@/utils/date-util';
 
 defineOptions({
   name: 'LatestActivity',
@@ -17,17 +19,17 @@ interface ActivityItem {
   // ID
   id: string;
   // 类型
-  type: 'comment' | 'article' | 'reply';
-  // 用户名
-  userName: string;
+  type: ActivityType;
+  // 用户昵称
+  userNickname: string;
   // 用户头像
   userAvatar: string;
   // 内容
   content: string;
   // 关联文章标题
-  articleTitle?: string;
+  articleTitle: string;
   // 关联文章ID
-  articleId?: string;
+  articleId: string;
   // 创建时间
   createTime: string;
 }
@@ -42,62 +44,15 @@ const loading = ref(false);
 function loadActivities() {
   loading.value = true;
 
-  // Mock数据，后续对接API
-  setTimeout(() => {
-    activities.value = [
-      {
-        id: '1',
-        type: 'comment',
-        userName: '张三',
-        userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        content: '这篇文章写得太棒了！',
-        articleTitle: 'Vue3 Composition API 实战指南',
-        articleId: 'article-1',
-        createTime: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '2',
-        type: 'article',
-        userName: '博主',
-        userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        content: '发表了新文章《TypeScript 高级类型详解》',
-        articleTitle: 'TypeScript 高级类型详解',
-        articleId: 'article-2',
-        createTime: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '3',
-        type: 'reply',
-        userName: '李四',
-        userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        content: '感谢分享，学到了很多',
-        articleTitle: 'Vite 性能优化实践',
-        articleId: 'article-3',
-        createTime: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '4',
-        type: 'comment',
-        userName: '王五',
-        userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        content: '期待下一篇文章',
-        articleTitle: 'Pinia 状态管理最佳实践',
-        articleId: 'article-4',
-        createTime: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '5',
-        type: 'comment',
-        userName: '赵六',
-        userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        content: '收藏了！',
-        articleTitle: 'Element Plus 进阶使用技巧',
-        articleId: 'article-5',
-        createTime: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-      },
-    ];
+  asyncRequest<PageData<ActivityItem>>(activityApiModule.apis.fetchPage, {
+    params: {
+      page: 1,
+      size: 5,
+    },
+  }).then(res => {
+    activities.value = res.data.data;
     loading.value = false;
-  }, 500);
+  });
 }
 
 /**
@@ -107,27 +62,15 @@ function loadActivities() {
  */
 function getActivityIcon(type: ActivityItem['type']): string {
   switch (type) {
-    case 'comment':
+    case ActivityType.COMMENT:
       return '💬';
-    case 'article':
+    case ActivityType.ARTICLE:
       return '📝';
-    case 'reply':
+    case ActivityType.REPLY:
       return '↩️';
     default:
       return '📌';
   }
-}
-
-/**
- * 格式化相对时间
- *
- * @param dateString 日期字符串
- */
-function formatRelativeTime(dateString: string): string {
-  return formatDistanceToNow(new Date(dateString), {
-    addSuffix: true,
-    locale: zhCN,
-  });
 }
 
 /**
@@ -160,15 +103,15 @@ onMounted(() => {
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center mb-1.5">
-            <ElAvatar :src="activity.userAvatar" :size="24" class="mr-2 shrink-0" />
-            <span class="text-[14px] text-[#333] font-semibold">{{ activity.userName }}</span>
+            <VenusAvatar v-model:value="activity.userAvatar" :custom-size="28" :disabled="true" class="mr-2 shrink-0" />
+            <span class="text-[14px] text-[#333] font-semibold">{{ activity.userNickname }}</span>
           </div>
           <div class="text-[13px] text-[#333] mb-1 leading-normal">
-            <template v-if="activity.type === 'comment' || activity.type === 'reply'">
-              评论了《<span class="text-[#bbb] font-medium transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
+            <template v-if="activity.type === ActivityType.COMMENT || activity.type === ActivityType.REPLY">
+              评论了《<span class="text-[#333] font-semibold transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
             </template>
-            <template v-else-if="activity.type === 'article'">
-              发表了新文章《<span class="text-[#333] font-medium transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
+            <template v-else-if="activity.type === ActivityType.ARTICLE">
+              发表了新文章《<span class="text-[#333] font-semibold transition-colors duration-200 group-hover:text-[#409eff]">{{ activity.articleTitle }}</span>》
             </template>
           </div>
           <div v-if="activity.content" class="text-xs text-[#999] leading-normal mb-1 py-1.5 px-2.5 bg-[#f5f7fa] rounded-md truncate">

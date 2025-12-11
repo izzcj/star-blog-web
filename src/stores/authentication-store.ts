@@ -40,7 +40,7 @@ export const useAuthenticationStore = defineStore({
      * @param formData 登录表单数据
      */
     async login(formData: LoginData) {
-      const { message, data } = await asyncRequest(loginApiModule.apis.login, {
+      const { message, data } = await asyncRequest<AuthenticationState>(loginApiModule.apis.login, {
         data: {
           ...formData,
         },

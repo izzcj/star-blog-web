@@ -63,7 +63,7 @@ watch(timeRange, val => {
  * 加载评论列表
  */
 function loadComments() {
-  asyncRequest(commentApiModule.apis.fetchPage, {
+  asyncRequest<PageData<CommentDetail>>(commentApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,

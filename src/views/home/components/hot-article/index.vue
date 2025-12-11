@@ -29,7 +29,7 @@ function goArticleList() {
  */
 async function loadHotArticle() {
   loading.value = true;
-  asyncRequest<Article[]>(articleApiModule.apis.hotArticles).then(res => {
+  asyncRequest<Article[]>(articleApiModule.apis.fetchHotArticles).then(res => {
     hotArticle.value = res.data;
     loading.value = false;
   });

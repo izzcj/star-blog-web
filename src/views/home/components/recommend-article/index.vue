@@ -3,6 +3,8 @@ import { View } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 import HomeComponentCard from '../home-component-card.vue';
 import { formatViewCount } from '@/utils/format-util';
+import { asyncRequest } from '@/utils/request-util';
+import articleApiModule from '@/api/blog/article';
 
 defineOptions({
   name: 'RecommendArticle',
@@ -20,33 +22,18 @@ const loading = ref(false);
 function loadArticles() {
   loading.value = true;
 
-  // Mock数据，后续对接API
-  setTimeout(() => {
-    articles.value = [
-      {
-        id: '1',
-        title: 'Vue 3 性能优化最佳实践',
-        coverImage: 'https://picsum.photos/400/200?random=1',
-        viewCount: 1234,
-        publishTime: '2024-12-01',
-      },
-      {
-        id: '2',
-        title: 'TypeScript 高级类型详解',
-        coverImage: 'https://picsum.photos/400/200?random=2',
-        viewCount: 856,
-        publishTime: '2024-11-28',
-      },
-      {
-        id: '3',
-        title: 'Vite 构建优化实战',
-        coverImage: 'https://picsum.photos/400/200?random=3',
-        viewCount: 672,
-        publishTime: '2024-11-25',
-      },
-    ];
-    loading.value = false;
-  }, 400);
+  asyncRequest<PageData<Article>>(articleApiModule.apis.fetchPage, {
+    params: {
+      page: 1,
+      size: 5,
+      recommended: true,
+      sortDesc: 'publishTime',
+    },
+  })
+    .then(res => {
+      articles.value = res.data.data;
+      loading.value = false;
+    });
 }
 
 /**
@@ -64,20 +51,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="推荐阅读">
+  <HomeComponentCard v-loading="loading" title="推荐阅读" body-class="custom-scrollbar max-h-[300px] overflow-y-auto">
     <div class="flex flex-col gap-3">
       <div
         v-for="article of articles"
         :key="article.id"
-        class="group flex p-3 rounded-lg bg-[#fafafa] transition duration-300 ease-out cursor-pointer overflow-hidden hover:bg-[#f0f0f0] hover:-translate-y-0.5 hover:shadow-md"
+        class="group flex p-3 rounded-lg bg-[#fafafa] cursor-pointer overflow-hidden transition duration-300 ease-out hover:bg-[#f0f0f0] hover:-translate-y-0.5 hover:shadow-md"
         @click="goToArticle(article.id)"
       >
         <!-- 封面 -->
         <div class="relative w-20 h-15 rounded-md overflow-hidden mr-3 flex-shrink-0">
-          <img
+          <VenusImage
             :src="article.coverImage"
-            class="size-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
-            alt=""
+            class="size-full transition-transform duration-300 ease-out group-hover:scale-110"
           />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <span class="text-white text-xs font-semibold px-2 py-1 border border-white rounded">
@@ -103,7 +89,7 @@ onMounted(() => {
 
       <ElEmpty
         v-if="!loading && articles.length === 0"
-        description="暂无推荐"
+        description="暂无推荐文章"
         :image-size="60"
       />
     </div>

@@ -14,7 +14,7 @@ defineOptions({
 const router = useRouter();
 const articleList = ref<Article[]>([]);
 const queryParams = reactive<ArticleQueryParams>({
-  type: '',
+  category: '',
   title: '',
   status: '',
 });
@@ -40,9 +40,9 @@ watch(() => [pagination.page, pagination.size], () => {
  */
 function loadArticleList() {
   loading.value = true;
-  asyncRequest(articleApiModule.apis.fetchPage, {
+  asyncRequest<PageData<Article>>(articleApiModule.apis.fetchPage, {
     params: {
-      type: queryParams.type || undefined,
+      type: queryParams.category || undefined,
       title: queryParams.title || undefined,
       status: queryParams.status || undefined,
       page: pagination.page,
@@ -72,7 +72,7 @@ function handleQuery() {
 function handleReset() {
   queryParams.title = '';
   queryParams.status = '';
-  queryParams.type = '';
+  queryParams.category = '';
   loadArticleList();
 }
 
@@ -105,9 +105,11 @@ function publishArticle(article: Article) {
  *
  * @param article 文章信息
  */
-function toggleTop(article: Article) {
-  asyncRequest(articleApiModule.apis.top, {
-    pathParams: { id: article.id },
+const toggleTop = debounce((article: Article) => {
+  asyncRequest(articleApiModule.apis.toggleTop, {
+    pathParams: {
+      id: article.id,
+    },
   })
     .then(() => {
       successNotification(
@@ -116,7 +118,27 @@ function toggleTop(article: Article) {
       );
       loadArticleList();
     });
-}
+}, 300);
+
+/**
+ * 切换推荐状态
+ *
+ * @param article 文章信息
+ */
+const toggleRecommend = debounce((article: Article) => {
+  asyncRequest(articleApiModule.apis.toggleRecommend, {
+    pathParams: {
+      id: article.id,
+    },
+  })
+    .then(() => {
+      successNotification(
+        `${article.recommended ? '取消推荐' : '推荐'}成功`,
+        '成功',
+      );
+      loadArticleList();
+    });
+}, 300);
 
 /**
  * 删除文章
@@ -147,9 +169,9 @@ function deleteArticle(article: Article) {
             </ElFormItem>
             <ElFormItem label="分类">
               <VenusSelect
-                v-model:value="queryParams.type"
+                v-model:value="queryParams.category"
                 :option-type="DataOptionType.DICT"
-                option-key="article-type"
+                option-key="article-category"
                 placeholder="请选择分类"
                 clearable
               />
@@ -186,7 +208,7 @@ function deleteArticle(article: Article) {
 
       <ElTable v-loading="loading" :data="articleList" border>
         <ElTableColumn prop="title" label="标题" min-width="200" show-overflow-tooltip />
-        <ElTableColumn prop="typeName" label="类型" width="100" />
+        <ElTableColumn prop="categoryName" label="分类" width="100" />
         <ElTableColumn prop="viewCount" label="浏览量" width="100" />
         <ElTableColumn prop="createByName" label="作者" width="120" />
         <ElTableColumn prop="publishTime" label="发布时间" width="180" />
@@ -196,6 +218,15 @@ function deleteArticle(article: Article) {
               v-model="row.top"
               :disabled="row.status === 'PUBLISHED'"
               @change="toggleTop(row)"
+            />
+          </template>
+        </ElTableColumn>
+        <ElTableColumn label="是否推荐" width="100">
+          <template #default="{ row }">
+            <ElSwitch
+              v-model="row.recommended"
+              :disabled="row.status === 'PUBLISHED'"
+              @change="toggleRecommend(row)"
             />
           </template>
         </ElTableColumn>

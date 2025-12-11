@@ -1,19 +1,33 @@
 <script setup lang="ts">
 import { User, ChatDotRound, Clock, Document } from '@element-plus/icons-vue';
 import HomeComponentCard from '../home-component-card.vue';
+import statInfoApiModule from '@/api/system/stat-info';
+import { asyncRequest } from '@/utils/request-util';
 
 defineOptions({
   name: 'WebsiteStats',
 });
 
+/**
+ * 统计信息
+ */
+interface StatInfo {
+  // 访问数
+  viewCount: number;
+  // 文章数
+  articleCount: number;
+  // 评论数
+  commentCount: number;
+}
+
 // 统计数据
-const visitorCount = ref(0);
+const viewCount = ref(0);
 const articleCount = ref(0);
 const commentCount = ref(0);
 const runningDays = ref(0);
 const animationDuration = 2000;
 
-const displayVisitorCount = useTransition(visitorCount, {
+const displayViewCount = useTransition(viewCount, {
   duration: animationDuration,
 });
 const displayArticleCount = useTransition(articleCount, {
@@ -32,10 +46,11 @@ const loading = ref(false);
  */
 function loadStats() {
   loading.value = true;
-  // Mock数据，后续对接API
-  visitorCount.value = 1245;
-  articleCount.value = 156;
-  commentCount.value = 5678;
+  asyncRequest<StatInfo>(statInfoApiModule.apis.fetchAccumulativeStatInfo).then(res => {
+    viewCount.value = res.data.viewCount;
+    articleCount.value = res.data.articleCount;
+    commentCount.value = res.data.commentCount;
+  });
 
   // 计算运营天数
   const startDate = new Date('2024-01-01');
@@ -55,7 +70,7 @@ onMounted(() => {
     <div class="grid grid-cols-2 gap-3">
       <!-- 访客数 -->
       <div class="stat-item">
-        <ElStatistic :value="displayVisitorCount">
+        <ElStatistic :value="displayViewCount">
           <template #title>
             访客数
           </template>

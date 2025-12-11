@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es';
 import { Icon } from '@iconify/vue';
-import { formatDistanceToNow } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
 import { ChatDotRound } from '@element-plus/icons-vue';
 import ReplySection from '../reply-section/index.vue';
 import { asyncRequest } from '@/utils/request-util';
@@ -11,6 +8,7 @@ import { useAuthenticationStore } from '@/stores/authentication-store';
 import { errorNotification, warningNotification } from '@/element-plus/notification';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 import AvatarDisplay from '@/components/venus/venus-avatar/components/avatar-display/index.vue';
+import { formatRelativeTime } from '@/utils/date-util';
 
 interface CommentItemProps {
   // 评论数据
@@ -41,14 +39,6 @@ const showReplyInput = ref(false);
 
 // 回复数量（可能动态变化）
 const replyCount = ref(props.replyCount);
-
-// 相对时间
-const relativeTime = computed(() => {
-  return formatDistanceToNow(new Date(props.comment.createTime as string), {
-    addSuffix: true,
-    locale: zhCN,
-  });
-});
 
 // 点赞图标类名
 const likeIconClass = computed(() => {
@@ -141,7 +131,7 @@ function handleReplyCountChange(count: number) {
       <!-- 头像 -->
       <AvatarDisplay
         :src="localComment.userAvatar"
-        :name="localComment.userName"
+        :name="localComment.userNickname"
         :size="avatarSize"
         shape="circle"
       />
@@ -149,8 +139,8 @@ function handleReplyCountChange(count: number) {
       <div class="flex-1">
         <!-- 用户名和时间 -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="font-semibold text-sm">{{ localComment.userName }}</span>
-          <span class="text-xs text-gray-400">{{ relativeTime }}</span>
+          <span class="font-semibold text-sm">{{ localComment.userNickname }}</span>
+          <span class="text-xs text-gray-400">{{ formatRelativeTime(localComment.createTime as string) }}</span>
         </div>
 
         <!-- 评论内容 -->
@@ -162,8 +152,8 @@ function handleReplyCountChange(count: number) {
         <div class="flex items-center gap-4 text-xs text-gray-500">
           <!-- 点赞 -->
           <ElButton
-            type="text"
             class="flex items-center gap-1 transition-colors cursor-pointer"
+            text
             :class="likeIconClass"
             @click="handleLike"
           >
@@ -175,8 +165,8 @@ function handleReplyCountChange(count: number) {
 
           <!-- 回复 -->
           <ElButton
-            type="text"
             class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
+            text
             @click="showReplyInputHandler"
           >
             <ElIcon>

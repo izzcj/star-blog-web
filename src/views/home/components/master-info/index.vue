@@ -15,7 +15,7 @@ const masterInfo: Pick<UserProfile, 'nickname' | 'avatar' | 'remark' | 'email'> 
 });
 const textShineRef = ref<HTMLElement | null>(null);
 onMounted(() => {
-  asyncRequest(userApiModule.apis.masterInfo).then(res => {
+  asyncRequest<UserProfile>(userApiModule.apis.masterInfo).then(res => {
     const { nickname, avatar, remark, email } = res.data;
     Object.assign(masterInfo, { nickname, avatar, remark, email });
 

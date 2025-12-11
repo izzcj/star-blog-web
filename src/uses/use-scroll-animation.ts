@@ -2,7 +2,7 @@ import type { AnimationParams } from 'animejs';
 import { animate } from 'animejs';
 
 /**
- * 滚动动画Hook
+ * 滚动动画 Composable
  */
 export function useScrollAnimation() {
   const observer = ref<IntersectionObserver | null>(null);
