@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
 import {
   Notebook,
   Reading,
@@ -23,8 +22,8 @@ const route = useRoute();
 const router = useRouter();
 
 const activeMenu = computed(() => {
-  if (route.path.startsWith('/admin/article')) {
-    return '/admin/article';
+  if (route.meta && route.meta.activeMenu) {
+    return route.meta.activeMenu;
   }
   return route.path;
 });

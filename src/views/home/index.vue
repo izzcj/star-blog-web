@@ -102,8 +102,6 @@ function toggleExpand() {
   const start = distanceToViewportTop * 0.4;
   const end = distanceToViewportTop;
   if (isExpanded.value) {
-    console.log(start);
-    console.log(end);
     // 展开动画
     animate(homeHeader, {
       height: [`${start}px`, `${end}px`],

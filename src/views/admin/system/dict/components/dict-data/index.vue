@@ -158,7 +158,7 @@ function handleSubmit() {
       <template #header>
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-4">
-            <ElButton :icon="DArrowLeft" type="primary" @click="handleBack" />
+            <ElButton :icon="DArrowLeft" text @click="handleBack" />
           </div>
           <ElButton :icon="Plus" type="primary" @click="handleAddDictItem">
             新增字典项

@@ -68,6 +68,7 @@ const commonRouter: RouteRecordRaw[] = [
           keepAlive: false,
           topLevel: false,
           hidden: true,
+          activeMenu: '/blog/article',
         },
         component: () => import('@/views/blog/article/details/index.vue'),
       },

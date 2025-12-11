@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { useRoute, useRouter } from 'vue-router';
-import { Check, Refresh } from '@element-plus/icons-vue';
+import { Check, DArrowLeft, Refresh } from '@element-plus/icons-vue';
 import articleApiModule from '@/api/blog/article';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
@@ -12,7 +11,10 @@ defineOptions({
   name: 'ArticleEditor',
 });
 
-const route = useRoute();
+const props = defineProps<{
+  id?: string;
+}>();
+
 const router = useRouter();
 
 const formRef = ref<FormInstance>();
@@ -56,7 +58,7 @@ const rules = reactive<FormRules>({
 });
 
 onMounted(() => {
-  const blogId = route.params.id as string;
+  const blogId = props.id;
   if (blogId) {
     fetchArticleDetail(blogId);
   }
@@ -112,7 +114,6 @@ function submitForm() {
  */
 function saveArticle() {
   loading.value = true;
-  console.log('articleForm:', articleForm);
   asyncRequest(
     articleForm.value.id ? articleApiModule.apis.modify : articleApiModule.apis.create,
     {
@@ -123,7 +124,7 @@ function saveArticle() {
   )
     .then(() => {
       successNotification('保存成功', '成功');
-      router.push('/admin/blog/article');
+      router.push('ArticleManagement');
     })
     .finally(() => {
       loading.value = false;
@@ -134,19 +135,26 @@ function saveArticle() {
  * 重置表单
  */
 function resetForm() {
-  if (formRef.value) {
-    formRef.value.resetFields();
-  }
+  articleForm.value = {
+    ...initialFormData,
+  };
+}
+
+/**
+ * 返回
+ */
+function handleBack() {
+  router.go(-1);
 }
 </script>
 
 <template>
-  <ElCard shadow="never" body-class="max-h-dvh">
+  <ElCard shadow="never" body-class="max-h-[80dvh] custom-scrollbar overflow-y-auto">
     <template #header>
       <div class="flex items-center justify-between">
-        <span class="text-lg font-semibold">
-          {{ articleForm.id ? '编辑文章' : '写文章' }}
-        </span>
+        <div class="flex items-center gap-4">
+          <ElButton :icon="DArrowLeft" text @click="handleBack" />
+        </div>
         <div>
           <ElButton
             type="primary"
@@ -156,18 +164,18 @@ function resetForm() {
           >
             保存
           </ElButton>
-          <ElButton
-            :icon="Refresh"
-            class="ml-2"
-            @click="resetForm"
-          >
-            重置
-          </ElButton>
+          <ElPopconfirm title="未保存数据将会丢失，确认清空吗？" placement="top" @confirm="resetForm">
+            <template #reference>
+              <ElButton :icon="Refresh" class="ml-2">
+                清空
+              </ElButton>
+            </template>
+          </ElPopconfirm>
         </div>
       </div>
     </template>
 
-    <div class="pb-[30px]">
+    <div>
       <ElForm
         ref="formRef"
         :model="articleForm"

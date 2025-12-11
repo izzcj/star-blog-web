@@ -82,7 +82,12 @@ function handleReset() {
  * @param article 文章信息
  */
 function editArticle(article: Article) {
-  router.push(`/admin/blog/article/edit/${article.id}`);
+  router.push({
+    name: 'ArticleEdit',
+    params: {
+      id: article.id,
+    },
+  });
 }
 
 /**
