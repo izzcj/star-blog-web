@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { Check, DArrowLeft, Refresh } from '@element-plus/icons-vue';
+import { Back, Check, Refresh } from '@element-plus/icons-vue';
 import articleApiModule from '@/api/blog/article';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
@@ -153,7 +153,7 @@ function handleBack() {
     <template #header>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <ElButton :icon="DArrowLeft" text @click="handleBack" />
+          <ElButton :icon="Back" text @click="handleBack" />
         </div>
         <div>
           <ElButton

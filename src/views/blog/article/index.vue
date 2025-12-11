@@ -14,7 +14,7 @@ const size = ref(10);
 const params = reactive({
   page,
   size,
-  status: 'PUBLISHED',
+  status: 'published',
 });
 
 onMounted(() => {

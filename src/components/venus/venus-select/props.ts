@@ -11,13 +11,15 @@ export const venusSelectProps = {
   // 是否禁用
   disabled: bool().def(false),
   // 是否可以清除
-  clearable: bool().def(false),
+  clearable: bool().def(true),
   // 多选时是否将选中值按文字的形式展示
   collapseTags: bool().def(true),
   // 当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。使用此属性collapseTags必须启用
   collapseTagsTooltip: bool().def(true),
+  // 需要显示的Tag的最大数量
+  maxCollapseTags: number().def(4),
   // 是否可筛选
-  filterable: bool().def(false),
+  filterable: bool().def(true),
   // 是否为远程搜索
   remote: bool().def(false),
   // 远程搜索方法

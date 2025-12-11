@@ -18,6 +18,7 @@ const queryForm = reactive<TagQueryParams>({
 // 标签列表
 const tagList = ref<Tag[]>([]);
 const total = ref(0);
+const loading = ref(false);
 
 // 分页相关
 const pagination = reactive({
@@ -60,16 +61,21 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载标签列表
  */
 function loadTags() {
+  loading.value = true;
   asyncRequest<PageData<Tag>>(tagApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,
       name: queryForm.name || undefined,
     },
-  }).then(res => {
-    tagList.value = res.data.data;
-    total.value = Number(res.data.total);
-  });
+  })
+    .then(res => {
+      tagList.value = res.data.data;
+      total.value = Number(res.data.total);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -184,7 +190,7 @@ function handleSubmit() {
       </div>
 
       <!-- 标签列表表格 -->
-      <ElTable :data="tagList" border>
+      <ElTable v-loading="loading" :data="tagList" border max-height="600px">
         <ElTableColumn prop="name" label="标签名称" />
         <ElTableColumn prop="color" label="标签样式" width="200">
           <template #default="{ row }">

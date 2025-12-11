@@ -23,6 +23,8 @@ const pagination = reactive({
   size: 10,
 });
 
+const loading = ref(false);
+
 // 弹窗相关
 const dialogVisible = ref(false);
 const dialogTitle = ref('');
@@ -46,16 +48,21 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载字典数据
  */
 function loadDictTypes() {
+  loading.value = true;
   asyncRequest<PageData<DictType>>(dictTypeApiModule.apis.fetchPage, {
     params: {
       dictName: queryParams.dictName || undefined,
       page: pagination.page,
       size: pagination.size,
     },
-  }).then(res => {
-    dictList.value = res.data.data;
-    total.value = Number(res.data.total);
-  });
+  })
+    .then(res => {
+      dictList.value = res.data.data;
+      total.value = Number(res.data.total);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -192,7 +199,7 @@ function handleDictKeyClick(dict: DictType) {
           新增
         </ElButton>
       </div>
-      <ElTable :data="dictList" border>
+      <ElTable v-loading="loading" :data="dictList" border max-height="600px">
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn prop="dictName" label="字典名称" />
         <ElTableColumn prop="dictKey" label="字典key">

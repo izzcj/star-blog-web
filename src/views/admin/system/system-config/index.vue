@@ -24,6 +24,8 @@ const { data: configCategoryOptions } = useLoadDataOptions(optionType, optionKey
 const dialogVisible = ref(false);
 // 新增配置表单数据
 const formRef = ref();
+const loading = ref(false);
+
 type SystemConfigFormData = Omit<SystemConfig, 'id' | 'deletable' | 'createTime' | 'updateTime'>;
 const formData = ref<SystemConfigFormData>({
   category: '',
@@ -79,16 +81,25 @@ watch(
  * 加载系统配置项
  */
 function loadSystemConfigs() {
-  asyncRequest<SystemConfig[]>(systemConfigApiModule.apis.fetchList, { params: { category: currentConfigCategory.value } }).then(res => {
-    systemConfigs.value = res.data.map(config => {
-      if (config.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
-        if (config.value) {
-          config.value = JSON.parse(config.value);
+  loading.value = true;
+  asyncRequest<SystemConfig[]>(systemConfigApiModule.apis.fetchList, {
+    params: {
+      category: currentConfigCategory.value,
+    },
+  })
+    .then(res => {
+      systemConfigs.value = res.data.map(config => {
+        if (config.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
+          if (config.value) {
+            config.value = JSON.parse(config.value);
+          }
         }
-      }
-      return config;
+        return config;
+      });
+    })
+    .finally(() => {
+      loading.value = false;
     });
-  });
 }
 
 /**
@@ -202,7 +213,7 @@ function submitForm() {
               </ElButton>
             </div>
           </template>
-          <ElTable :data="systemConfigs">
+          <ElTable v-loading="loading" :data="systemConfigs" max-height="700px">
             <ElTableColumn label="序号" prop="sort" width="80px" />
             <ElTableColumn label="配置项" prop="name" width="150px" />
             <ElTableColumn label="配置值" prop="value" min-width="400px">

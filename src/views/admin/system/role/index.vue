@@ -64,6 +64,8 @@ const currentRole = ref<Role | null>(null);
 const permissionDialogVisible = ref(false);
 const currentPermissionRole = ref<Role | null>(null);
 
+const loading = ref(false);
+
 onMounted(() => {
   loadRoles();
 });
@@ -76,6 +78,7 @@ watch(() => [pagination.page, pagination.size], () => {
  * 加载角色列表
  */
 function loadRoles() {
+  loading.value = true;
   asyncRequest<PageData<Role>>(roleApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
@@ -83,10 +86,14 @@ function loadRoles() {
       name: queryForm.name || undefined,
       type: queryForm.type || undefined,
     },
-  }).then(res => {
-    roleList.value = res.data.data;
-    total.value = Number(res.data.total);
-  });
+  })
+    .then(res => {
+      roleList.value = res.data.data;
+      total.value = Number(res.data.total);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -232,7 +239,7 @@ function handlePermissionChanged() {
       </div>
 
       <!-- 角色列表表格 -->
-      <ElTable :data="roleList" border>
+      <ElTable v-loading="loading" :data="roleList" border max-height="600px">
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn prop="name" label="角色名称" />
         <ElTableColumn prop="typeName" label="角色类型" />

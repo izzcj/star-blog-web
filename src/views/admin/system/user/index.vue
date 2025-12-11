@@ -282,7 +282,7 @@ function handleDialogClose() {
       </div>
 
       <!-- 用户列表表格 -->
-      <ElTable v-loading="loading" :data="userList" border>
+      <ElTable v-loading="loading" :data="userList" border max-height="600px">
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn prop="avatar" label="头像" width="80" align="center">
           <template #default="{ row }">

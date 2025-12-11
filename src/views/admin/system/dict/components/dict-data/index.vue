@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DArrowLeft, Delete, Edit, Plus } from '@element-plus/icons-vue';
+import { Back, Delete, Edit, Plus } from '@element-plus/icons-vue';
 import type { DictData } from './metadata';
 import dictDataApiModule from '@/api/system/dict-data';
 import { asyncRequest } from '@/utils/request-util';
@@ -17,6 +17,8 @@ const props = defineProps<{
 const router = useRouter();
 
 const dictDataList = ref<DictData[]>([]);
+
+const loading = ref(false);
 
 const total = ref(0);
 const pagination = reactive({
@@ -61,17 +63,21 @@ function loadDictData() {
   if (!props.dictKey) {
     return;
   }
-
+  loading.value = true;
   asyncRequest<PageData<DictData>>(dictDataApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
       size: pagination.size,
       dictKey: props.dictKey,
     },
-  }).then(res => {
-    dictDataList.value = res.data.data;
-    total.value = Number(res.data.total);
-  });
+  })
+    .then(res => {
+      dictDataList.value = res.data.data;
+      total.value = Number(res.data.total);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -158,7 +164,7 @@ function handleSubmit() {
       <template #header>
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-4">
-            <ElButton :icon="DArrowLeft" text @click="handleBack" />
+            <ElButton :icon="Back" text @click="handleBack" />
           </div>
           <ElButton :icon="Plus" type="primary" @click="handleAddDictItem">
             新增字典项
@@ -166,7 +172,7 @@ function handleSubmit() {
         </div>
       </template>
 
-      <ElTable :data="dictDataList" border>
+      <ElTable v-loading="loading" :data="dictDataList" border max-height="600px">
         <ElTableColumn prop="dictLabel" label="字典标签" />
         <ElTableColumn prop="dictValue" label="字典键值" />
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />

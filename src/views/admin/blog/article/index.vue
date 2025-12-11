@@ -211,7 +211,7 @@ function deleteArticle(article: Article) {
         </ElButton>
       </div>
 
-      <ElTable v-loading="loading" :data="articleList" border>
+      <ElTable v-loading="loading" :data="articleList" border max-height="600px">
         <ElTableColumn prop="title" label="标题" min-width="200" show-overflow-tooltip />
         <ElTableColumn prop="categoryName" label="分类" width="100" />
         <ElTableColumn prop="viewCount" label="浏览量" width="100" />
@@ -221,7 +221,7 @@ function deleteArticle(article: Article) {
           <template #default="{ row }">
             <ElSwitch
               v-model="row.top"
-              :disabled="row.status === 'PUBLISHED'"
+              :disabled="row.status !== 'published'"
               @change="toggleTop(row)"
             />
           </template>
@@ -230,7 +230,7 @@ function deleteArticle(article: Article) {
           <template #default="{ row }">
             <ElSwitch
               v-model="row.recommended"
-              :disabled="row.status === 'PUBLISHED'"
+              :disabled="row.status !== 'published'"
               @change="toggleRecommend(row)"
             />
           </template>
@@ -251,7 +251,7 @@ function deleteArticle(article: Article) {
               link
               type="primary"
               size="small"
-              :disabled="row.status === 'PUBLISHED'"
+              :disabled="row.status === 'published'"
               @click="publishArticle(row)"
             >
               发布

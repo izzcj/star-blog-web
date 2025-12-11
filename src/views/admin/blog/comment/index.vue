@@ -24,6 +24,7 @@ const timeRange = ref<[string, string] | null>(null);
 // 评论列表
 const commentList = ref<CommentDetail[]>([]);
 const total = ref(0);
+const loading = ref(false);
 
 // 分页相关
 const pagination = reactive({
@@ -63,6 +64,7 @@ watch(timeRange, val => {
  * 加载评论列表
  */
 function loadComments() {
+  loading.value = true;
   asyncRequest<PageData<CommentDetail>>(commentApiModule.apis.fetchPage, {
     params: {
       page: pagination.page,
@@ -71,10 +73,14 @@ function loadComments() {
       createTimeBegin: queryForm.createTimeBegin || undefined,
       createTimeEnd: queryForm.createTimeEnd || undefined,
     },
-  }).then(res => {
-    commentList.value = res.data.data;
-    total.value = Number(res.data.total);
-  });
+  })
+    .then(res => {
+      commentList.value = res.data.data;
+      total.value = Number(res.data.total);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -256,8 +262,10 @@ function isRowSelectable(row: CommentDetail): boolean {
 
       <!-- 数据表格 -->
       <ElTable
+        v-loading="loading"
         :data="commentList"
         border
+        max-height="600px"
         @selection-change="handleSelectionChange"
       >
         <!-- 多选列 -->
@@ -269,7 +277,7 @@ function isRowSelectable(row: CommentDetail): boolean {
         <!-- 评论用户头像 -->
         <ElTableColumn prop="userAvatar" label="头像" width="80">
           <template #default="{ row }">
-            <VenusAvatar v-model:value="row.userAvatar" :disabled="true" size="auto" />
+            <VenusAvatar v-model:value="row.userAvatar" :disabled="true" :custom-size="40" />
           </template>
         </ElTableColumn>
 

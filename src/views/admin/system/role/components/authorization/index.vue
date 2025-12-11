@@ -250,6 +250,7 @@ function handleBatchAuthorize() {
     <ElTable
       :data="authorizedUsers"
       border
+      max-height="500px"
       @selection-change="handleAuthorizedSelectionChange"
     >
       <ElTableColumn type="selection" width="55" />

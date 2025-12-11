@@ -89,14 +89,13 @@ const filteredMenuTree = computed(() => {
  */
 async function loadMenuTree() {
   loading.value = true;
-  try {
-    const response = await asyncRequest<Menu[]>(menuApiModule.apis.fetchTreeList);
-    menuTreeData.value = response.data ?? [];
-  } catch (error) {
-    console.error('加载菜单树失败:', error);
-  } finally {
-    loading.value = false;
-  }
+  asyncRequest<Menu[]>(menuApiModule.apis.fetchTreeList)
+    .then(res => {
+      menuTreeData.value = res.data;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /**
@@ -287,6 +286,7 @@ onMounted(() => {
         :data="filteredMenuTree"
         row-key="id"
         border
+        max-height="600px"
         :tree-props="{ children: 'children' }"
         class="mt-4"
       >

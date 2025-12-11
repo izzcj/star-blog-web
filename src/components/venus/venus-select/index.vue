@@ -29,6 +29,7 @@ const { data: options } = useLoadDataOptions(optionType, optionKey);
     :clearable="props.clearable"
     :collapse-tags="props.collapseTags"
     :collapse-tags-tooltip="props.collapseTagsTooltip"
+    :max-collapse-tags="props.maxCollapseTags"
     :filterable="props.filterable"
     :remote="props.remote"
     :remote-method="props.remoteMethod"
