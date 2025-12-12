@@ -179,7 +179,7 @@ declare global {
     /**
      * 总数
      */
-    total: string;
+    total: number;
     /**
      * 数据
      */
@@ -201,7 +201,7 @@ declare global {
     /**
      * 值
      */
-    value: string | number | boolean;
+    value: string | number;
     /**
      * 描述
      */

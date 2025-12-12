@@ -71,7 +71,7 @@ function loadTags() {
   })
     .then(res => {
       tagList.value = res.data.data;
-      total.value = Number(res.data.total);
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;

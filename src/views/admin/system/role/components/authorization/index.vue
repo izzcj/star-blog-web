@@ -71,7 +71,7 @@ function loadAuthorizedUsers() {
     },
   }).then(res => {
     authorizedUsers.value = res.data.data;
-    authorizedTotal.value = Number(res.data.total);
+    authorizedTotal.value = res.data.total;
   });
 }
 
@@ -160,7 +160,7 @@ function loadUnauthorizedUsers() {
     },
   }).then(res => {
     unauthorizedUsers.value = res.data.data;
-    unauthorizedTotal.value = Number(res.data.total);
+    unauthorizedTotal.value = res.data.total;
   });
 }
 

@@ -51,7 +51,7 @@ async function loadComments(append = false) {
       commentState.comments = newComments;
     }
 
-    commentState.total = Number(response.data.total);
+    commentState.total = response.data.total;
     commentState.hasMore = commentState.comments.length < commentState.total;
   } finally {
     commentState.loading = false;

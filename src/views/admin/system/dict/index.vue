@@ -58,7 +58,7 @@ function loadDictTypes() {
   })
     .then(res => {
       dictList.value = res.data.data;
-      total.value = Number(res.data.total);
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;

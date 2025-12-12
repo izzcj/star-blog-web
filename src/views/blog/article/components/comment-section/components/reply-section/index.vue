@@ -82,7 +82,7 @@ async function loadReplies() {
     });
 
     replyState.replies = response.data.data;
-    replyState.total = Number(response.data.total);
+    replyState.total = response.data.total;
 
     // 通知父组件回复数量变化
     if (replyState.total !== props.replyCount) {
