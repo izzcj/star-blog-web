@@ -66,13 +66,6 @@ const articleApiModule: ApiModule = {
       method: RequestMethod.DELETE,
     },
     /**
-     * 获取热门文章
-     */
-    fetchHotArticles: {
-      uri: '/blog/article/hot',
-      method: RequestMethod.GET,
-    },
-    /**
      * 获取文章分类导航栏
      */
     fetchCategoryNavbar: {

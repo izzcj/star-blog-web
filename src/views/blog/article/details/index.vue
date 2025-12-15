@@ -6,7 +6,6 @@ import { asyncRequest } from '@/utils/request-util';
 import { formatViewCount } from '@/utils/format-util';
 import articleApiModule from '@/api/blog/article';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
-import { formatRelativeTime } from '@/utils/date-util';
 
 defineOptions({
   name: 'ArticleDetails',
@@ -77,7 +76,7 @@ function goBack() {
             </span>
 
             <span class="flex items-center gap-1">
-              {{ formatRelativeTime(articleDetail.publishTime) }}
+              {{ articleDetail.publishTime }}
             </span>
           </div>
         </div>

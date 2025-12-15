@@ -124,7 +124,7 @@ function saveArticle() {
   )
     .then(() => {
       successNotification('保存成功', '成功');
-      router.push('ArticleManagement');
+      router.push({ name: 'ArticleManagement' });
     })
     .finally(() => {
       loading.value = false;

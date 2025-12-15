@@ -41,14 +41,14 @@ function clickArticle(article: Article) {
       />
 
       <!-- 分类标签 -->
-      <div class="absolute top-3 left-3">
+      <div class="absolute top-2 left-2">
         <span :class="getCategoryColor(article.category)" class="px-2 py-1 text-white text-xs font-medium rounded-md">
           {{ article.categoryName }}
         </span>
       </div>
 
       <!-- 置顶/推荐标识 -->
-      <div v-if="article.top || article.recommended" class="absolute top-3 right-3 flex gap-2">
+      <div v-if="article.top || article.recommended" class="absolute top-2 right-2 flex gap-2">
         <span v-if="article.top" class="flex items-center gap-1 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded-md shadow-sm">
           <ElIcon :size="12">
             <Top />

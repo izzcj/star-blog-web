@@ -38,14 +38,18 @@ const searchKeyword = ref('');
 
 // 请求参数
 const params = computed(() => {
+  let defaultDescSort = 'top, updateTime';
   const [sortField, sortOrder] = currentSort.value.split(':');
+  if (sortOrder == 'desc' && !defaultDescSort.includes(sortField)) {
+    defaultDescSort += `,${sortField}`;
+  }
   return {
     page: page.value,
     size: size.value,
     status: 'published',
     category: currentCategory.value || undefined,
     title: searchKeyword.value || undefined,
-    sortDesc: sortOrder === 'desc' ? sortField : undefined,
+    sortDesc: defaultDescSort,
     sortAsc: sortOrder === 'asc' ? sortField : undefined,
   };
 });

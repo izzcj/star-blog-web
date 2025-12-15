@@ -29,10 +29,17 @@ function goArticleList() {
  */
 async function loadHotArticle() {
   loading.value = true;
-  asyncRequest<Article[]>(articleApiModule.apis.fetchHotArticles).then(res => {
-    hotArticle.value = res.data;
-    loading.value = false;
-  });
+  asyncRequest<PageData<Article>>(articleApiModule.apis.fetchPage, {
+    params: {
+      page: 1,
+      size: 6,
+      sortDesc: 'top, viewCount, updateTime',
+    },
+  })
+    .then(res => {
+      hotArticle.value = res.data.data;
+      loading.value = false;
+    });
 }
 </script>
 

@@ -127,7 +127,7 @@ declare global {
     /**
      * API查询参数
      */
-    params?: Recordable<Undefinable<string | number | boolean>>;
+    params?: Recordable<Undefinable<string | number | boolean | string[]>>;
     /**
      * 路径参数
      */
