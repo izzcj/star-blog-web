@@ -15,18 +15,10 @@ defineOptions({
 
     <!-- 内容骨架 -->
     <div class="p-4 space-y-3">
-      <!-- 分类标签骨架 -->
+      <!-- 标题骨架 -->
       <ElSkeleton animated>
         <template #template>
-          <ElSkeletonItem variant="text" class="w-20 h-6" />
-        </template>
-      </ElSkeleton>
-
-      <!-- 标题骨架 -->
-      <ElSkeleton animated :rows="2">
-        <template #template>
           <ElSkeletonItem variant="text" class="w-full h-5" />
-          <ElSkeletonItem variant="text" class="w-3/4 h-5" />
         </template>
       </ElSkeleton>
 

@@ -11,6 +11,11 @@ defineOptions({
   name: 'ArticlePage',
 });
 
+const props = defineProps<{
+  // 分类
+  category?: string;
+}>();
+
 // 文章列表
 const articleList = ref<Article[]>([]);
 // 精选文章（用于横幅）
@@ -27,7 +32,7 @@ const page = ref(1);
 const size = ref(12);
 
 // 筛选参数
-const currentCategory = ref('');
+const currentCategory = ref(props.category);
 const currentSort = ref('publishTime:desc');
 const searchKeyword = ref('');
 
@@ -138,7 +143,7 @@ function handleSizeChange(newSize: number) {
 </script>
 
 <template>
-  <div class="min-h-full bg-gray-50/50">
+  <div class="min-h-full bg-gray-50/75">
     <div class="w-full max-w-[1280px] mx-auto px-4 md:px-6">
       <!-- 顶部横幅 -->
       <div class="pt-6 pb-8">

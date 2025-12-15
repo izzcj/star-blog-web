@@ -58,6 +58,9 @@ const commonRouter: RouteRecordRaw[] = [
         name: 'Article',
         path: '',
         component: () => import('@/views/blog/article/index.vue'),
+        props: route => ({
+          category: route.query.category,
+        }),
       },
       {
         name: 'ArticleDetails',

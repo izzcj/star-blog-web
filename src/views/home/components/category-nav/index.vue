@@ -46,7 +46,7 @@ function loadCategories() {
  * @param categoryValue 分类值
  */
 function goToCategory(categoryValue: string) {
-  router.push({ name: 'Article', query: { categoryValue } });
+  router.push({ name: 'Article', query: { category: categoryValue } });
 }
 
 onMounted(() => {
