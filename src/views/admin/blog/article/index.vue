@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
 import { Delete, Edit, Position, Refresh, Search } from '@element-plus/icons-vue';
 import type { ArticleQueryParams } from '@/views/admin/blog/article/metadata';
 import articleApiModule from '@/api/blog/article';

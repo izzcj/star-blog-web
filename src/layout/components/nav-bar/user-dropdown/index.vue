@@ -15,7 +15,6 @@ const userInfoStore = useUserInfoStore();
 const appSettingsStore = useAppSettingsStore();
 const dynamicRouteStore = useDynamicRouteStore();
 const router = useRouter();
-const avatar = ref(userInfoStore.avatar);
 /**
  * 个人信息点击事件
  */
@@ -53,7 +52,7 @@ function clickLogout() {
 <template>
   <div class="cursor-pointer pt-[5px] venus-center">
     <ElDropdown v-if="authenticationStore.isLoggedIn">
-      <ElAvatar :size="50" :src="avatar" />
+      <VenusAvatar v-model:value="userInfoStore.avatar" />
       <template #dropdown>
         <ElDropdownMenu>
           <ElDropdownItem @click="clickUserInfo">

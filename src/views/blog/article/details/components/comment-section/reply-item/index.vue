@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import { ChatDotRound } from '@element-plus/icons-vue';
 import { asyncRequest } from '@/utils/request-util';
 import commentApiModule from '@/api/blog/comment';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { errorNotification, warningNotification } from '@/element-plus/notification';
-import AvatarDisplay from '@/components/venus/venus-avatar/components/avatar-display/index.vue';
 import { formatRelativeTime } from '@/utils/date-util';
 
 interface ReplyItemProps {
@@ -91,59 +89,68 @@ function handleReply() {
 
 <template>
   <div class="py-3 border-b border-solid border-[#e8e8e8] last:border-none">
-    <div class="flex gap-3">
+    <!-- 回复头部 -->
+    <ElRow :gutter="12">
       <!-- 头像 -->
-      <AvatarDisplay
-        :src="localReply.userAvatar"
-        :name="localReply.userNickname"
-        :size="32"
-        shape="circle"
-      />
+      <ElCol :xs="4" :sm="2">
+        <VenusAvatar
+          v-model:value="localReply.userAvatar"
+          :name="localReply.userNickname"
+          size="small"
+          :disabled="true"
+          shape="circle"
+        />
+      </ElCol>
 
-      <div class="flex-1">
+      <ElCol :xs="20" :sm="22">
         <!-- 用户名和时间 -->
         <div class="flex items-center gap-2 mb-1">
           <span class="font-semibold text-sm">{{ localReply.userNickname }}</span>
-          <span class="text-xs text-gray-400">{{ formatRelativeTime(localReply.createTime as string) }}</span>
         </div>
 
         <!-- 回复内容 -->
         <div class="reply-content text-sm text-gray-700 mb-2">
-          <span v-if="localReply.replyUserNickname" class="text-[#bbb] font-medium mr-1">
-            回复：{{ localReply.replyUserNickname }}
+          <span v-if="localReply.replyUserNickname">
+            回复
+            <span class="text-gray-400 font-medium">
+              {{ `${localReply.replyUserNickname}：` }}
+            </span>
           </span>
           {{ localReply.content }}
         </div>
 
         <!-- 操作栏 -->
-        <div class="reply-actions flex items-center gap-4 text-xs text-gray-500">
-          <!-- 点赞 -->
-          <ElButton
-            class="flex items-center gap-1 transition-colors"
-            :class="likeIconClass"
-            text
-            @click="handleLike"
-          >
-            <ElIcon>
-              <Icon icon="ant-design:like-outlined" />
-            </ElIcon>
-            <span>{{ localReply.likeCount }}</span>
-          </ElButton>
-
-          <!-- 回复 -->
-          <ElButton
-            class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
-            text
-            @click="handleReply"
-          >
-            <ElIcon>
-              <ChatDotRound />
-            </ElIcon>
-            <span>回复</span>
-          </ElButton>
-        </div>
-      </div>
-    </div>
+        <ElRow class="items-center">
+          <!-- 发表时间 -->
+          <ElCol :span="18">
+            <span class="text-gray-400 text-sm">{{ formatRelativeTime(localReply.createTime as string) }}</span>
+            <!-- 回复 -->
+            <ElButton
+              class="text-gray-400! hover:text-blue-500! transition-colors"
+              text
+              size="small"
+              @click="handleReply"
+            >
+              <span>回复</span>
+            </ElButton>
+          </ElCol>
+          <ElCol :span="6">
+            <!-- 点赞 -->
+            <ElButton
+              class="transition-colors"
+              :class="likeIconClass"
+              text
+              @click="handleLike"
+            >
+              <ElIcon>
+                <Icon icon="ant-design:like-outlined" />
+              </ElIcon>
+              <span>{{ localReply.likeCount }}</span>
+            </ElButton>
+          </ElCol>
+        </ElRow>
+      </ElCol>
+    </ElRow>
   </div>
 </template>
 

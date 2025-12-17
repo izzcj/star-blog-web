@@ -2,15 +2,11 @@
 import { venusAvatarProps } from './props';
 import AvatarDisplay from './components/avatar-display/index.vue';
 import AvatarUploader from './components/avatar-uploader/index.vue';
-import { blobToFile, fileToDataURL, isValidImageType } from './utils/image-process';
 import ImageCropper from './components/image-cropper/index.vue';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
-import { useAuthenticationStore } from '@/stores/authentication-store';
-import { getAppConfig } from '@/utils/env-util';
 import { errorNotification, successNotification } from '@/element-plus/notification';
-import request from '@/request';
-import RequestMethod from '@/enums/request-method';
-import RequestHeader from '@/enums/request-header';
+import { blobToFile, fileToDataURL, isValidImageType } from '@/utils/file-util';
+import { asyncUploadRequest } from '@/utils/request-util';
 
 defineOptions({
   name: 'VenusAvatar',
@@ -24,26 +20,17 @@ const model = defineModel<string | null>('value', { type: String });
 
 const uploadInfoStore = useUploadInfoStore();
 
-const authenticationStore = useAuthenticationStore();
-
 // 尺寸映射
 const sizeMap = {
-  small: 48,
-  default: 80,
-  large: 120,
+  small: 32,
+  default: 50,
+  large: 80,
   auto: null,
 };
 
 // 计算实际尺寸
 const computedSize = computed(() => {
   return props.customSize || sizeMap[props.size];
-});
-
-// 上传 URL
-const uploadUrl = computed(() => {
-  const apiBaseUrl = getAppConfig().apiBaseUrl;
-  const baseUrl = apiBaseUrl.endsWith('/') ? apiBaseUrl : `${apiBaseUrl}/`;
-  return `${baseUrl}oss/upload/${props.ossProvider}/image`;
 });
 
 // 裁剪弹窗显示状态
@@ -54,17 +41,6 @@ const imageToCrop = ref('');
 
 // 上传加载状态
 const uploading = ref(false);
-
-// 请求头
-const headers = computed<Recordable>(() => {
-  if (authenticationStore.isLoggedIn) {
-    return {
-      [RequestHeader.AUTHORIZATION]: `Bearer ${authenticationStore.accessToken}`,
-      [RequestHeader.CONTENT_TYPE]: RequestHeader.CONTENT_TYPE_MULTIPART_FORM_DATA,
-    } as Recordable;
-  }
-  return {};
-});
 
 /**
  * 处理文件选择
@@ -115,13 +91,8 @@ async function uploadToOss(file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await request({
-      url: uploadUrl.value,
-      method: RequestMethod.POST,
-      headers: headers.value,
-      data: formData,
-    });
-    model.value = response.data.data;
+    const response = await asyncUploadRequest(formData);
+    model.value = response.data;
 
     successNotification('头像上传成功', '成功');
   } catch (error) {
@@ -154,7 +125,7 @@ async function handleDelete() {
 <template>
   <div class="relative inline-block">
     <AvatarUploader
-      :disabled="props.disabled || uploading"
+      :enabled="props.mode === 'edit' && !uploading"
       :has-avatar="!!model"
       @upload="handleFileSelected"
       @delete="handleDelete"

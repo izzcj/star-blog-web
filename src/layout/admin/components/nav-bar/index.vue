@@ -7,7 +7,6 @@ defineOptions({
 });
 
 const userInfoStore = useUserInfoStore();
-const avatar = ref(userInfoStore.avatar);
 const router = useRouter();
 
 /**
@@ -24,7 +23,7 @@ function toHome() {
       <ElCol :span="2" :offset="22">
         <div class="cursor-pointer pt-[5px] venus-center">
           <ElDropdown>
-            <ElAvatar :size="50" :src="avatar" />
+            <VenusAvatar v-model:value="userInfoStore.avatar" />
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem @click="toHome">

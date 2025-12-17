@@ -2,8 +2,8 @@
 import { Delete } from '@element-plus/icons-vue';
 
 interface AvatarUploaderProps {
-  // 是否禁用
-  disabled?: boolean;
+  // 是否启用
+  enabled?: boolean;
   // 是否已有头像
   hasAvatar?: boolean;
 }
@@ -18,7 +18,7 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<AvatarUploaderProps>(), {
-  disabled: false,
+  enabled: true,
   hasAvatar: false,
 });
 
@@ -34,10 +34,9 @@ const isHovering = ref(false);
  * 文件选择处理
  */
 function handleClick() {
-  if (props.disabled) {
-    return;
+  if (props.enabled) {
+    fileInputRef.value?.click();
   }
-  fileInputRef.value?.click();
 }
 
 /**
@@ -70,8 +69,8 @@ function handleDelete(event: Event) {
 
 <template>
   <div
-    class="inline-block relative cursor-pointer select-none"
-    :class="{ 'cursor-not-allowed': props.disabled }"
+    class="inline-block relative select-none"
+    :class="{ 'cursor-pointer': props.enabled }"
     @click="handleClick"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
@@ -81,7 +80,7 @@ function handleDelete(event: Event) {
 
     <!-- 悬停遮罩 -->
     <div
-      v-if="isHovering && !props.disabled"
+      v-if="isHovering && props.enabled"
       class="absolute flex items-center justify-center"
     >
       <div class="actions flex gap-3">

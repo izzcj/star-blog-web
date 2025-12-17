@@ -2,12 +2,13 @@
 import 'element-plus/es/components/upload/style/index';
 import type { UploadUserFile, UploadRawFile } from 'element-plus';
 import path from 'path-browserify';
-import { indexOf, remove } from 'lodash-es';
+import { remove } from 'lodash-es';
 import { Delete, Plus } from '@element-plus/icons-vue';
 import { venusUploadProps } from './props';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
+import { isValidImageType } from '@/utils/file-util';
 import RequestHeader from '@/enums/request-header';
 import { errorNotification } from '@/element-plus/notification';
 
@@ -146,8 +147,7 @@ function onSuccess(response: any, uploadFile: VenusUploadFile) {
  */
 function beforeUpload(rawFile: UploadRawFile) {
   if (props.fileType === 'image') {
-    const supportableImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/bmp'];
-    if (indexOf(supportableImageTypes, rawFile.type) == -1) {
+    if (!isValidImageType(rawFile)) {
       errorNotification('仅支持jpeg,png,jpg,bmp格式的图片', '错误');
       return false;
     }

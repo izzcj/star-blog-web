@@ -5,15 +5,23 @@ import { asyncRequest } from '@/utils/request-util';
 import HomeComponentCard from '@/views/home/components/home-component-card.vue';
 
 defineOptions({
-  name: 'HotArticle',
+  name: 'LatestArticle',
 });
 
 const hotArticle = ref<Article[]>([]);
+const router = useRouter();
 const loading = ref(false);
 
 onMounted(() => {
   loadHotArticle();
 });
+
+/**
+ * 跳转至文章列表页
+ */
+function goArticleList() {
+  router.push({ name: 'Article' });
+}
 
 /**
  * 加载热门文章
@@ -25,7 +33,7 @@ async function loadHotArticle() {
       page: 1,
       size: 6,
       status: 'published',
-      sortDesc: 'top, viewCount, updateTime',
+      sortDesc: 'publishTime',
     },
   })
     .then(res => {
@@ -36,7 +44,12 @@ async function loadHotArticle() {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" header-class="" title="热门文章">
+  <HomeComponentCard v-loading="loading" header-class="" title="最新文章">
+    <template #header>
+      <ElButton text type="primary" size="small" @click="goArticleList">
+        查看更多 →
+      </ElButton>
+    </template>
     <div class="w-full">
       <template v-if="hotArticle.length">
         <div class="w-full grid gap-4 grid-cols-1 md:grid-cols-2 2xl:grid-cols-3">
@@ -47,7 +60,7 @@ async function loadHotArticle() {
           />
         </div>
       </template>
-      <ElEmpty v-else description="暂无热门文章" :image-size="80" />
+      <ElEmpty v-else description="暂无文章" :image-size="80" />
     </div>
   </HomeComponentCard>
 </template>

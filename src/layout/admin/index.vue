@@ -35,7 +35,7 @@ onMounted(() => {
         </ElCard>
         <ElMain class="admin-main overflow-hidden!">
           <div>
-            <div class="pb-3 sticky top-0 z-10">
+            <div class="pb-3 sticky top-0 z-0">
               <AdminNavBar />
             </div>
             <AppMain />

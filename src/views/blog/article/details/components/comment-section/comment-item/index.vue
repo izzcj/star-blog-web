@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import { ChatDotRound } from '@element-plus/icons-vue';
 import ReplySection from '../reply-section/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import commentApiModule from '@/api/blog/comment';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { errorNotification, warningNotification } from '@/element-plus/notification';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
-import AvatarDisplay from '@/components/venus/venus-avatar/components/avatar-display/index.vue';
 import { formatRelativeTime } from '@/utils/date-util';
 
 interface CommentItemProps {
@@ -127,20 +125,22 @@ function handleReplyCountChange(count: number) {
 <template>
   <div class="py-4 border-b border-solid border-[#e8e8e8] last:border-none">
     <!-- 评论头部 -->
-    <div class="flex gap-3">
+    <ElRow :gutter="12">
       <!-- 头像 -->
-      <AvatarDisplay
-        :src="localComment.userAvatar"
-        :name="localComment.userNickname"
-        :size="avatarSize"
-        shape="circle"
-      />
+      <ElCol :xs="4" :sm="2">
+        <VenusAvatar
+          v-model:value="localComment.userAvatar"
+          :name="localComment.userNickname"
+          :custom-size="avatarSize"
+          :disabled="true"
+          shape="circle"
+        />
+      </ElCol>
 
-      <div class="flex-1">
-        <!-- 用户名和时间 -->
-        <div class="flex items-center gap-2 mb-1">
+      <ElCol :xs="20" :sm="22">
+        <!-- 用户名 -->
+        <div class="mb-1">
           <span class="font-semibold text-sm">{{ localComment.userNickname }}</span>
-          <span class="text-xs text-gray-400">{{ formatRelativeTime(localComment.createTime as string) }}</span>
         </div>
 
         <!-- 评论内容 -->
@@ -149,39 +149,43 @@ function handleReplyCountChange(count: number) {
         </div>
 
         <!-- 操作栏 -->
-        <div class="flex items-center gap-4 text-xs text-gray-500">
-          <!-- 点赞 -->
-          <ElButton
-            class="flex items-center gap-1 transition-colors cursor-pointer"
-            text
-            :class="likeIconClass"
-            @click="handleLike"
-          >
-            <ElIcon>
-              <Icon icon="ant-design:like-outlined" />
-            </ElIcon>
-            <span>{{ localComment.likeCount }}</span>
-          </ElButton>
-
-          <!-- 回复 -->
-          <ElButton
-            class="flex items-center gap-1 text-gray-400! hover:text-blue-500! transition-colors cursor-pointer"
-            text
-            @click="showReplyInputHandler"
-          >
-            <ElIcon>
-              <ChatDotRound />
-            </ElIcon>
-            <span>回复</span>
-          </ElButton>
-
+        <ElRow class="items-center">
+          <ElCol :span="18">
+            <!-- 发表时间 -->
+            <span class="text-gray-400 text-sm">{{ formatRelativeTime(localComment.createTime as string) }}</span>
+            <!-- 回复 -->
+            <ElButton
+              class="text-gray-400! hover:text-blue-500! transition-colors"
+              text
+              size="small"
+              @click="showReplyInputHandler"
+            >
+              <span>回复</span>
+            </ElButton>
+          </ElCol>
+          <ElCol :span="6">
+            <!-- 点赞 -->
+            <ElButton
+              class="transition-colors"
+              text
+              :class="likeIconClass"
+              @click="handleLike"
+            >
+              <ElIcon>
+                <Icon icon="ant-design:like-outlined" />
+              </ElIcon>
+              <span>{{ localComment.likeCount }}</span>
+            </ElButton>
+          </ElCol>
+        </ElRow>
+        <div v-if="replyCount > 0">
           <!-- 回复数量 -->
-          <span v-if="replyCount > 0" class="text-blue-500 cursor-pointer" @click="toggleReplySection">
+          <span class="text-xs text-blue-500 cursor-pointer" @click="toggleReplySection">
             {{ replyCount }} 条回复 {{ showReplySection ? '▲' : '▼' }}
           </span>
         </div>
-      </div>
-    </div>
+      </ElCol>
+    </ElRow>
 
     <!-- 回复区域 -->
     <ReplySection

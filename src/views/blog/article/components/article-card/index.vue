@@ -49,13 +49,13 @@ function clickArticle(article: Article) {
 
       <!-- 置顶/推荐标识 -->
       <div v-if="article.top || article.recommended" class="absolute top-2 right-2 flex gap-2">
-        <span v-if="article.top" class="flex items-center gap-1 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded-md shadow-sm">
+        <span v-if="article.top" class="flex items-center gap-1 px-2 py-1 bg-orange-500/60 text-white text-xs font-medium rounded-md shadow-sm">
           <ElIcon :size="12">
             <Top />
           </ElIcon>
           置顶
         </span>
-        <span v-if="article.recommended" class="flex items-center gap-1 px-2 py-1 bg-blue-500 text-white text-xs font-medium rounded-md shadow-sm">
+        <span v-if="article.recommended" class="flex items-center gap-1 px-2 py-1 bg-blue-500/60 text-white text-xs font-medium rounded-md shadow-sm">
           <ElIcon :size="12">
             <Star />
           </ElIcon>

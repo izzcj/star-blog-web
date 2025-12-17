@@ -52,6 +52,7 @@ const commonRouter: RouteRecordRaw[] = [
       title: '文章',
       keepAlive: true,
       topLevel: true,
+      icon: 'svg:article',
     },
     children: [
       {

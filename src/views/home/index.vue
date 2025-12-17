@@ -3,6 +3,7 @@ import { animate, stagger } from 'animejs';
 import { calculateElTopToViewportDistance } from '@/utils/html-util';
 import MasterInfo from '@/views/home/components/master-info/index.vue';
 import HotArticle from '@/views/home/components/hot-article/index.vue';
+import LatestArticle from '@/views/home/components/latest-article/index.vue';
 import WebsiteStats from '@/views/home/components/website-stats/index.vue';
 import LatestActivity from '@/views/home/components/latest-activity/index.vue';
 import CategoryNav from '@/views/home/components/category-nav/index.vue';
@@ -163,7 +164,7 @@ function initScrollAnimations() {
         // 中间内容缩放淡入
         observeElements('#main-col > .fade-children > *', {
           ...scaleInConfig,
-          delay: 200,
+          delay: stagger(100),
         });
       }
     }, 100);
@@ -215,6 +216,7 @@ onBeforeRouteLeave(() => {
         <ElCol id="main-col" :xs="24" :sm="24" :md="12">
           <div class="fade-children w-full">
             <HotArticle />
+            <LatestArticle />
           </div>
         </ElCol>
 

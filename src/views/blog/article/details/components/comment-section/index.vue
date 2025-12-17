@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CommentInput from './components/comment-input/index.vue';
-import CommentItem from './components/comment-item/index.vue';
+import CommentInput from './comment-input/index.vue';
+import CommentItem from './comment-item/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import commentApiModule from '@/api/blog/comment';
 import { errorNotification, successNotification } from '@/element-plus/notification';
@@ -20,7 +20,7 @@ const props = defineProps<CommentSectionProps>();
 const commentState = reactive({
   comments: [] as CommentDetail[],
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 5,
   total: 0,
   loading: false,
   hasMore: true,

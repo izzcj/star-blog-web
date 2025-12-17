@@ -2,6 +2,9 @@ import type { AxiosResponse, RawAxiosRequestHeaders } from 'axios';
 import RequestMethod from '@/enums/request-method';
 import instance from '@/request';
 import { replaceTemplate } from '@/utils/string-util';
+import { uploadApiModule } from '@/api/upload';
+import { useAuthenticationStore } from '@/stores/authentication-store';
+import RequestHeader from '@/enums/request-header';
 
 // ------------------简化请求方法-------------------- //
 export async function get<T = any>(uri: string, params: Recordable = {}, headers: RawAxiosRequestHeaders = {}) {
@@ -95,6 +98,42 @@ export function asyncRequest<T = any, D extends Recordable = Recordable>(
   const requestInfo = mergedRequestInfo(api, apiRequest);
 
   return executeRequest<T, D>(requestInfo.uri, requestInfo.method, requestInfo.apiRequest);
+}
+
+/**
+ * 发送异步上传请求
+ *
+ * @param formData    表单数据
+ * @param api         API
+ * @param fileType    文件类型
+ * @param ossProvider OSS提供者
+ */
+export function asyncUploadRequest<T = any>(
+  formData: FormData,
+  api?: ApiDescriptor,
+  fileType?: string,
+  ossProvider?: string,
+) {
+  if (!api) {
+    api = uploadApiModule.apis.uploadObject;
+  }
+  const authenticationStore = useAuthenticationStore();
+  let headers: Recordable = {};
+  if (authenticationStore.isLoggedIn) {
+    headers = {
+      [RequestHeader.AUTHORIZATION]: `Bearer ${authenticationStore.accessToken}`,
+      [RequestHeader.CONTENT_TYPE]: RequestHeader.CONTENT_TYPE_MULTIPART_FORM_DATA,
+    };
+  }
+  const apiRequest: ApiRequest<FormData> = {
+    pathParams: {
+      fileType: fileType || 'image',
+      ossProvider: ossProvider || 'minio',
+    },
+    headers,
+    data: formData,
+  };
+  return asyncRequest<T, FormData>(api, apiRequest);
 }
 
 /**

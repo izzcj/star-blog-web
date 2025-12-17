@@ -99,7 +99,7 @@ onMounted(() => {
       </ElHeader>
       <ElMain ref="mainRef" class="default-main w-dvw hidden-scrollbar">
         <AppMain />
-        <ElBacktop :bottom="100" target=".default-main" :visibility-height="visibilityHeight" />
+        <ElBacktop :bottom="100" target=".default-main" :visibility-height="visibilityHeight" class="z-0!" />
       </ElMain>
       <ElFooter>Footer</ElFooter>
     </ElContainer>

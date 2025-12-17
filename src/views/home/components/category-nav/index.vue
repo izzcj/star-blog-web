@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
 import HomeComponentCard from '../home-component-card.vue';
 import { asyncRequest } from '@/utils/request-util';
 import articleApiModule from '@/api/blog/article';

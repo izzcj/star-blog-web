@@ -17,8 +17,8 @@ export const venusAvatarProps = {
   bgColor: string(),
   // 是否启用裁剪功能
   enableCrop: bool().def(true),
-  // 是否禁用
-  disabled: bool().def(false),
+  // 模式
+  mode: oneOf(['view', 'edit']).def('view'),
   // 取消回调函数
   onCancel: func<() => void>(),
 } as const;

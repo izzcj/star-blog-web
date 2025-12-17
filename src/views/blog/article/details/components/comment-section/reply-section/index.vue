@@ -45,7 +45,7 @@ const replyState = reactive({
 // 回复输入框状态
 const replyInputState = reactive({
   show: props.showInput,
-  target: null as { userId: string; userName: string; commentId: string } | null,
+  target: null as { userId: string; userNickname: string; commentId: string } | null,
 });
 
 // 监听 showInput 属性变化
@@ -63,7 +63,7 @@ const paginationLayout = computed(() => {
 // 输入框占位符
 const inputPlaceholder = computed(() => {
   return replyInputState.target
-    ? `回复 @${replyInputState.target.userName}`
+    ? `回复 @${replyInputState.target.userNickname}`
     : '发表回复...';
 });
 
@@ -104,7 +104,7 @@ async function handlePageChange(page: number) {
 /**
  * 点击回复按钮
  */
-function handleReplyClick(target: { userId: string; userName: string; commentId: string }) {
+function handleReplyClick(target: { userId: string; userNickname: string; commentId: string }) {
   replyInputState.show = true;
   replyInputState.target = target;
 }

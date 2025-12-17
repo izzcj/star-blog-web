@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { View } from '@element-plus/icons-vue';
-import { useRouter } from 'vue-router';
 import HomeComponentCard from '../home-component-card.vue';
 import { formatViewCount } from '@/utils/format-util';
 import { asyncRequest } from '@/utils/request-util';

@@ -286,7 +286,7 @@ function handleDialogClose() {
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn prop="avatar" label="头像" width="80" align="center">
           <template #default="{ row }">
-            <VenusAvatar v-model:value="row.avatar" :disabled="true" size="auto" />
+            <VenusAvatar v-model:value="row.avatar" size="auto" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="account" label="账号" />
@@ -365,8 +365,8 @@ function handleDialogClose() {
         <ElFormItem label="头像" prop="avatar">
           <VenusAvatar
             v-model:value="formData.avatar"
-            size="default"
             name="默认"
+            mode="edit"
             :on-cancel="handleAvatarCancel"
           />
         </ElFormItem>
