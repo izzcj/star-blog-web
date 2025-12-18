@@ -102,7 +102,7 @@ onMounted(() => {
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center mb-1.5">
-            <VenusAvatar v-model:value="activity.userAvatar" :custom-size="28" class="mr-2 shrink-0" />
+            <VenusAvatar v-model:value="activity.userAvatar" :size="28" class="mr-2 shrink-0" />
             <span class="text-[14px] text-[#333] font-semibold">{{ activity.userNickname }}</span>
           </div>
           <div class="text-[13px] text-[#333] mb-1 leading-normal">

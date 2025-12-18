@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { View } from '@element-plus/icons-vue';
-import { asyncRequest } from '@/utils/request-util';
 import articleApiModule from '@/api/blog/article';
+import { asyncRequest } from '@/utils/request-util';
 import { formatViewCount } from '@/utils/format-util';
+import { formatRelativeTime } from '@/utils/date-util';
 
 const props = defineProps<{
   authorId: string;
@@ -90,7 +91,7 @@ onMounted(() => {
 
           <!-- 元信息 -->
           <div class="flex items-center gap-3 text-xs text-gray-500">
-            <span>{{ article.publishTime }}</span>
+            <span>{{ formatRelativeTime(article.publishTime) }}</span>
             <span class="flex items-center gap-1">
               <ElIcon :size="14"><View /></ElIcon>
               {{ formatViewCount(article.viewCount) }}

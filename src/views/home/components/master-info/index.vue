@@ -37,7 +37,7 @@ onMounted(() => {
         <div class="relative mb-4">
           <VenusAvatar
             v-model:value="masterInfo.avatar"
-            :custom-size="100"
+            :size="100"
             class="transition-transform duration-300 ease-out group-hover:scale-105 group-hover:rotate-[5deg]"
           />
           <div class="avatar-ring" />

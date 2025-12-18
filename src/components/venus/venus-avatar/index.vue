@@ -22,15 +22,18 @@ const uploadInfoStore = useUploadInfoStore();
 
 // 尺寸映射
 const sizeMap = {
+  mini: 24,
   small: 32,
   default: 50,
   large: 80,
-  auto: null,
 };
 
 // 计算实际尺寸
 const computedSize = computed(() => {
-  return props.customSize || sizeMap[props.size];
+  if (isNumber(props.size)) {
+    return props.size;
+  }
+  return sizeMap[props.size];
 });
 
 // 裁剪弹窗显示状态

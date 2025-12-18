@@ -131,7 +131,7 @@ function handleReplyCountChange(count: number) {
         <VenusAvatar
           v-model:value="localComment.userAvatar"
           :name="localComment.userNickname"
-          :custom-size="avatarSize"
+          :size="avatarSize"
           :disabled="true"
           shape="circle"
         />

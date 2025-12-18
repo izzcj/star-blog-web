@@ -1,12 +1,11 @@
-import { bool, func, number, oneOf, string } from 'vue-types';
+import { bool, func, number, oneOf, oneOfType, string } from 'vue-types';
+import { ComponentsSize } from '@/enums/components-size';
 
 export const venusAvatarProps = {
   // OSS实现
   ossProvider: oneOf(['minio'] as const).def('minio'),
-  // 尺寸配置
-  size: oneOf(['small', 'default', 'large', 'auto'] as const).def('default'),
-  // 自定义尺寸（像素），优先级高于size
-  customSize: number(),
+  // 尺寸
+  size: oneOfType([number(), oneOf(values(ComponentsSize))]).def(ComponentsSize.DEFAULT),
   // 形状
   shape: oneOf(['circle', 'square'] as const).def('circle'),
   // 用户名（用于文字头像）

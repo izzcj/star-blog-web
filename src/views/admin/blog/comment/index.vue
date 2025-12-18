@@ -277,7 +277,7 @@ function isRowSelectable(row: CommentDetail): boolean {
         <!-- 评论用户头像 -->
         <ElTableColumn prop="userAvatar" label="头像" width="80">
           <template #default="{ row }">
-            <VenusAvatar v-model:value="row.userAvatar" :custom-size="40" />
+            <VenusAvatar v-model:value="row.userAvatar" :size="40" />
           </template>
         </ElTableColumn>
 
