@@ -68,12 +68,12 @@ function clickArticle(article: Article) {
     <ElText class="block! pt-2! text-[20px]! font-bold!" truncated>
       {{ article.title }}
     </ElText>
-    <ElText v-if="article.summary" class="block! pt-2! text-[14px]! text-black/75!" truncated :line-clamp="2">
+    <ElText v-if="article.summary" class="block! pt-2! text-[14px]! text-black/40!" truncated :line-clamp="2">
       {{ article.summary }}
     </ElText>
 
     <!-- 底部信息栏 -->
-    <div class="pt-5 text-[13px] text-black/40">
+    <div class="pt-5 text-[13px] text-black/50">
       <div class="mr-auto flex flex-wrap">
         <div class="venus-center">
           <ElIcon>

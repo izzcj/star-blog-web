@@ -34,7 +34,7 @@ onMounted(() => {
     <div v-if="articleDetail" id="article-detail" class="max-w-[1500px] 2xl:max-w-[1700px] mx-auto py-6">
       <ElRow :gutter="24">
         <!-- 左侧作者栏：PC端显示 -->
-        <ElCol :xs="0" :sm="0" :md="0" :lg="5" :xl="5">
+        <ElCol :xs="0" :sm="0" :md="0" :lg="5">
           <AuthorSidebar
             :author-id="articleDetail.createBy"
             :current-article-id="articleDetail.id"
@@ -42,17 +42,17 @@ onMounted(() => {
         </ElCol>
 
         <!-- 中间内容区：全端显示 -->
-        <ElCol :xs="24" :sm="24" :md="17" :lg="14" :xl="14">
+        <ElCol :xs="24" :sm="24" :md="17" :lg="14">
           <div v-if="appSettingsStore.isMobile">
             <ArticleContent :article-detail="articleDetail" />
           </div>
-          <ElCard v-else class="min-h-full">
+          <ElCard v-else class="min-h-full" shadow="never">
             <ArticleContent :article-detail="articleDetail" />
           </ElCard>
         </ElCol>
 
         <!-- 右侧目录：平板及以上显示 -->
-        <ElCol :xs="0" :sm="0" :md="7" :lg="5" :xl="5">
+        <ElCol :xs="0" :sm="0" :md="7" :lg="5">
           <ElAffix :offset="100" :z-index="0">
             <ArticleToc :content="articleDetail.content" />
           </ElAffix>

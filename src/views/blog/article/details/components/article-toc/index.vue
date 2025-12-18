@@ -18,8 +18,6 @@ const activeTocId = ref<string>('');
 const observer = ref<IntersectionObserver | null>(null);
 // 阅读进度
 const readingProgress = ref(0);
-// 折叠状态
-const collapsedHeadings = ref<Set<string>>(new Set());
 // 滚动容器
 const scrollContainer = ref<Element | null>(null);
 
@@ -93,41 +91,6 @@ function scrollToHeading(id: string) {
     });
     activeTocId.value = id;
   }
-}
-
-/**
- * 切换折叠状态
- *
- * @param id 标题ID
- * @param event 事件对象
- */
-function toggleCollapse(id: string, event: Event) {
-  event.stopPropagation();
-  if (collapsedHeadings.value.has(id)) {
-    collapsedHeadings.value.delete(id);
-  } else {
-    collapsedHeadings.value.add(id);
-  }
-}
-
-/**
- * 判断是否应该隐藏（父级被折叠）
- *
- * @param item 当前目录项
- * @param index 当前索引
- */
-function shouldHide(item: TocItem, index: number): boolean {
-  // 从当前项往上查找，看是否有被折叠的父级
-  for (let i = index - 1; i >= 0; i--) {
-    const prevItem = tocItems.value[i];
-    if (prevItem.level < item.level && collapsedHeadings.value.has(prevItem.id)) {
-      return true;
-    }
-    if (prevItem.level < item.level) {
-      break;
-    }
-  }
-  return false;
 }
 
 /**
@@ -259,8 +222,7 @@ onUnmounted(() => {
     <div class="overflow-y-auto max-h-[calc(100vh-140px)] custom-scrollbar">
       <div v-if="tocItems.length > 0" class="space-y-1">
         <div
-          v-for="(item, index) of tocItems"
-          v-show="!shouldHide(item, index)"
+          v-for="item of tocItems"
           :key="item.id"
           class="group flex items-center gap-1.5 px-2 py-0.5 rounded cursor-pointer transition-all duration-300 ease-in-out"
           :class="[
@@ -280,15 +242,6 @@ onUnmounted(() => {
           <!-- 标题文本 -->
           <span class="flex-1 text-sm truncate" :title="item.text">
             {{ item.text }}
-          </span>
-
-          <!-- 折叠按钮（仅 H3+ 显示） -->
-          <span
-            v-if="item.level >= 3"
-            class="text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
-            @click="toggleCollapse(item.id, $event)"
-          >
-            {{ collapsedHeadings.has(item.id) ? '▶' : '▼' }}
           </span>
         </div>
       </div>

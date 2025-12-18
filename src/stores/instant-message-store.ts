@@ -1,5 +1,4 @@
 import { errorNotification, infoNotification, successNotification } from '@/element-plus/notification';
-import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
 import { getAppConfig } from '@/utils/env-util';
 import { emitter } from '@/utils/event-util';
@@ -36,11 +35,10 @@ export const useInstantMessageStore = defineStore({
      */
     connectMessageServer(_id: string) {
       const appConfig = getAppConfig();
-      const authenticationStore = useAuthenticationStore();
 
-      this.client = new WebSocket(`${appConfig.instantMessageServerUrl}?accessToken=${authenticationStore.accessToken}`);
+      this.client = new WebSocket(`${appConfig.instantMessageServerUrl}`);
       this.client.onopen = () => {
-        successNotification('成功提示', '即时消息服务连接成功！');
+        successNotification('成功提示', '欢迎来到星站！');
       };
       this.client.onmessage = e => {
         const result = JSON.parse(e.data);
@@ -54,7 +52,7 @@ export const useInstantMessageStore = defineStore({
       };
       this.client.onerror = e => {
         console.log('WebSocket连接错误', e);
-        errorNotification('错误提示', '已中断即时消息服务连接！');
+        errorNotification('错误提示', '已与星站断开连接！');
       };
 
       useEventListener(window, 'beforeunload', () => {

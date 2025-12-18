@@ -79,7 +79,7 @@ function getActivityIcon(type: ActivityItem['type']): string {
  */
 function goToArticle(articleId?: string) {
   if (articleId) {
-    router.push({ name: 'ArticleDetail', params: { id: articleId } });
+    router.push({ name: 'ArticleDetails', params: { id: articleId } });
   }
 }
 
@@ -94,7 +94,7 @@ onMounted(() => {
       <div
         v-for="activity of activities"
         :key="activity.id"
-        class="group cursor-pointer flex py-3 px-4 border-b-[1px_solid_#f5f5f5] last:border-b-0 transition-colors duration-200 hover:bg-gray-100"
+        class="group cursor-pointer flex py-3 px-4 border-b-[1px_solid_#f5f5f5] last:border-b-0 transition-colors duration-200 hover:bg-gray-200"
         @click="goToArticle(activity.articleId)"
       >
         <div class="w-6 h-6 text-xl mr-3 shrink-0 flex items-center justify-center">

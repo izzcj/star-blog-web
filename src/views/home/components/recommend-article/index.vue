@@ -4,6 +4,7 @@ import HomeComponentCard from '../home-component-card.vue';
 import { formatViewCount } from '@/utils/format-util';
 import { asyncRequest } from '@/utils/request-util';
 import articleApiModule from '@/api/blog/article';
+import { formatRelativeTime } from '@/utils/date-util';
 
 defineOptions({
   name: 'RecommendArticle',
@@ -77,7 +78,8 @@ onMounted(() => {
             {{ article.title }}
           </div>
 
-          <div class="flex items-center text-xs text-gray-500">
+          <div class="flex items-center text-xs gap-3 text-gray-500">
+            <span>{{ formatRelativeTime(article.publishTime) }}</span>
             <span class="flex items-center gap-1">
               <ElIcon :size="14"><View /></ElIcon>
               {{ formatViewCount(article.viewCount) }}
