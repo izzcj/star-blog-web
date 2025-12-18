@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Delete } from '@element-plus/icons-vue';
+import { Delete, Plus } from '@element-plus/icons-vue';
 
 interface AvatarUploaderProps {
   // 是否启用
@@ -69,31 +69,40 @@ function handleDelete(event: Event) {
 
 <template>
   <div
-    class="inline-block relative select-none"
+    class="inline-block relative"
     :class="{ 'cursor-pointer': props.enabled }"
-    @click="handleClick"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
   >
-    <!-- 默认插槽，显示头像 -->
+    <!-- 默认插槽：头像 -->
     <slot />
 
     <!-- 悬停遮罩 -->
-    <div
-      v-if="isHovering && props.enabled"
-      class="absolute flex items-center justify-center"
-    >
-      <div class="actions flex gap-3">
-        <!-- 删除按钮 -->
-        <ElIcon
-          v-if="props.hasAvatar"
-          :size="24"
-          @click="handleDelete"
-        >
-          <Delete />
-        </ElIcon>
+    <Transition name="fade">
+      <div
+        v-if="isHovering && props.enabled"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-sm rounded-full"
+      >
+        <div class="actions flex gap-3 text-white">
+          <!-- 删除按钮 -->
+          <ElIcon
+            v-if="props.hasAvatar"
+            :size="24"
+            @click="handleDelete"
+          >
+            <Delete />
+          </ElIcon>
+          <!-- 上传按钮 -->
+          <ElIcon
+            v-else
+            :size="24"
+            @click="handleClick"
+          >
+            <Plus />
+          </ElIcon>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- 文件输入 -->
     <input

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Loading } from '@element-plus/icons-vue';
 import { venusAvatarProps } from './props';
 import AvatarDisplay from './components/avatar-display/index.vue';
 import AvatarUploader from './components/avatar-uploader/index.vue';
@@ -117,7 +118,6 @@ async function handleDelete() {
   try {
     await uploadInfoStore.removeTempObject(props.ossProvider, model.value);
     model.value = null;
-    successNotification('头像已删除', '成功');
   } catch (error) {
     console.error('删除失败:', error);
     errorNotification('删除头像失败', '错误');
@@ -126,7 +126,10 @@ async function handleDelete() {
 </script>
 
 <template>
-  <div class="relative inline-block">
+  <div
+    class="relative inline-block"
+    :style="{ width: `${computedSize}px`, height: `${computedSize}px` }"
+  >
     <AvatarUploader
       :enabled="props.mode === 'edit' && !uploading"
       :has-avatar="!!model"
@@ -152,14 +155,16 @@ async function handleDelete() {
     />
 
     <!-- 上传中遮罩 -->
-    <Transition name="fade">
+    <Transition name="fade-scale">
       <div
         v-if="uploading"
-        class="border-inherit absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-inherit"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-sm rounded-full"
       >
-        <ElIcon class="animate-spin text-white" :size="computedSize ?? 24 * 0.3">
-          <Loading />
-        </ElIcon>
+        <div class="actions flex gap-3 text-white">
+          <ElIcon class="animate-spin" :size="computedSize * 0.3">
+            <Loading />
+          </ElIcon>
+        </div>
       </div>
     </Transition>
   </div>

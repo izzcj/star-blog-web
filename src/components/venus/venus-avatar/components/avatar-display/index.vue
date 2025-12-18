@@ -129,7 +129,7 @@ watch(() => props.src, () => {
     <!-- 文字头像 -->
     <div
       v-else-if="shouldShowText"
-      class="size-full flex items-center justify-center font-semibold select-none"
+      class="size-full rounded-full flex items-center justify-center font-semibold select-none"
       :style="textAvatarStyle"
     >
       {{ avatarText }}
