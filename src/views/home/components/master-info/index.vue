@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Message } from '@element-plus/icons-vue';
 import { asyncRequest } from '@/utils/request-util';
-import userApiModule from '@/api/system/user';
+import userProfileApiModule from '@/api/user-profile';
 
 defineOptions({
   name: 'MasterInfo',
@@ -15,7 +15,7 @@ const masterInfo: Pick<UserProfile, 'nickname' | 'avatar' | 'remark' | 'email'> 
 });
 const textShineRef = ref<HTMLElement | null>(null);
 onMounted(() => {
-  asyncRequest<UserProfile>(userApiModule.apis.masterInfo).then(res => {
+  asyncRequest<UserProfile>(userProfileApiModule.apis.fetchMasterInfo).then(res => {
     const { nickname, avatar, remark, email } = res.data;
     Object.assign(masterInfo, { nickname, avatar, remark, email });
 
@@ -65,7 +65,7 @@ onMounted(() => {
   border-radius: 12px;
   padding: 3px;
   margin-bottom: 16px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s ease-in-out;
 
   &:hover {
     box-shadow: 0 12px 40px rgba(146, 118, 253, 0.4);
@@ -86,7 +86,7 @@ onMounted(() => {
   border-radius: 50%;
   border: 2px solid rgba(146, 118, 253, 0.3);
   z-index: 1;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease-in-out;
 }
 
 .text-shine {

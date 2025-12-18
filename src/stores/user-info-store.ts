@@ -1,4 +1,4 @@
-import userApiModule from '@/api/system/user';
+import userProfileApiModule from '@/api/user-profile';
 import { errorMessage, errorNotification } from '@/element-plus/notification';
 import { useInstantMessageStore } from '@/stores/instant-message-store';
 import { asyncRequest } from '@/utils/request-util';
@@ -58,7 +58,7 @@ export const useUserInfoStore = defineStore({
      */
     async fetchUserInfo() {
       const instantMessageStore = useInstantMessageStore();
-      return asyncRequest<UserProfile>(userApiModule.apis.info)
+      return asyncRequest<UserProfile>(userProfileApiModule.apis.info)
         .then(resp => {
           this.$patch({
             ...resp.data,

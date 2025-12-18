@@ -26,6 +26,16 @@
   }
 }
 
+/* shimmer */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* 上下浮动动画 */
 @keyframes floatArrow {
   0%, 100% {
@@ -37,7 +47,7 @@
 }
 
 /* 渐入 */
-@keyframes fade-in {
+@keyframes fadeIn {
   from {
     opacity: 0;
     transform: scale(0.95);

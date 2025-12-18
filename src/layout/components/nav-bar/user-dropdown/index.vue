@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserInfo from './user-info/index.vue';
 import CommonRouterPath from '@/enums/common-router-path';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { useUserInfoStore } from '@/stores/user-info-store';
@@ -15,11 +16,17 @@ const userInfoStore = useUserInfoStore();
 const appSettingsStore = useAppSettingsStore();
 const dynamicRouteStore = useDynamicRouteStore();
 const router = useRouter();
+const showUserInfo = ref(false);
+
+const computedDrawerSize = computed(() => {
+  return appSettingsStore.isMobile ? '80%' : '500px';
+});
+
 /**
  * 个人信息点击事件
  */
 function clickUserInfo() {
-  router.push('/user/info');
+  showUserInfo.value = true;
 }
 
 /**
@@ -70,6 +77,9 @@ function clickLogout() {
     <ElAvatar v-else :size="50" @click="clickLogin">
       登录
     </ElAvatar>
+    <ElDrawer v-model="showUserInfo" :size="computedDrawerSize" :with-header="false">
+      <UserInfo />
+    </ElDrawer>
   </div>
 </template>
 

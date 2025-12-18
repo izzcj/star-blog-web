@@ -78,29 +78,6 @@ const commonRouter: RouteRecordRaw[] = [
       },
     ],
   },
-  // 个人信息
-  {
-    path: '/user',
-    component: DefaultLayout,
-    meta: {
-      title: '用户',
-      keepAlive: false,
-      topLevel: true,
-      hidden: true,
-    },
-    children: [
-      {
-        name: 'UserInfo',
-        path: '/user/info',
-        meta: {
-          title: '个人信息',
-          keepAlive: false,
-          topLevel: false,
-        },
-        component: () => import('@/views/user/info/index.vue'),
-      },
-    ],
-  },
   {
     path: '/redirect',
     component: DefaultLayout,
