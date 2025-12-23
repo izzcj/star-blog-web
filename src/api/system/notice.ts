@@ -1,41 +1,43 @@
 import RequestMethod from '@/enums/request-method';
 
-export const systemConfigApiModule: ApiModule = {
+const noticeApiModule: ApiModule = {
   apis: {
     /**
-     * 获取系统配置列表
+     * 获取通知列表
      */
-    fetchList: {
-      uri: '/system/config/list',
+    fetchPage: {
+      uri: '/notice/page',
       method: RequestMethod.GET,
     },
     /**
-     * 获取系统配置
+     * 获取通知
      */
     fetchOne: {
-      uri: '/system/config',
+      uri: '/notice/detail/{id}',
       method: RequestMethod.GET,
     },
     /**
-     * 新增系统配置
+     * 新增通知
      */
     create: {
-      uri: '/system/config',
+      uri: '/notice',
       method: RequestMethod.POST,
     },
     /**
-     * 修改系统配置
+     * 修改通知
      */
     modify: {
-      uri: '/system/config',
+      uri: '/notice',
       method: RequestMethod.PUT,
     },
     /**
-     * 删除系统配置
+     * 删除通知
      */
     delete: {
-      uri: '/system/config/{id}',
+      uri: '/notice/{id}',
       method: RequestMethod.DELETE,
     },
   },
 };
+
+export default noticeApiModule;

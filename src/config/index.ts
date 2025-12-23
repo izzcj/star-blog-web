@@ -25,5 +25,8 @@ export default {
     CommonRouterPathName.REDIRECT,
     CommonRouterPathName.SSO_LOGIN,
   ],
+  /**
+   * 是否允许匿名访问
+   */
   anonymousEnable: true,
 };

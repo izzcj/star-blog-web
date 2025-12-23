@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import loginApiModule from '@/api/login';
 import { useDynamicRouteStore } from '@/stores/dynamic-route-store';
 import { useInstantMessageStore } from '@/stores/instant-message-store';
@@ -16,6 +17,10 @@ export interface AuthenticationState {
    * 访问Token
    */
   accessToken: Nullable<string>;
+  /**
+   * 匿名token
+   */
+  anonymousToken: Nullable<string>;
 }
 
 export const useAuthenticationStore = defineStore({
@@ -23,6 +28,7 @@ export const useAuthenticationStore = defineStore({
   state: (): Partial<AuthenticationState> => {
     return {
       accessToken: storage.get<string>('accessToken'),
+      anonymousToken: storage.get<string>('anonymousToken'),
     };
   },
   getters: {
@@ -48,6 +54,8 @@ export const useAuthenticationStore = defineStore({
 
       this.accessToken = data.accessToken;
       storage.set('accessToken', this.accessToken);
+      // 清除匿名token
+      storage.remove('anonymousToken');
       return message;
     },
 
@@ -61,10 +69,28 @@ export const useAuthenticationStore = defineStore({
     },
 
     /**
+     * 构建匿名Token
+     */
+    async buildAnonymousToken() {
+      try {
+        if (!this.anonymousToken) {
+          this.anonymousToken = nanoid(12);
+          storage.set('anonymousToken', this.anonymousToken);
+        }
+        const userInfoStore = useUserInfoStore();
+        return await userInfoStore.buildAnonymousUserInfo();
+      } catch {
+        console.error('构建匿名Token失败');
+        return false;
+      }
+    },
+
+    /**
      * 清除认证信息
      */
     clearAuthentication() {
       this.accessToken = null;
+      this.anonymousToken = null;
       storage.clear();
 
       const userInfoStore = useUserInfoStore();

@@ -3,17 +3,17 @@ import RequestMethod from '@/enums/request-method';
 const commentApiModule: ApiModule = {
   apis: {
     /**
-     * 获取评论详情
-     */
-    fetchDetail: {
-      uri: '/blog/comment/{id}',
-      method: RequestMethod.GET,
-    },
-    /**
      * 分页获取评论列表
      */
     fetchPage: {
       uri: '/blog/comment/page',
+      method: RequestMethod.GET,
+    },
+    /**
+     * 获取评论
+     */
+    fetchOne: {
+      uri: '/blog/comment/{id}',
       method: RequestMethod.GET,
     },
     /**

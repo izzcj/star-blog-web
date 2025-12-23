@@ -1,5 +1,6 @@
 import type { RawAxiosRequestHeaders } from 'axios';
 import type RequestMethod from '@/enums/request-method';
+import type InstantMessageType from '@/enums/instant-message-type';
 
 declare global {
   /**
@@ -56,6 +57,10 @@ declare global {
      * Minio 服务地址
      */
     minioServerUrl: string;
+    /**
+     * Minio 预览服务地址
+     */
+    minioPreviewServerUrl: string;
     /**
      * 即时消息服务地址
      */
@@ -147,21 +152,25 @@ declare global {
    */
   interface InstantMessage {
     /**
+     * 消息来源
+     */
+    from: string;
+    /**
+     * 消息目标
+     */
+    to: string;
+    /**
      * 消息类型
      */
-    type: string;
-    /**
-     * 消息标题
-     */
-    title: string;
+    type: InstantMessageType;
     /**
      * 消息内容
      */
     content: string;
     /**
-     * 消息属性
+     * 额外属性
      */
-    attributes: Recordable;
+    extra: Recordable;
   }
 
   /**

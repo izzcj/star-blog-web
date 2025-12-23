@@ -34,6 +34,12 @@ export const useUserInfoStore = defineStore({
     isAdmin(): boolean {
       return this.admin;
     },
+    /**
+     * 是否是匿名用户
+     */
+    isAnonymousUser(): boolean {
+      return this.account == 'anonymous';
+    },
   },
   actions: {
     /**
@@ -65,7 +71,7 @@ export const useUserInfoStore = defineStore({
           });
 
           // 连接IM
-          instantMessageStore.connectMessageServer(resp.data.id as string);
+          instantMessageStore.connectMessageServer();
           return true;
         })
         .catch(e => {
@@ -75,6 +81,32 @@ export const useUserInfoStore = defineStore({
           errorMessage('登录用户信息加载失败，请刷新页面重试！');
           return false;
         });
+    },
+    /**
+     * 构建匿名用户信息
+     */
+    async buildAnonymousUserInfo() {
+      this.$patch({
+        id: '',
+        account: 'anonymous',
+        nickname: '匿名用户',
+        avatar: '',
+        remark: '',
+        email: '',
+        lastLoginIp: '',
+        lastLoginTime: '',
+        admin: false,
+        roleIds: [],
+        permissions: [],
+      });
+      try {
+        const instantMessageStore = useInstantMessageStore();
+        instantMessageStore.connectMessageServer();
+        return true;
+      } catch {
+        errorMessage('用户信息构建失败，请刷新页面重试！');
+        return false;
+      }
     },
   },
 });

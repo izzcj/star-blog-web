@@ -13,7 +13,7 @@ const articleApiModule: ApiModule = {
      * 获取文章详情
      */
     fetchDetail: {
-      uri: '/blog/article/{id}',
+      uri: '/blog/article/detail/{id}',
       method: RequestMethod.GET,
     },
     /**

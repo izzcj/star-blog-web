@@ -18,6 +18,7 @@
     "types/*.d.ts",
     "src/utils/env-util.ts",
     "src/types/venus.d.ts",
-    "src/enums/request-method.ts"
+    "src/enums/request-method.ts",
+    "src/enums/instant-message-type.ts",
   ]
 }

@@ -10,9 +10,9 @@ const userApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
-     * 获取用户详情
+     * 获取用户
      */
-    fetchDetail: {
+    fetchOne: {
       uri: '/system/user/{id}',
       method: RequestMethod.GET,
     },

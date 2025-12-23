@@ -3,17 +3,17 @@ import RequestMethod from '@/enums/request-method';
 const roleApiModule: ApiModule = {
   apis: {
     /**
-     * 获取角色详情
-     */
-    fetchDetail: {
-      uri: '/system/role/detail/{id}',
-      method: RequestMethod.GET,
-    },
-    /**
      * 分页获取角色
      */
     fetchPage: {
       uri: '/system/role/page',
+      method: RequestMethod.GET,
+    },
+    /**
+     * 获取角色
+     */
+    fetchOne: {
+      uri: '/system/role/detail/{id}',
       method: RequestMethod.GET,
     },
     /**

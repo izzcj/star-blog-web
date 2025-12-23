@@ -3,17 +3,17 @@ import RequestMethod from '@/enums/request-method';
 const menuApiModule: ApiModule = {
   apis: {
     /**
-     * 获取菜单详情
-     */
-    fetchDetail: {
-      uri: '/system/menu/{id}',
-      method: RequestMethod.GET,
-    },
-    /**
      * 获取菜单树列表
      */
     fetchTreeList: {
       uri: '/system/menu/tree',
+      method: RequestMethod.GET,
+    },
+    /**
+     * 获取菜单详情
+     */
+    fetchOne: {
+      uri: '/system/menu/{id}',
       method: RequestMethod.GET,
     },
     /**

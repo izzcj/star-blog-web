@@ -1,105 +1,170 @@
-import { errorNotification, infoNotification, successNotification } from '@/element-plus/notification';
+import { defineStore } from 'pinia';
+import { errorNotification, successNotification } from '@/element-plus/notification';
 import { useUserInfoStore } from '@/stores/user-info-store';
+import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
 import { emitter } from '@/utils/event-util';
+import InstantMessageType from '@/enums/instant-message-type';
 
 export interface InstantMessageState {
-  /**
-   * Stomp客户端
-   */
-  client: Nullable<WebSocket>;
-  /**
-   * 消息列表
-   */
-  notificationList: Recordable[];
-  /**
-   * 消息条数
-   */
-  notificationCount: number;
+  // WebSocket 实例
+  client: WebSocket | null;
+  // 心跳定时器
+  heartTimer: number | null;
+  // 重连次数
+  retry: number;
+  // 是否手动关闭
+  manuallyClosed: boolean;
 }
+// 重连最大次数
+const MAX_RETRY = 5;
+// 心跳间隔
+const HEARTBEAT_INTERVAL = 30_000;
 
-export const useInstantMessageStore = defineStore({
-  id: 'app-instant-message',
-  state: (): InstantMessageState => {
-    return {
-      client: null,
-      notificationList: [],
-      notificationCount: 0,
-    };
-  },
+export const useInstantMessageStore = defineStore('app-instant-message', {
+  state: (): InstantMessageState => ({
+    client: null,
+    heartTimer: null,
+    retry: 0,
+    manuallyClosed: false,
+  }),
+
   actions: {
     /**
-     * 连接即时消息服务
-     *
-     * @param _id 用户ID
+     * 创建 WebSocket 实例并绑定事件
      */
-    connectMessageServer(_id: string) {
+    createClient(token: string) {
       const appConfig = getAppConfig();
+      const url = `${appConfig.instantMessageServerUrl}?token=${token}`;
+      const ws = new WebSocket(url);
 
-      this.client = new WebSocket(`${appConfig.instantMessageServerUrl}`);
-      this.client.onopen = () => {
-        successNotification('成功提示', '欢迎来到星站！');
+      ws.onopen = () => {
+        this.retry = 0;
+        this.startHeartbeat();
+        setTimeout(() => {
+          successNotification('成功提示', '欢迎来到星站！');
+        }, 3000);
       };
-      this.client.onmessage = e => {
-        const result = JSON.parse(e.data);
-        this.notificationList = result.attributes.messageList;
-        this.notificationCount = result.attributes.unreadCount;
-        infoNotification('系统提醒', result.content);
-        emitter.emit('user-im', result);
+
+      ws.onmessage = event => {
+        try {
+          const message = JSON.parse(event.data) as InstantMessage;
+          if (message.type !== InstantMessageType.PONG) {
+            if (message.type === InstantMessageType.PUSH) {
+              emitter.emit('global-im', message);
+            } else {
+              emitter.emit('user-im', message);
+            }
+          }
+        } catch {
+          console.warn('消息解析失败', event.data);
+        }
       };
-      this.client.onclose = () => {
-        this.disconnectMessageServer();
+
+      ws.onclose = () => {
+        this.stopHeartbeat();
+        this.client = null;
+
+        if (!this.manuallyClosed) {
+          this.reconnect(() => this.createClient(token));
+        }
       };
-      this.client.onerror = e => {
-        console.log('WebSocket连接错误', e);
+
+      ws.onerror = err => {
+        console.error('WebSocket 错误', err);
         errorNotification('错误提示', '已与星站断开连接！');
       };
 
+      this.client = ws;
+    },
+
+    /**
+     * 连接即时消息服务
+     */
+    connectMessageServer() {
+      if (this.client) {
+        return;
+      }
+      const authenticationStore = useAuthenticationStore();
+      const token = authenticationStore.isLoggedIn ? authenticationStore.accessToken : authenticationStore.anonymousToken;
+
+      if (!token) {
+        console.error('连接即时消息服务失败，未获取到token！');
+        return;
+      }
+
+      this.manuallyClosed = false;
+      this.createClient(token);
+
+      // 页面关闭时主动断开
       useEventListener(window, 'beforeunload', () => {
         this.disconnectMessageServer();
       });
     },
+
     /**
-     * 断开即时消息服务连接
+     * 启动心跳
      */
-    disconnectMessageServer() {
-      this.client?.close();
-      this.client = null;
+    startHeartbeat() {
+      this.stopHeartbeat();
+      this.heartTimer = window.setInterval(() => {
+        if (this.client?.readyState === WebSocket.OPEN) {
+          this.client.send(JSON.stringify({ type: InstantMessageType.PING }));
+        }
+      }, HEARTBEAT_INTERVAL);
     },
+
     /**
-     * 发送消息
-     *
-     * @param attributes 消息属性
+     * 停止心跳
      */
-    sendMessage(attributes: Recordable) {
-      if (this.client?.readyState === WebSocket.OPEN) {
-        const userInfoStore = useUserInfoStore();
-        this.client.send(
-          JSON.stringify({
-            '@class': 'xxx',
-            'userId': userInfoStore.id,
-            'attributes': {
-              '@class': 'java.util.HashMap',
-              ...attributes,
-            },
-          }),
-        );
+    stopHeartbeat() {
+      if (this.heartTimer) {
+        clearInterval(this.heartTimer);
+        this.heartTimer = null;
       }
     },
+
     /**
-     * 清理消息缓存
+     * 重连
      */
-    cleanMessageCache() {
-      this.notificationList = [];
-      this.notificationCount = 0;
+    reconnect(connect: () => void) {
+      if (this.retry >= MAX_RETRY) {
+        console.warn('WebSocket 重连次数已达上限');
+        return;
+      }
+      // 指数退避
+      const delay = ++this.retry * 2000;
+      setTimeout(connect, delay);
     },
+
     /**
-     * 已读消息
+     * 主动断开连接
      */
-    readMessage(id: string) {
-      const index = this.notificationList.findIndex(item => item.id === id);
-      this.notificationList.splice(index, 1);
-      this.notificationCount -= 1;
+    disconnectMessageServer() {
+      this.manuallyClosed = true;
+      this.stopHeartbeat();
+
+      if (this.client) {
+        this.client.close();
+        this.client = null;
+      }
+    },
+
+    /**
+     * 发送消息
+     */
+    sendMessage(message: InstantMessage) {
+      if (this.client?.readyState !== WebSocket.OPEN) {
+        console.warn('WebSocket 未连接，消息发送失败');
+        return;
+      }
+
+      const userInfoStore = useUserInfoStore();
+      message.from = userInfoStore.id;
+
+      this.client.send(
+        JSON.stringify(message),
+      );
     },
   },
 });

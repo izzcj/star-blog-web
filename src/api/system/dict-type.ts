@@ -10,9 +10,9 @@ const dictTypeApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
-     * 获取字典类型详情
+     * 获取字典类型
      */
-    fetchDetail: {
+    fetchOne: {
       uri: '/system/dict-type/{id}',
       method: RequestMethod.GET,
     },

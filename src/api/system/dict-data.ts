@@ -10,6 +10,13 @@ const dictDataApiModule: ApiModule = {
       method: RequestMethod.GET,
     },
     /**
+     * 获取字典数据
+     */
+    fetchOne: {
+      uri: '/system/dict-data/{id}',
+      method: RequestMethod.GET,
+    },
+    /**
      * 获取字典数据列表
      */
     list: {
@@ -21,13 +28,6 @@ const dictDataApiModule: ApiModule = {
      */
     fetchOptions: {
       uri: '/system/dict-data/options',
-      method: RequestMethod.GET,
-    },
-    /**
-     * 获取字典数据详情
-     */
-    fetchDetail: {
-      uri: '/system/dict-data/{id}',
       method: RequestMethod.GET,
     },
     /**

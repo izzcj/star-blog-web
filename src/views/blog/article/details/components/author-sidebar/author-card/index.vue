@@ -7,15 +7,14 @@ const props = defineProps<{
 }>();
 
 // 作者信息
-const authorInfo = ref<User>({
+const authorInfo = ref<Omit<User, 'sort' | 'account'>>({
   id: '',
+  sex: '',
   avatar: '',
   nickname: '',
   remark: '',
-  username: '',
   email: '',
-  phone: '',
-  enabled: false,
+  mobile: '',
   createTime: '',
   updateTime: '',
 });
@@ -27,7 +26,7 @@ const loading = ref(false);
 async function fetchAuthorInfo() {
   loading.value = true;
   try {
-    const response = await asyncRequest<User>(userApiModule.apis.fetchDetail, {
+    const response = await asyncRequest<User>(userApiModule.apis.fetchOne, {
       pathParams: { id: props.authorId },
     });
     Object.assign(authorInfo.value, response.data);

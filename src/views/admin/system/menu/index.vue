@@ -141,7 +141,7 @@ async function handleEdit(menu: Menu) {
   // 获取菜单详情
   loading.value = true;
   try {
-    const response = await asyncRequest<Menu>(menuApiModule.apis.fetchDetail, {
+    const response = await asyncRequest<Menu>(menuApiModule.apis.fetchOne, {
       params: { id: menu.id },
     });
     const detail = response.data;
