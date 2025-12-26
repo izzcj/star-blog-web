@@ -7,7 +7,7 @@ defineOptions({
 </script>
 
 <template>
-  <VenusEditor />
+  <VenusEditor :is-read="true" />
 </template>
 
 <style scoped lang="scss">
