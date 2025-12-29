@@ -36,7 +36,7 @@ export const useUploadInfoStore = defineStore({
   },
   actions: {
     /**
-     * 获取OSS上传基URL
+     * 获取OSS基URL
      *
      * @param ossProvider 实现类型
      */

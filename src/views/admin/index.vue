@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import VenusEditor from '@/components/venus/venus-editor/index.vue';
-
 defineOptions({
   name: 'AdminPage',
 });
 </script>
 
 <template>
-  <VenusEditor :is-read="true" />
+  <div>
+    统计信息
+  </div>
 </template>
 
 <style scoped lang="scss">

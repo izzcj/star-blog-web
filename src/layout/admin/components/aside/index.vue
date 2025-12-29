@@ -8,6 +8,7 @@ import {
   UserFilled,
   PriceTag,
   ChatDotRound,
+  HomeFilled,
 } from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
 
@@ -29,6 +30,12 @@ const activeMenu = computed(() => {
 });
 
 const menus = shallowRef([
+  {
+    id: 'admin-home',
+    title: '首页',
+    icon: HomeFilled,
+    path: '/admin',
+  },
   {
     id: 'system-config',
     title: '系统配置',
