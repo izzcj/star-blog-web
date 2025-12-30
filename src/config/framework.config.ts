@@ -13,5 +13,5 @@ interface FrameworkConfig {
 
 export const frameworkConfig: FrameworkConfig = {
   ignoreFetchMenusRouteNames: [CommonRouterPathName.SSO_LOGIN, CommonRouterPathName.LOGIN],
-  loginSuccessRouteName: 'Index',
+  loginSuccessRouteName: 'Home',
 };

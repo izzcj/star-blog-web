@@ -9,18 +9,25 @@ import {
   PriceTag,
   ChatDotRound,
   HomeFilled,
+  Promotion,
 } from '@element-plus/icons-vue';
 import Logo from '@/layout/components/nav-bar/logo/index.vue';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 defineOptions({
   name: 'AdminAside',
 });
 
-const logType = ref('TEXT');
-const logText = ref('StarBlog管理后台');
+const logText = ref('管理后台');
 
 const route = useRoute();
 const router = useRouter();
+
+const appSettingsStore = useAppSettingsStore();
+
+const collapse = computed(() => {
+  return appSettingsStore.isMobile;
+});
 
 const activeMenu = computed(() => {
   if (route.meta && route.meta.activeMenu) {
@@ -67,6 +74,12 @@ const menus = shallowRef([
     path: '/admin/system/dict',
   },
   {
+    id: 'notice-management',
+    title: '系统通知',
+    icon: Promotion,
+    path: '/admin/system/notice',
+  },
+  {
     id: 'tag-management',
     title: '标签管理',
     icon: PriceTag,
@@ -97,15 +110,16 @@ function handleMenuClick(menuPath: string) {
 </script>
 
 <template>
-  <div class="h-dvh">
+  <div>
     <div class="venus-center">
-      <Logo :type="logType" :logo="logText" text-class="logo-text-class" />
+      <Logo :text="logText" text-class="logo-text-class" />
     </div>
 
     <!-- 菜单区域 -->
     <ElMenu
       :default-active="activeMenu"
       class="border-r-0"
+      :collapse="collapse"
       background-color="#ffffff"
     >
       <ElMenuItem
@@ -117,7 +131,9 @@ function handleMenuClick(menuPath: string) {
         <ElIcon>
           <component :is="menu.icon" />
         </ElIcon>
-        <span>{{ menu.title }}</span>
+        <template #title>
+          <span>{{ menu.title }}</span>
+        </template>
       </ElMenuItem>
     </ElMenu>
   </div>

@@ -39,7 +39,7 @@ const commonRouter: RouteRecordRaw[] = [
     },
     children: [
       {
-        name: 'Index',
+        name: 'Home',
         path: '',
         component: () => import('@/views/home/index.vue'),
       },

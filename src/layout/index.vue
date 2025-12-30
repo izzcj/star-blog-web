@@ -22,10 +22,6 @@ const appSettingsStore = useAppSettingsStore();
 const backgroundImage = ref(bgImage);
 
 const isLoaded = computed(() => appStatusStore.resourceLoadStatus);
-const isMobile = computed<boolean>({
-  get: () => appSettingsStore.isMobile,
-  set: bool => appSettingsStore.isMobile = bool,
-});
 
 const mainRef = useTemplateRef<any>('mainRef');
 
@@ -35,21 +31,13 @@ const mainRef = useTemplateRef<any>('mainRef');
  * 移动端：保持原样
  */
 const headerClass = computed(() => {
-  if (isMobile.value) {
+  if (appSettingsStore.isMobile) {
     return '';
   }
 
   const baseClass = 'transition-colors duration-500 ease-in-out';
   return isScrolled.value ? `${baseClass} bg-(--venus-menu-bg--color)` : `${baseClass} hover:bg-(--venus-menu-bg--color)`;
 });
-
-/**
- * 处理窗口大小改变
- */
-const handleResize = debounce(() => {
-  currentWindowHeight.value = window.innerHeight;
-  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
-}, 100);
 
 /**
  * 处理主区域滚动
@@ -70,16 +58,11 @@ function containerLoadComplete() {
   }, 1500);
 }
 
-useEventListener(window, 'resize', () => {
-  handleResize();
-});
-
 useEventListener(mainRef, 'scroll', () => {
   handleScroll();
 });
 
 onMounted(() => {
-  isMobile.value = window.innerWidth <= appSettingsStore.mobileWidth;
   containerLoadComplete();
 });
 </script>
@@ -101,13 +84,12 @@ onMounted(() => {
         <AppMain />
         <ElBacktop :bottom="100" target=".default-main" :visibility-height="visibilityHeight" class="z-0!" />
       </ElMain>
-      <ElFooter>Footer</ElFooter>
     </ElContainer>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .default-main {
-  --el-main-padding: 0 20px;
+  --el-main-padding: 0;
 }
 </style>

@@ -20,7 +20,7 @@ const router = useRouter();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
-const initialFormData: Omit<ArticleDetail, 'categoryName' | 'viewCount' | 'publishTime' | 'createByName' | 'tags'> & { tagIds: string[] } = {
+const initialFormData: Omit<ArticleDetail, 'categoryName' | 'viewCount' | 'publishTime' | 'createBy' | 'createByName' | 'tags'> & { tagIds: string[] } = {
   id: '',
   category: '',
   title: '',
@@ -253,7 +253,7 @@ function handleBack() {
 
         <!-- 内容 -->
         <ElFormItem class="" label="内容" prop="content">
-          <VenusMdEditor v-model:value="articleForm.content" />
+          <VenusByteMdEditor v-model:value="articleForm.content" />
         </ElFormItem>
       </ElForm>
     </div>

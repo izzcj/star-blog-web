@@ -1,6 +1,6 @@
 import { bool } from 'vue-types';
 
 export const venusMdEditorProps = {
-  // 是否只读
-  isRead: bool().def(false),
+  // 是否仅预览
+  preview: bool().def(false),
 } as const;

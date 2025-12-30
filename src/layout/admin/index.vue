@@ -2,12 +2,18 @@
 import AppMain from '@/layout/components/app-main/index.vue';
 import AdminAside from '@/layout/admin/components/aside/index.vue';
 import AdminNavBar from '@/layout/admin/components/nav-bar/index.vue';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 defineOptions({
   name: 'AdminLayout',
 });
 
 const isLoading = ref(true);
+
+const appSettingsStore = useAppSettingsStore();
+const asideWidth = computed(() => {
+  return appSettingsStore.isMobile ? '60px' : '150px';
+});
 
 onMounted(() => {
   setTimeout(() => {
@@ -28,11 +34,11 @@ onMounted(() => {
         </div>
       </div>
       <ElContainer v-else class="h-dvh w-dvw relative">
-        <ElCard>
-          <ElAside width="200px">
+        <div class="py-4 px-1 border-r-gray-200 border-r">
+          <ElAside :width="asideWidth">
             <AdminAside />
           </ElAside>
-        </ElCard>
+        </div>
         <ElMain class="admin-main overflow-hidden!">
           <div>
             <div class="pb-3 sticky top-0 z-0">

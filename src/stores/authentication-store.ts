@@ -7,7 +7,7 @@ import { asyncRequest } from '@/utils/request-util';
 import { createStorage } from '@/utils/storage-util';
 
 const storageKeyPrefix = 'AUTHENTICATION_';
-const storage = createStorage(storageKeyPrefix, 'session');
+const storage = createStorage(storageKeyPrefix);
 
 /**
  * 认证信息
@@ -17,6 +17,10 @@ export interface AuthenticationState {
    * 访问Token
    */
   accessToken: Nullable<string>;
+  /**
+   * 访问Token过期事件（秒）
+   */
+  expiresIn: number;
   /**
    * 匿名token
    */
@@ -53,7 +57,7 @@ export const useAuthenticationStore = defineStore({
       });
 
       this.accessToken = data.accessToken;
-      storage.set('accessToken', this.accessToken);
+      storage.set('accessToken', this.accessToken, data.expiresIn);
       // 清除匿名token
       storage.remove('anonymousToken');
       return message;

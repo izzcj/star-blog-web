@@ -95,11 +95,7 @@ function toggleExpand() {
   if (!homeHeader) {
     return;
   }
-  let distanceToViewportTop = calculateElTopToViewportDistance(homeHeader);
-  const bannerWave1 = document.querySelector('#banner-wave-1');
-  if (bannerWave1) {
-    distanceToViewportTop = distanceToViewportTop + bannerWave1.getBoundingClientRect().height;
-  }
+  const distanceToViewportTop = calculateElTopToViewportDistance(homeHeader);
   const start = distanceToViewportTop * 0.4;
   const end = distanceToViewportTop;
   if (isExpanded.value) {
@@ -204,8 +200,8 @@ onBeforeRouteLeave(() => {
     <div class="max-w-full min-h-[calc(100vh - 40dvh)] bg-white py-6 px-5 my-0 mx-auto box-border">
       <ElRow :gutter="20" justify="center" class="my-0 mx-auto">
         <!-- 左侧栏 -->
-        <ElCol id="left-sidebar-col" :xs="24" :sm="24" :md="6" :lg="5" class="lg:sticky lg:top-5 lg:self-start">
-          <div class="fade-children lg:max-h-[calc(100vh-60px)] lg:overflow-y-auto lg:pr-[5px] custom-scrollbar">
+        <ElCol id="left-sidebar-col" :xs="24" :sm="24" :md="6" :lg="5" :xl="4" class="lg:sticky lg:top-2 lg:self-start">
+          <div class="fade-children lg:max-h-[100vh] lg:overflow-y-auto lg:pr-[5px] custom-scrollbar">
             <MasterInfo />
             <WebsiteStats />
             <LatestActivity />
@@ -221,8 +217,8 @@ onBeforeRouteLeave(() => {
         </ElCol>
 
         <!-- 右侧栏 -->
-        <ElCol id="right-sidebar-col" :xs="24" :sm="24" :md="6" :lg="5" class="lg:sticky lg:top-5 lg:self-start">
-          <div class="fade-children lg:max-h-[calc(100vh-60px)] lg:overflow-y-auto lg:pr-[5px] custom-scrollbar">
+        <ElCol id="right-sidebar-col" :xs="24" :sm="24" :md="6" :lg="5" :xl="4">
+          <div class="fade-children lg:max-h-[100vh] lg:overflow-y-auto lg:pr-[5px] custom-scrollbar">
             <CategoryNav />
             <HotTags />
             <RecommendArticle />

@@ -30,8 +30,8 @@ if (!isEmpty(dynamicRoutesStore.routes)) {
     routers.push(route);
   });
 }
-const logType = ref('TEXT');
-const logText = ref('StarBlog');
+
+const logoText = ref('StarBlog');
 const showUserInfo = ref(true);
 const currentRoute = useRoute();
 
@@ -72,7 +72,7 @@ function clickMenuItem() {
   <div v-show="!appSettingsStore.isMobile" class="bg-transparent">
     <ElRow :gutter="10">
       <ElCol :span="getColSpan('logo')">
-        <Logo :type="logType" :logo="logText" />
+        <Logo :text="logoText" />
       </ElCol>
       <ElCol :span="getColSpan('menu')">
         <ElMenu
@@ -95,7 +95,7 @@ function clickMenuItem() {
   </div>
   <!-- 移动端 -->
   <div v-show="appSettingsStore.isMobile" class="venus-center">
-    <Logo :type="logType" :logo="logText" class="mr-auto" />
+    <Logo :text="logoText" class="mr-auto" />
     <ElIcon class="ml-auto" size="30" @click="showDrawer = !showDrawer">
       <Fold />
     </ElIcon>

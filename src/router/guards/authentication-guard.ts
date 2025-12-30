@@ -1,5 +1,4 @@
-import type { Router } from 'vue-router';
-
+import type { RouteLocationNormalized, Router } from 'vue-router';
 import config from '@/config';
 import CommonRouterPath from '@/enums/common-router-path';
 import CommonRouterPathName from '@/enums/common-router-path-name';
@@ -21,7 +20,7 @@ export default (router: Router) => {
 
     // 允许匿名访问
     if (config.anonymousEnable) {
-      return await handleAnonymousMode(authenticationStore, userInfoStore);
+      return await handleAnonymousMode(authenticationStore, userInfoStore, to);
     }
 
     // 无需登录的页面
@@ -64,8 +63,17 @@ export default (router: Router) => {
  *
  * @param authenticationStore 认证状态Store
  * @param userInfoStore       用户信息Store
+ * @param to                  下一路由
  */
-async function handleAnonymousMode(authenticationStore: ReturnType<typeof useAuthenticationStore>, userInfoStore: ReturnType<typeof useUserInfoStore>) {
+async function handleAnonymousMode(authenticationStore: ReturnType<typeof useAuthenticationStore>, userInfoStore: ReturnType<typeof useUserInfoStore>, to: RouteLocationNormalized) {
+  // 未登录且在admin路由则跳回首页
+  if (!authenticationStore.isLoggedIn && (to.fullPath || '').startsWith('/admin')) {
+    return {
+      name: CommonRouterPathName.HOME,
+      replace: true,
+    };
+  }
+
   // 未获取用户信息
   if (!userInfoStore.isFetched) {
     if (authenticationStore.isLoggedIn) {

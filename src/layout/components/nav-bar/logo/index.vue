@@ -3,19 +3,19 @@ defineOptions({
   name: 'Logo',
 });
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   textClass: '',
 });
 
 interface Props {
   /**
-   * 类型
+   * log地址
    */
-  type: string;
+  logo?: string;
   /**
-   * log地址/logo文本
+   * 文字
    */
-  logo: string;
+  text: string;
   /**
    * 文本的自定义类名
    */
@@ -24,14 +24,13 @@ interface Props {
 </script>
 
 <template>
-  <div class="logo">
-    <img v-if="type === 'IMAGE'" :src="logo" alt="LOGO" class="mr-2" />
+  <div class="flex items-center justify-items-start text-xl h-16 overflow-hidden whitespace-nowrap">
+    <VenusImage v-if="props.logo" :src="props.logo" class="mr-2 rounded-xl h-8 w-auto" />
     <span
-      v-for="(char, index) of logo"
-      v-else
+      v-for="(char, index) of props.text"
       :key="index"
-      class="text"
-      :class="[textClass]"
+      class="text-white/80 text-xl"
+      :class="[props.textClass]"
     >
       {{ char }}
     </span>
@@ -39,24 +38,4 @@ interface Props {
 </template>
 
 <style scoped lang="scss">
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  height: 64px;
-  line-height: 64px;
-  overflow: hidden;
-  white-space: nowrap;
-
-  img {
-    border-radius: 9999px;
-    width: auto;
-    height: 32px;
-  }
-
-  .text {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 20px;
-  }
-}
 </style>

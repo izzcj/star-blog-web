@@ -7,7 +7,7 @@ import { isValidImageType } from '@/utils/file-util';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 
 defineOptions({
-  name: 'VenusEditor',
+  name: 'VenusVdMdEditor',
 });
 
 const props = defineProps({
@@ -61,75 +61,89 @@ function handleBlur(value: string) {
 }
 
 onMounted(() => {
-  venusEditor.value = new Vditor('venus-editor', {
-    height: props.height,
-    width: '100%',
-    mode: props.mode,
-    preview: {
+  if (props.preview) {
+    Vditor.preview(document.getElementById('venus-previewer') as HTMLDivElement, model.value || '', {
+      mode: 'light',
       theme: {
         current: 'fancy',
         path: '/vditor-theme',
       },
-      markdown: {
-        toc: true,
+    });
+  } else {
+    venusEditor.value = new Vditor('venus-editor', {
+      height: props.height,
+      width: '100%',
+      mode: props.mode,
+      value: model.value || '',
+      preview: {
+        theme: {
+          current: 'fancy',
+          path: '/vditor-theme',
+        },
+        markdown: {
+          toc: true,
+        },
       },
-    },
-    upload: {
-      handler: files => {
-        return handleUploadImage(files);
+      upload: {
+        handler: files => {
+          return handleUploadImage(files);
+        },
+        accept: 'image/*',
       },
-      accept: 'image/*',
-    },
-    // 必须配置，否则控制台会抛异常
-    customWysiwygToolbar: () => {
-    },
-    toolbar: [
-      'emoji',
-      'headings',
-      'bold',
-      'italic',
-      'strike',
-      '|',
-      'line',
-      'quote',
-      'list',
-      'ordered-list',
-      'check',
-      'outdent',
-      'indent',
-      'code',
-      'inline-code',
-      'insert-after',
-      'insert-before',
-      'undo',
-      'redo',
-      'upload',
-      'link',
-      'table',
-      'edit-mode',
-      'both',
-      'preview',
-      'fullscreen',
-      'outline',
-      'export',
-    ],
-    blur: value => {
-      handleBlur(value);
-    },
-    cache: {
-      enable: false,
-    },
-  });
+      // 必须配置，否则控制台会抛异常
+      customWysiwygToolbar: () => {
+      },
+      toolbar: [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        '|',
+        'line',
+        'quote',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        'code',
+        'inline-code',
+        'insert-after',
+        'insert-before',
+        'undo',
+        'redo',
+        'upload',
+        'link',
+        'table',
+        'edit-mode',
+        'both',
+        'preview',
+        'fullscreen',
+        'outline',
+        'export',
+      ],
+      blur: value => {
+        handleBlur(value);
+      },
+      cache: {
+        enable: false,
+      },
+    });
+  }
 });
 
 onUnmounted(() => {
-  venusEditor.value.destroy();
+  if (venusEditor.value) {
+    venusEditor.value.destroy();
+  }
 });
 </script>
 
 <template>
-  <div>
-    <div id="venus-editor" />
+  <div class="size-full">
+    <div v-if="props.preview" id="venus-previewer" />
+    <div v-else id="venus-editor" />
   </div>
 </template>
 

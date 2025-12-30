@@ -101,7 +101,7 @@ function goBack() {
 
     <!-- 内容 -->
     <div class="article-content-wrapper">
-      <VenusMdEditor v-model:value="localContent" :is-read="true" />
+      <VenusByteMdEditor v-model:value="localContent" :is-read="true" />
     </div>
 
     <!-- 标签 -->

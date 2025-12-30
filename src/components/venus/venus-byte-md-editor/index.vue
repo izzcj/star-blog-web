@@ -12,7 +12,7 @@ import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { errorNotification } from '@/element-plus/notification';
 
 defineOptions({
-  name: 'VenusMdEditor',
+  name: 'VenusByteMdEditor',
 });
 const props = defineProps({
   ...venusMdEditorProps,
@@ -78,18 +78,18 @@ function handleContentChange(content: string) {
 
 <template>
   <div class="size-full">
+    <ByteMdViewer
+      v-if="props.preview"
+      :value="model"
+      :plugins="viewerPlugins"
+    />
     <ByteMdEditor
-      v-if="!props.isRead"
+      v-else
       :locale="zhHans"
       :value="model"
       :plugins="plugins"
       :upload-images="handleUploadImage"
       @change="handleContentChange"
-    />
-    <ByteMdViewer
-      v-else
-      :value="model"
-      :plugins="viewerPlugins"
     />
   </div>
 </template>

@@ -56,8 +56,8 @@ export const useInstantMessageStore = defineStore('app-instant-message', {
               emitter.emit('user-im', message);
             }
           }
-        } catch {
-          console.warn('消息解析失败', event.data);
+        } catch (e) {
+          console.warn('消息解析失败', e);
         }
       };
 

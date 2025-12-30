@@ -130,6 +130,22 @@ export const adminRouter: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin/system/notice',
+    component: AdminLayout,
+    meta: {
+      title: '系统通知',
+      keepAlive: true,
+      topLevel: true,
+    },
+    children: [
+      {
+        name: 'NoticeManagement',
+        path: '',
+        component: () => import('@/views/admin/system/notice/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/admin/blog/article',
     component: AdminLayout,
     meta: {
