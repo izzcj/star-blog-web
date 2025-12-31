@@ -2,6 +2,8 @@
 interface Props {
   // 标题
   title: string;
+  // 标题图标
+  titleIcon?: string;
   // header样式
   headerClass?: string;
   // body样式
@@ -34,7 +36,10 @@ function mergeBodyClass(): string {
   <ElCard class="home-component-card" :header-class="mergeHeaderClass()" :body-class="mergeBodyClass()">
     <template #header>
       <div class="flex items-center justify-between">
-        <span class="text-base font-bold text-gray-700">{{ props.title }}</span>
+        <div class="flex items-center">
+          <IconRender v-if="props.titleIcon" :icon="props.titleIcon" class="mr-2" />
+          <span class="text-base font-bold text-gray-700">{{ props.title }}</span>
+        </div>
         <slot name="header" />
       </div>
     </template>

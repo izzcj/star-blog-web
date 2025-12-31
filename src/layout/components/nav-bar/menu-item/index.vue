@@ -78,13 +78,13 @@ function clickMenuItem(item: MenuItemRegistered) {
 <template>
   <ElMenuItem v-if="showMenuItem()" :index="resolvePath()" :route="route.path" @click="clickMenuItem">
     <template #title>
-      <IconRender :icon-value="route.meta?.icon || onlyOneChild?.meta?.icon" size="18px" />
+      <IconRender :icon="route.meta?.icon || onlyOneChild?.meta?.icon" size="18px" />
       <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title || onlyOneChild?.meta?.title }}</span>
     </template>
   </ElMenuItem>
   <ElSubMenu v-else :index="resolvePath()">
     <template #title>
-      <IconRender :icon-value="route.meta?.icon" size="18px" />
+      <IconRender :icon="route.meta?.icon" size="18px" />
       <span class="inline-block min-w-[4em] md:text-center">{{ route?.meta?.title }}</span>
     </template>
     <MenuItem v-for="child of route?.children" :key="child.path" :route="child" :base-path="resolvePath()" @click="clickMenuItem" />

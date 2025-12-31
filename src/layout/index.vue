@@ -2,6 +2,7 @@
 import { useTemplateRef } from 'vue';
 import NavBar from './components/nav-bar/index.vue';
 import AppMain from './components/app-main/index.vue';
+import Footer from './components/footer/index.vue';
 import Loading from '@/components/loading/index.vue';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useAppStatusStore } from '@/stores/app-status-store';
@@ -82,6 +83,7 @@ onMounted(() => {
       </ElHeader>
       <ElMain ref="mainRef" class="default-main w-dvw hidden-scrollbar">
         <AppMain />
+        <Footer />
         <ElBacktop :bottom="100" target=".default-main" :visibility-height="visibilityHeight" class="z-0!" />
       </ElMain>
     </ElContainer>

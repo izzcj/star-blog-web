@@ -180,7 +180,7 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-  <div class="size-full">
+  <div class="w-full">
     <div id="home-header" class="venus-center flex-col relative h-[40dvh] overflow-hidden">
       <div class="cursor-pointer text-[#FFFFFFFF] text-[4dvh] font-extrabold mb-5" @mouseenter="homeTitleAnime" @click="homeTitleClick">
         <span v-for="(char, index) of title" id="header-title" :key="index" class="inline-block text-shadow-[2px_2px_4px_rgb(0_0_0/_0.6)]">{{ char }}</span>

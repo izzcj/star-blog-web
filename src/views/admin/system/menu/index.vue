@@ -298,7 +298,7 @@ onMounted(() => {
 
         <ElTableColumn prop="icon" label="图标" width="100" align="center">
           <template #default="{ row }">
-            <IconRender v-if="row.icon" :icon-value="row.icon" size="18px" />
+            <IconRender v-if="row.icon" :icon="row.icon" size="18px" />
           </template>
         </ElTableColumn>
 

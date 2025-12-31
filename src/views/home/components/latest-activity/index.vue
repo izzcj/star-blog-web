@@ -89,7 +89,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="最新动态" body-class="p-0! custom-scrollbar max-h-[400px] overflow-y-auto">
+  <HomeComponentCard v-loading="loading" title="最新动态" title-icon="svg:new-activity" body-class="p-0! custom-scrollbar max-h-[260px] overflow-y-auto">
     <div class="flex flex-col">
       <div
         v-for="activity of activities"

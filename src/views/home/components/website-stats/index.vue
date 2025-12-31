@@ -66,7 +66,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="网站统计">
+  <HomeComponentCard v-loading="loading" title="网站统计" title-icon="svg:stat">
     <div class="grid grid-cols-2 gap-3">
       <!-- 访客数 -->
       <div class="stat-item">

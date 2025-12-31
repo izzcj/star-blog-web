@@ -214,7 +214,10 @@ onUnmounted(() => {
 
     <template #header>
       <div class="flex items-center justify-between">
-        <span class="text-base font-semibold text-gray-800">目录</span>
+        <div class="flex items-center">
+          <IconRender icon="svg:catalog" class="mr-2" />
+          <span class="text-base font-semibold text-gray-800">目录</span>
+        </div>
         <span class="text-xs text-gray-500">{{ Math.round(readingProgress) }}%</span>
       </div>
     </template>

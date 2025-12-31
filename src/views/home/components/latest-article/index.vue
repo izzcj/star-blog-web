@@ -44,10 +44,10 @@ async function loadHotArticle() {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" header-class="" title="最新文章">
+  <HomeComponentCard v-loading="loading" header-class="" title="最新文章" title-icon="svg:new-article">
     <template #header>
       <ElButton text type="primary" size="small" @click="goArticleList">
-        查看更多 →
+        更多 →
       </ElButton>
     </template>
     <div class="w-full">

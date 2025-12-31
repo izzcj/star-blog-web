@@ -51,7 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="推荐阅读" body-class="custom-scrollbar max-h-[300px] overflow-y-auto">
+  <HomeComponentCard v-loading="loading" title="推荐阅读" title-icon="svg:recommend" body-class="custom-scrollbar max-h-[330px] overflow-y-auto">
     <div class="flex flex-col gap-3">
       <div
         v-for="article of articles"

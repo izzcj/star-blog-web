@@ -36,7 +36,7 @@ async function loadHotArticle() {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" header-class="" title="热门文章">
+  <HomeComponentCard v-loading="loading" header-class="" title="热门文章" title-icon="svg:hot-article">
     <div class="w-full">
       <template v-if="hotArticle.length">
         <div class="w-full grid gap-4 grid-cols-1 md:grid-cols-2 2xl:grid-cols-3">

@@ -54,7 +54,7 @@ function handleClose(event: Event) {
     <div class="inline-flex items-center gap-1">
       <IconRender
         v-if="iconValue"
-        :icon-value="iconValue"
+        :icon="iconValue"
         :size="iconSize"
       />
       {{ displayName }}

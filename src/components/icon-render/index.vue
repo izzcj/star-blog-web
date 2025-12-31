@@ -5,8 +5,8 @@ import SvgIcon from '@/components/icon-render/components/svg-icon/index.vue';
 import { parseIconValue, normalizeIconValue } from '@/utils/icon-util';
 
 interface Props {
-  // 图标值
-  iconValue?: string;
+  // 图标
+  icon?: string;
   // 图标大小
   size?: string | number;
   // 图标颜色
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
  * 解析图标信息
  */
 const parsedIcon = computed(() => {
-  const normalized = normalizeIconValue(props.iconValue);
+  const normalized = normalizeIconValue(props.icon || '');
   return parseIconValue(normalized);
 });
 

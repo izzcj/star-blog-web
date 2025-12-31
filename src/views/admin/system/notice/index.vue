@@ -211,14 +211,13 @@ function handlePreview(notice: Notice) {
               />
             </ElFormItem>
             <ElFormItem label="发布状态">
-              <ElSelect
-                v-model="queryParams.published"
-                placeholder="请选择发布状态"
+              <VenusSelect
+                v-model:value="queryParams.published"
+                :option-type="DataOptionType.CONST"
+                :option-key="[{ label: '已发布', value: true }, { label: '未发布', value: false }]"
+                placeholder="请选择状态"
                 clearable
-              >
-                <ElOption label="已发布" :value="true" />
-                <ElOption label="未发布" :value="false" />
-              </ElSelect>
+              />
             </ElFormItem>
           </div>
           <div class="flex items-center gap-2">
@@ -246,7 +245,7 @@ function handlePreview(notice: Notice) {
       <!-- 通知列表表格 -->
       <ElTable v-loading="loading" :data="noticeList" border max-height="600px">
         <ElTableColumn prop="title" label="通知标题" min-width="200" show-overflow-tooltip />
-        <ElTableColumn prop="type" label="通知分类" width="120" />
+        <ElTableColumn prop="typeName" label="通知分类" width="120" />
         <ElTableColumn prop="published" label="发布状态" width="100" align="center">
           <template #default="{ row }">
             <ElTag :type="row.published ? 'success' : 'info'">

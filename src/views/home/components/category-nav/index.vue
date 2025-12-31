@@ -54,7 +54,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="分类导航">
+  <HomeComponentCard v-loading="loading" title="分类导航" title-icon="svg:category">
     <div class="grid grid-cols-2 gap-3">
       <div
         v-for="category of categories"

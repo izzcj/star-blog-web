@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HomeComponentCard v-loading="loading" title="热门标签">
+  <HomeComponentCard v-loading="loading" title="热门标签" title-icon="svg:hot-tag">
     <div class="min-h-20">
       <div v-if="hotTags.length" class="flex flex-wrap gap-2">
         <VenusTag v-for="tag of hotTags" :key="tag.id" :tag="tag" />

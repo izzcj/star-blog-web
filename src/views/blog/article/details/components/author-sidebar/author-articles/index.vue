@@ -61,7 +61,10 @@ onMounted(() => {
     class="border border-gray-100/60 hover:shadow-md transition-all duration-300 rounded-xl"
   >
     <template #header>
-      <span class="text-base font-semibold text-gray-800">其他文章</span>
+      <div class="flex items-center">
+        <IconRender icon="svg:other" class="mr-2" />
+        <span class="text-base font-semibold text-gray-800">其他文章</span>
+      </div>
     </template>
 
     <ElSkeleton v-if="loading" :rows="5" animated />
