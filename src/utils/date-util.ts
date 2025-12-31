@@ -1,5 +1,8 @@
-import { formatDistanceToNow, format, differenceInCalendarDays } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
+import { format, differenceInMinutes, differenceInCalendarDays } from 'date-fns';
+
+const MINUTES_PER_HOUR = 60;
+const HOURS_PER_DAY = 24;
+const MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR;
 
 /**
  * 格式化相对时间
@@ -14,27 +17,43 @@ export function formatRelativeTime(date: string | Date, formatDays?: number): st
   const target = new Date(toValue(date));
   const now = new Date();
 
-  // 相差的「日历天数」
-  const diffDays = Math.abs(differenceInCalendarDays(now, target));
+  const diffMinutes = differenceInMinutes(now, target);
 
-  // 超过格式化天数
-  if (diffDays > formatDays) {
+  // 未来时间兜底（可选）
+  if (diffMinutes < 0) {
+    return format(target, 'yyyy-MM-dd HH:mm');
+  }
+
+  // 超过指定天数，显示绝对时间
+  if (diffMinutes >= formatDays * MINUTES_PER_DAY) {
     const isSameYear = target.getFullYear() === now.getFullYear();
-
     return format(target, isSameYear ? 'MM-dd' : 'yyyy-MM-dd');
   }
 
-  // 3 天以内：相对时间
-  const relative = formatDistanceToNow(target, {
-    addSuffix: true,
-    locale: zhCN,
-  });
-
-  // 不是今天（昨天 / 前天），追加时分
-  if (diffDays >= 1) {
-    return `${relative} ${format(target, 'HH:mm')}`;
+  // 刚刚
+  if (diffMinutes < 1) {
+    return '刚刚';
   }
 
-  // 今天
-  return relative;
+  // 分钟前
+  if (diffMinutes < MINUTES_PER_HOUR) {
+    return `${diffMinutes} 分钟前`;
+  }
+
+  const diffHours = Math.floor(diffMinutes / MINUTES_PER_HOUR);
+
+  // 小时前（24小时内）
+  if (diffHours < HOURS_PER_DAY) {
+    return `${diffHours} 小时前`;
+  }
+
+  const diffCalendarDays = differenceInCalendarDays(now, target);
+
+  // 昨天
+  if (diffCalendarDays === 1) {
+    return `昨天 ${format(target, 'HH:mm')}`;
+  }
+
+  // 前天
+  return `前天 ${format(target, 'HH:mm')}`;
 }

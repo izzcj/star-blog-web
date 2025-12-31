@@ -47,7 +47,7 @@ const likeIconClass = computed(() => {
 
 // 头像尺寸
 const avatarSize = computed(() => {
-  return appSettingsStore.isMobile ? 32 : 40;
+  return appSettingsStore.isMobile ? 35 : 40;
 });
 
 /**
@@ -125,9 +125,9 @@ function handleReplyCountChange(count: number) {
 <template>
   <div class="py-4 border-b border-solid border-[#e8e8e8] last:border-none">
     <!-- 评论头部 -->
-    <ElRow :gutter="12">
+    <div class="flex">
       <!-- 头像 -->
-      <ElCol :xs="4" :sm="2">
+      <div class="flex justify-end">
         <VenusAvatar
           v-model:value="localComment.userAvatar"
           :name="localComment.userNickname"
@@ -135,12 +135,12 @@ function handleReplyCountChange(count: number) {
           :disabled="true"
           shape="circle"
         />
-      </ElCol>
+      </div>
 
-      <ElCol :xs="20" :sm="22">
+      <ElCol :span="22">
         <!-- 用户名 -->
         <div class="mb-1">
-          <span class="font-semibold text-sm">{{ localComment.userNickname }}</span>
+          <span class="font-semibold text-sm text-gray-400">{{ localComment.userNickname }}</span>
         </div>
 
         <!-- 评论内容 -->
@@ -152,7 +152,7 @@ function handleReplyCountChange(count: number) {
         <ElRow class="items-center">
           <ElCol :span="18">
             <!-- 发表时间 -->
-            <span class="text-gray-400 text-sm">{{ formatRelativeTime(localComment.createTime as string) }}</span>
+            <span class="text-gray-400 text-xs">{{ formatRelativeTime(localComment.createTime as string) }}</span>
             <!-- 回复 -->
             <ElButton
               class="text-gray-400! hover:text-blue-500! transition-colors"
@@ -185,7 +185,7 @@ function handleReplyCountChange(count: number) {
           </span>
         </div>
       </ElCol>
-    </ElRow>
+    </div>
 
     <!-- 回复区域 -->
     <ReplySection

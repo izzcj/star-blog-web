@@ -90,22 +90,22 @@ function handleReply() {
 <template>
   <div class="py-3 border-b border-solid border-[#e8e8e8] last:border-none">
     <!-- 回复头部 -->
-    <ElRow :gutter="12">
+    <div class="flex">
       <!-- 头像 -->
-      <ElCol :xs="4" :sm="2">
+      <div class="flex justify-end">
         <VenusAvatar
           v-model:value="localReply.userAvatar"
           :name="localReply.userNickname"
-          size="small"
+          :size="40"
           :disabled="true"
           shape="circle"
         />
-      </ElCol>
+      </div>
 
       <ElCol :xs="20" :sm="22">
-        <!-- 用户名和时间 -->
+        <!-- 用户名 -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="font-semibold text-sm">{{ localReply.userNickname }}</span>
+          <span class="font-semibold text-sm text-gray-400">{{ localReply.userNickname }}</span>
         </div>
 
         <!-- 回复内容 -->
@@ -123,7 +123,7 @@ function handleReply() {
         <ElRow class="items-center">
           <!-- 发表时间 -->
           <ElCol :span="18">
-            <span class="text-gray-400 text-sm">{{ formatRelativeTime(localReply.createTime as string) }}</span>
+            <span class="text-gray-400 text-xs">{{ formatRelativeTime(localReply.createTime as string) }}</span>
             <!-- 回复 -->
             <ElButton
               class="text-gray-400! hover:text-blue-500! transition-colors"
@@ -150,7 +150,7 @@ function handleReply() {
           </ElCol>
         </ElRow>
       </ElCol>
-    </ElRow>
+    </div>
   </div>
 </template>
 

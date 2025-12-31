@@ -1,6 +1,6 @@
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
 
 .fade-enter-from,
@@ -10,7 +10,7 @@
 
 .fade-slide-leave-active,
 .fade-slide-enter-active {
-  transition: all 0.3s;
+  transition: all 1s;
 }
 
 .fade-slide-enter-from {
@@ -24,7 +24,7 @@
 }
 
 .fade-bottom-enter-active {
-  transition: opacity 0.5s, transform 1s;
+  transition: opacity 1s, transform 1s;
 }
 
 .fade-bottom-leave-active {
@@ -43,7 +43,7 @@
 
 .fade-scale-leave-active,
 .fade-scale-enter-active {
-  transition: all 0.28s;
+  transition: all 1s;
 }
 
 .fade-scale-enter-from {
@@ -58,7 +58,7 @@
 
 .fade-top-enter-active,
 .fade-top-leave-active {
-  transition: opacity 0.2s, transform 0.25s;
+  transition: opacity 0.5s, transform 1s;
 }
 
 .fade-top-enter-from {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { animate, stagger } from 'animejs';
 import AuthorSidebar from './components/author-sidebar/index.vue';
 import ArticleContent from './components/article-content/index.vue';
 import ArticleToc from './components/article-toc/index.vue';
@@ -20,10 +21,48 @@ const props = defineProps({
 const articleDetail = ref<ArticleDetail>();
 const appSettingsStore = useAppSettingsStore();
 
+/**
+ * 初始化入场动画
+ */
+function initEnterAnimations() {
+  // 使用setTimeout确保所有子组件都已渲染
+  nextTick(() => {
+    setTimeout(() => {
+      // 左侧作者栏淡入左移
+      animate('#author-sidebar-col', {
+        opacity: [0, 1],
+        translateX: [-30, 0],
+        duration: 800,
+        ease: 'easeOutCubic',
+        delay: stagger(100),
+      });
+
+      // 中间内容缩放淡入
+      animate('#article-content-col', {
+        opacity: [0, 1],
+        scale: [0.8, 1],
+        duration: 600,
+        ease: 'easeOutCubic',
+        delay: stagger(100),
+      });
+
+      // 右侧目录淡入右移
+      animate('#article-toc-col', {
+        opacity: [0, 1],
+        translateX: [30, 0],
+        duration: 800,
+        ease: 'easeOutCubic',
+        delay: stagger(100),
+      });
+    }, 100);
+  });
+}
+
 onMounted(() => {
   asyncRequest(articleApiModule.apis.incrementViewCount, { pathParams: { id: props.id } }).then(() => {
     asyncRequest(articleApiModule.apis.fetchDetail, { pathParams: { id: props.id } }).then(res => {
       articleDetail.value = res.data;
+      initEnterAnimations();
     });
   });
 });
@@ -36,13 +75,14 @@ onMounted(() => {
         <!-- 左侧作者栏：PC端显示 -->
         <ElCol :xs="0" :sm="0" :md="0" :lg="5">
           <AuthorSidebar
+            id="author-sidebar-col"
             :author-id="articleDetail.createBy"
             :current-article-id="articleDetail.id"
           />
         </ElCol>
 
         <!-- 中间内容区：全端显示 -->
-        <ElCol :xs="24" :sm="24" :md="17" :lg="14">
+        <ElCol id="article-content-col" :xs="24" :sm="24" :md="17" :lg="14">
           <div v-if="appSettingsStore.isMobile">
             <ArticleContent :article-detail="articleDetail" />
           </div>
@@ -54,7 +94,7 @@ onMounted(() => {
         <!-- 右侧目录：平板及以上显示 -->
         <ElCol :xs="0" :sm="0" :md="7" :lg="5">
           <ElAffix :offset="100" :z-index="0">
-            <ArticleToc :content="articleDetail.content" />
+            <ArticleToc id="article-toc-col" :content="articleDetail.content" />
           </ElAffix>
         </ElCol>
       </ElRow>

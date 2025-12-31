@@ -117,21 +117,22 @@ function handleConfigCategoryChange(category: string) {
  * @param config 配置项
  */
 function saveConfig(config: SystemConfig) {
-  if (config.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
-    if (config.value) {
-      config.value = JSON.stringify(config.value);
+  const submitData = { ...config };
+  if (submitData.type === SystemConfigType.MULTI_SELECT || config.type === SystemConfigType.CHECKBOX) {
+    if (submitData.value) {
+      submitData.value = JSON.stringify(submitData.value);
     }
   }
   // 检查是否是新增的配置项（没有id）
   if (!config.id) {
     // 新增配置项
-    asyncRequest(systemConfigApiModule.apis.create, { data: config }).then(() => {
+    asyncRequest(systemConfigApiModule.apis.create, { data: submitData }).then(() => {
       successMessage('新增成功');
       loadSystemConfigs();
     });
   } else {
     // 更新已存在的配置项
-    asyncRequest(systemConfigApiModule.apis.modify, { data: config }).then(() => {
+    asyncRequest(systemConfigApiModule.apis.modify, { data: submitData }).then(() => {
       successMessage('保存成功');
     });
   }
