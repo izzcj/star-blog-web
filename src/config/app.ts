@@ -46,6 +46,10 @@ const appSettings: AppSettingsState = {
    * 是否是移动端
    */
   isMobile: false,
+  /**
+   * 管理后台侧边栏是否折叠（默认展开）
+   */
+  asideCollapsed: false,
 };
 
 export default appSettings;

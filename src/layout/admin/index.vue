@@ -12,7 +12,7 @@ const isLoading = ref(true);
 
 const appSettingsStore = useAppSettingsStore();
 const asideWidth = computed(() => {
-  return appSettingsStore.isMobile ? '60px' : '150px';
+  return appSettingsStore.asideWidth;
 });
 
 onMounted(() => {
@@ -20,6 +20,16 @@ onMounted(() => {
     isLoading.value = false;
   }, 1000);
 });
+
+// 监听移动端状态变化，强制折叠
+watch(
+  () => appSettingsStore.isMobile,
+  isMobile => {
+    if (isMobile) {
+      appSettingsStore.setAsideCollapse(true);
+    }
+  },
+);
 </script>
 
 <template>
@@ -34,12 +44,12 @@ onMounted(() => {
         </div>
       </div>
       <ElContainer v-else class="h-dvh w-dvw relative">
-        <div class="py-4 px-1 border-r-gray-200 border-r">
-          <ElAside :width="asideWidth">
+        <div class="transition-all duration-300 ease-in-out py-4 px-1 border-r-gray-200 border-r">
+          <ElAside :width="asideWidth" class="transition-all duration-300 ease-in-out">
             <AdminAside />
           </ElAside>
         </div>
-        <ElMain class="admin-main overflow-hidden!">
+        <ElMain class="admin-main transition-all duration-300 ease-in-out overflow-hidden!">
           <div>
             <div class="pb-3 sticky top-0 z-0">
               <AdminNavBar />
