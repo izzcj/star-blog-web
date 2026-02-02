@@ -1,7 +1,7 @@
-import { getAppConfig } from '@/utils/env-util';
 import { loadingMessage, successMessage, warningMessage } from '@/element-plus/notification';
 import { asyncRequest } from '@/utils/request-util';
 import { uploadApiModule } from '@/api/upload';
+import { getAppConfig } from '@/utils/env-util';
 
 export interface UploadInfoState {
   /**
@@ -29,9 +29,7 @@ export const useUploadInfoStore = defineStore({
       loading: false,
       loadingPromise: null,
       fetched: false,
-      ossBaseUrls: {
-        minio: getAppConfig().minioServerUrl,
-      },
+      ossBaseUrls: {},
     };
   },
   actions: {
@@ -40,9 +38,13 @@ export const useUploadInfoStore = defineStore({
      *
      * @param ossProvider 实现类型
      */
-    getOssBaseUrl(ossProvider: string): string {
+    getOssBaseUrl(ossProvider?: string): string {
       if (!this.fetched) {
         return '';
+      }
+
+      if (!ossProvider) {
+        ossProvider = getAppConfig().defaultOssProvider;
       }
 
       const baseUrl = this.ossBaseUrls[ossProvider];
@@ -84,12 +86,15 @@ export const useUploadInfoStore = defineStore({
     /**
      * 移除临时上传对象文件
      *
-     * @param ossProvider OSS实现
      * @param objectKey 对象文件Key
+     * @param ossProvider OSS实现
      */
-    async removeTempObject(ossProvider: string, objectKey: string) {
+    async removeTempObject(objectKey: string, ossProvider?: string) {
       if (!objectKey.startsWith('temp/')) {
         return Promise.resolve(true);
+      }
+      if (!ossProvider) {
+        ossProvider = getAppConfig().defaultOssProvider;
       }
       const closeLoading = loadingMessage('删除中...');
       return asyncRequest(uploadApiModule.apis.removeTempObject, {

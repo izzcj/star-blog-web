@@ -5,7 +5,8 @@ import { frameworkConfig } from '@/config/framework.config';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import CommonRouterPath from '@/enums/common-router-path';
 import LoginType from '@/enums/login-type';
-import loginBg from '@/assets/image/login-bg.png';
+import { asyncRequest } from '@/utils/request-util';
+import { systemConfigApiModule } from '@/api/system/system-config';
 
 defineOptions({
   name: 'LoginPage',
@@ -49,14 +50,30 @@ const loginData = reactive<LoginData>({
   loginType: loginType.value,
 });
 
+const bgLoaded = ref(false);
+const loginBg = ref('');
+
 // 组件挂载时检查本地存储
 onMounted(() => {
+  loadLoginBg();
   const savedAccount = localStorage.getItem('rememberedAccount');
   if (savedAccount) {
     loginData.account = savedAccount;
     rememberMe.value = true;
   }
 });
+
+/**
+ * 加载背景图
+ */
+function loadLoginBg() {
+  asyncRequest<SystemConfig>(systemConfigApiModule.apis.fetchOne, { params: { key: 'login-bg' } })
+    .then(res => {
+      if (res.data.value) {
+        loginBg.value = res.data.value;
+      }
+    });
+}
 
 /**
  * 登录
@@ -118,7 +135,13 @@ function handleForgotPassword() {
 <template>
   <div class="relative w-dvw h-dvh overflow-hidden flex items-center justify-center">
     <!-- 背景图片 -->
-    <ElImage :src="loginBg" class="fixed! top-0 left-0 w-dvw h-dvh" fit="cover" />
+    <VenusImage
+      :src="loginBg"
+      class="login-bg fixed! top-0 left-0 w-dvw h-dvh"
+      :class="[{ 'is-loaded': bgLoaded }]"
+      fit="cover"
+      @load="bgLoaded = true"
+    />
 
     <!-- 渐变蒙版 -->
     <div class="gradient-overlay" />
@@ -217,6 +240,33 @@ function handleForgotPassword() {
 
 <style scoped lang="scss">
 @forward "@/styles/common";
+.login-bg {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.login-bg.is-loaded {
+  animation: bgFadeIn 1.2s ease forwards, bgZoom 20s ease-in-out 1.2s infinite alternate;
+}
+
+/* 淡入动画 */
+@keyframes bgFadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 持续呼吸式缩放 + 位移 */
+@keyframes bgZoom {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate(-1%, -1%);
+  }
+}
+
 // Element Plus 输入框深层样式覆盖
 :deep(.login-input) {
   .el-input__wrapper {

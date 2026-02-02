@@ -55,12 +55,12 @@ async function handleUploadImage(files: File[]) {
   if (isArray(result.data)) {
     result.data.forEach(url => {
       uploadedImages.push({
-        url: uploadInfoStore.getOssBaseUrl('minio') + url,
+        url: uploadInfoStore.getOssBaseUrl() + url,
       });
     });
   } else {
     uploadedImages.push({
-      url: uploadInfoStore.getOssBaseUrl('minio') + result.data,
+      url: uploadInfoStore.getOssBaseUrl() + result.data,
     });
   }
   return uploadedImages;

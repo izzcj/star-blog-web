@@ -103,7 +103,8 @@ export const useUserInfoStore = defineStore({
         const instantMessageStore = useInstantMessageStore();
         instantMessageStore.connectMessageServer();
         return true;
-      } catch {
+      } catch (e) {
+        console.log(e);
         errorMessage('用户信息构建失败，请刷新页面重试！');
         return false;
       }

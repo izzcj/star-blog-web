@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Delete, Plus } from '@element-plus/icons-vue';
-
-interface AvatarUploaderProps {
-  // 是否启用
-  enabled?: boolean;
-  // 是否已有头像
-  hasAvatar?: boolean;
-}
+import { avatarUploaderProps } from './props';
 
 interface AvatarUploaderEmits {
   (e: 'upload', file: File): void;
@@ -17,9 +11,8 @@ defineOptions({
   name: 'AvatarUploader',
 });
 
-const props = withDefaults(defineProps<AvatarUploaderProps>(), {
-  enabled: true,
-  hasAvatar: false,
+const props = defineProps({
+  ...avatarUploaderProps,
 });
 
 const emit = defineEmits<AvatarUploaderEmits>();

@@ -227,7 +227,7 @@ async function handleAvatarCancel() {
   }
 
   try {
-    await uploadInfoStore.removeTempObject('minio', formData.value.avatar);
+    await uploadInfoStore.removeTempObject(formData.value.avatar);
     formData.value.avatar = initialAvatar.value;
   } catch (error) {
     console.error('清理临时头像失败:', error);
@@ -400,9 +400,9 @@ function handleDialogClose() {
             :option-type="DataOptionType.CONST"
             :option-key="roleOptions"
             placeholder="请选择角色"
-            multiple
-            collapse-tags
-            collapse-tags-tooltip
+            :multiple="true"
+            :collapse-tags="true"
+            :collapse-tags-tooltip="true"
           />
         </ElFormItem>
         <ElFormItem label="排序" prop="sort">

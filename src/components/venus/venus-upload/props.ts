@@ -1,8 +1,9 @@
 import { bool, integer, oneOf, string } from 'vue-types';
+import { getAppConfig } from '@/utils/env-util';
 
 export const venusUploadProps = {
   // OSS实现
-  ossProvider: oneOf(['minio'] as const).def('minio'),
+  ossProvider: oneOf(getAppConfig().ossProviders).def(getAppConfig().defaultOssProvider),
   // 文件类型
   fileType: oneOf(['image', 'file'] as const).def('image'),
   // 是否批量上传

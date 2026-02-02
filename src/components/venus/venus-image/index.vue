@@ -10,7 +10,7 @@ const props = defineProps({
   ...venusImageProps,
 });
 
-const ossProvider = computed(() => props.ossProvider ?? 'minio');
+const ossProvider = computed(() => props.ossProvider);
 
 const uploadInfoStore = useUploadInfoStore();
 

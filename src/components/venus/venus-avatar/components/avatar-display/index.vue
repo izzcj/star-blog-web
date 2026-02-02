@@ -1,36 +1,14 @@
 <script setup lang="ts">
 import { User } from '@element-plus/icons-vue';
 import { generateAvatarColor, getAvatarText } from '../../utils/avatar-color';
-
-interface AvatarDisplayProps {
-  // 图片地址（objectKey）
-  src?: string | null;
-  // 用户名
-  name?: string;
-  // 尺寸（像素）
-  size?: number | null;
-  // 形状
-  shape?: 'circle' | 'square';
-  // 文字颜色
-  textColor?: string;
-  // 背景色
-  bgColor?: string;
-  // OSS实现
-  ossProvider?: 'minio';
-}
+import { avatarDisplayProps } from './props';
 
 defineOptions({
   name: 'AvatarDisplay',
 });
 
-const props = withDefaults(defineProps<AvatarDisplayProps>(), {
-  src: null,
-  name: '',
-  size: 48,
-  shape: 'circle',
-  textColor: '#ffffff',
-  bgColor: '',
-  ossProvider: 'minio',
+const props = defineProps({
+  ...avatarDisplayProps,
 });
 
 // 图片加载失败状态

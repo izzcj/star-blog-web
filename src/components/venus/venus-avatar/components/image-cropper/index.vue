@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Cropper from 'cropperjs';
+import { imageCropperProps } from './props';
 
 interface CropperModalEmits {
   (e: 'update:visible', value: boolean): void;
@@ -7,43 +8,12 @@ interface CropperModalEmits {
   (e: 'cancel'): void;
 }
 
-interface Props {
-  // 显示状态
-  visible?: boolean;
-  // 标题
-  title?: string;
-  // 图片路径
-  path?: string;
-  // 输出宽度
-  outWidth?: number;
-  // 容器宽度
-  width?: number;
-  // 容器高度
-  height?: number;
-  // 宽高比
-  aspectRatio?: number;
-  // 裁剪比例
-  coverage?: number;
-  // 是否可移动
-  movable?: boolean;
-  // 是否圆角
-  rounded?: boolean;
-}
-
 defineOptions({
   name: 'ImageCropper',
 });
 
-const props = withDefaults(defineProps<Props>(), {
-  title: '头像编辑',
-  path: '',
-  width: 600,
-  height: 400,
-  outWidth: 240,
-  aspectRatio: 1,
-  coverage: 0.72,
-  movable: true,
-  rounded: true,
+const props = defineProps({
+  ...imageCropperProps,
 });
 
 const emits = defineEmits<CropperModalEmits>();

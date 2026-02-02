@@ -34,10 +34,10 @@ function handleUploadImage(files: File[]): Nullable<string> {
   });
   asyncUploadRequest<string | string[]>(fromData).then(res => {
     if (files.length === 1) {
-      venusEditor.value.insertValue(`![${files[0].name}](${uploadInfoStore.getOssBaseUrl('minio') + res.data})\n`);
+      venusEditor.value.insertValue(`![${files[0].name}](${uploadInfoStore.getOssBaseUrl() + res.data})\n`);
     } else {
       for (let i = 0; i < files.length; i++) {
-        venusEditor.value.insertValue(`![${files[i].name}](${uploadInfoStore.getOssBaseUrl('minio') + res.data[i]})\n`);
+        venusEditor.value.insertValue(`![${files[i].name}](${uploadInfoStore.getOssBaseUrl() + res.data[i]})\n`);
       }
     }
   })

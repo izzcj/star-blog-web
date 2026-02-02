@@ -28,13 +28,14 @@ interface VenusUploadFile extends UploadUserFile {
 const uploadInfoStore = useUploadInfoStore();
 const result = uploadInfoStore.fetchOssBaseUrls();
 const apiBaseUrl = getAppConfig().apiBaseUrl;
+
 let uploadUrl: string;
 if (apiBaseUrl.endsWith('/')) {
-  uploadUrl = `${apiBaseUrl}oss/upload/${props.ossProvider ?? 'minio'}/${
+  uploadUrl = `${apiBaseUrl}oss/upload/${props.ossProvider}/${
     props.fileType == 'image' ? 'image' : 'file'
   }`;
 } else {
-  uploadUrl = `${apiBaseUrl}/oss/upload/${props.ossProvider ?? 'minio'}/${
+  uploadUrl = `${apiBaseUrl}/oss/upload/${props.ossProvider}/${
     props.fileType == 'image' ? 'image' : 'file'
   }`;
 }
@@ -95,7 +96,7 @@ watch(
         return {
           name: path.basename(file).split('__', 2)[1],
           fullPath: file,
-          url: uploadInfoStore.getOssBaseUrl(props.ossProvider ?? 'minio') + file,
+          url: uploadInfoStore.getOssBaseUrl(props.ossProvider) + file,
           status: 'success',
         } as VenusUploadFile;
       });
@@ -134,7 +135,7 @@ function onSuccess(response: any, uploadFile: VenusUploadFile) {
   objectKeys.value.push(objectKey);
   // 使用 nextTick 确保 DOM 更新后再修改文件信息
   nextTick(() => {
-    uploadFile.url = uploadInfoStore.getOssBaseUrl(props.ossProvider ?? 'minio') + objectKey;
+    uploadFile.url = uploadInfoStore.getOssBaseUrl(props.ossProvider) + objectKey;
     uploadFile.fullPath = objectKey;
     uploadFile.name = path.basename(objectKey).split('__', 2)[1];
   });
@@ -169,7 +170,7 @@ async function beforeRemove(uploadFile: VenusUploadFile) {
     return false;
   }
   try {
-    await uploadInfoStore.removeTempObject(props.ossProvider ?? 'minio', uploadFile.fullPath);
+    await uploadInfoStore.removeTempObject(uploadFile.fullPath, props.ossProvider);
     remove(objectKeys.value, item => item == uploadFile.fullPath);
     return true;
   } catch (error) {

@@ -1,6 +1,8 @@
 import type { RawAxiosRequestHeaders } from 'axios';
 import type RequestMethod from '@/enums/request-method';
 import type InstantMessageType from '@/enums/instant-message-type';
+import type SystemConfigType from '@/enums/systme-config-type';
+import type DataOptionType from '@/enums/data-option-type';
 
 declare global {
   /**
@@ -50,17 +52,17 @@ declare global {
      */
     apiBaseUrl: string;
     /**
+     * oss提供器
+     */
+    ossProviders: string[];
+    /**
+     * 默认oss提供器
+     */
+    defaultOssProvider: string;
+    /**
      * 是否显示快速的连续请求警告
      */
     showRapidDuplicateRequestWarning: true | false;
-    /**
-     * Minio 服务地址
-     */
-    minioServerUrl: string;
-    /**
-     * Minio 预览服务地址
-     */
-    minioPreviewServerUrl: string;
     /**
      * 即时消息服务地址
      */
@@ -273,6 +275,30 @@ declare global {
      * 更新时间
      */
     updateTime?: string;
+  }
+
+  /**
+   * 系统配置
+   */
+  export interface SystemConfig extends BaseEntity {
+    // 类别
+    category: string;
+    // 排序
+    sort: Nullable<number>;
+    // 名称
+    name: string;
+    // 类型
+    type: SystemConfigType;
+    // key
+    key: string;
+    // 值
+    value: Nullable<string>;
+    // 数据源类型
+    dataSourceType: Nullable<DataOptionType>;
+    // 数据源配置
+    dataSourceConfig: Nullable<string>;
+    // 是否可删除
+    deletable: boolean;
   }
 
   /**

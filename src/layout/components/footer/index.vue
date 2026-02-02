@@ -9,7 +9,7 @@ defineOptions({
 // 当前年份计算
 const currentYear = computed(() => new Date().getFullYear());
 const copyrightYear = computed(() => {
-  return currentYear.value > 2024 ? `2024-${currentYear.value}` : '2024';
+  return currentYear.value > 2026 ? `2026-${currentYear.value}` : '2026';
 });
 
 // 备案链接

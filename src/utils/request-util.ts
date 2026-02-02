@@ -5,6 +5,7 @@ import { replaceTemplate } from '@/utils/string-util';
 import { uploadApiModule } from '@/api/upload';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import RequestHeader from '@/enums/request-header';
+import { getAppConfig } from '@/utils/env-util';
 
 // ------------------简化请求方法-------------------- //
 export async function get<T = any>(uri: string, params: Recordable = {}, headers: RawAxiosRequestHeaders = {}) {
@@ -86,33 +87,18 @@ export function executeRequest<T = unknown, D extends Recordable = Recordable>(
 }
 
 /**
- * 发送异步请求
- *
- * @param api        API
- * @param apiRequest 请求信息
- */
-export function asyncRequest<T = any, D extends Recordable = Recordable>(
-  api: ApiDescriptor,
-  apiRequest?: ApiRequest<D>,
-) {
-  const requestInfo = mergedRequestInfo(api, apiRequest);
-
-  return executeRequest<T, D>(requestInfo.uri, requestInfo.method, requestInfo.apiRequest);
-}
-
-/**
  * 发送异步上传请求
  *
  * @param formData    表单数据
+ * @param ossProvider OSS提供者
  * @param api         API
  * @param fileType    文件类型
- * @param ossProvider OSS提供者
  */
 export function asyncUploadRequest<T = any>(
   formData: FormData,
+  ossProvider?: string,
   api?: ApiDescriptor,
   fileType?: string,
-  ossProvider?: string,
 ) {
   if (!api) {
     api = uploadApiModule.apis.uploadObject;
@@ -128,12 +114,27 @@ export function asyncUploadRequest<T = any>(
   const apiRequest: ApiRequest<FormData> = {
     pathParams: {
       fileType: fileType || 'image',
-      ossProvider: ossProvider || 'minio',
+      ossProvider: ossProvider || getAppConfig().defaultOssProvider,
     },
     headers,
     data: formData,
   };
   return asyncRequest<T, FormData>(api, apiRequest);
+}
+
+/**
+ * 发送异步请求
+ *
+ * @param api        API
+ * @param apiRequest 请求信息
+ */
+export function asyncRequest<T = any, D extends Recordable = Recordable>(
+  api: ApiDescriptor,
+  apiRequest?: ApiRequest<D>,
+) {
+  const requestInfo = mergedRequestInfo(api, apiRequest);
+
+  return executeRequest<T, D>(requestInfo.uri, requestInfo.method, requestInfo.apiRequest);
 }
 
 /**

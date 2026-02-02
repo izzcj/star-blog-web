@@ -95,7 +95,7 @@ async function uploadToOss(file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await asyncUploadRequest(formData);
+    const response = await asyncUploadRequest(formData, props.ossProvider);
     model.value = response.data;
 
     successNotification('头像上传成功', '成功');
@@ -116,7 +116,7 @@ async function handleDelete() {
   }
 
   try {
-    await uploadInfoStore.removeTempObject(props.ossProvider, model.value);
+    await uploadInfoStore.removeTempObject(model.value, props.ossProvider);
     model.value = null;
   } catch (error) {
     console.error('删除失败:', error);

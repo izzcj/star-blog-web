@@ -6,7 +6,8 @@ import Footer from './components/footer/index.vue';
 import Loading from '@/components/loading/index.vue';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 import { useAppStatusStore } from '@/stores/app-status-store';
-import bgImage from '@/assets/image/background.png';
+import { asyncRequest } from '@/utils/request-util';
+import { systemConfigApiModule } from '@/api/system/system-config';
 
 defineOptions({
   name: 'Layout',
@@ -20,7 +21,7 @@ const isScrolled = ref(false);
 const appStatusStore = useAppStatusStore();
 const appSettingsStore = useAppSettingsStore();
 
-const backgroundImage = ref(bgImage);
+const backgroundImage = ref('');
 
 const isLoaded = computed(() => appStatusStore.resourceLoadStatus);
 
@@ -51,6 +52,18 @@ const handleScroll = debounce(() => {
 }, 20);
 
 /**
+ * 加载网站背景图
+ */
+function loadWebBg() {
+  asyncRequest<SystemConfig>(systemConfigApiModule.apis.fetchOne, { params: { key: 'web-bg' } })
+    .then(res => {
+      if (res.data.value) {
+        backgroundImage.value = res.data.value;
+      }
+    });
+}
+
+/**
  * 容器加载完毕
  */
 function containerLoadComplete() {
@@ -64,6 +77,7 @@ useEventListener(mainRef, 'scroll', () => {
 });
 
 onMounted(() => {
+  loadWebBg();
   containerLoadComplete();
 });
 </script>
@@ -74,7 +88,7 @@ onMounted(() => {
     <Loading />
 
     <!-- 背景图 -->
-    <ElImage class="h-dvh w-dvw fixed!" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
+    <VenusImage class="h-dvh w-dvw fixed!" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
 
     <!-- 页面主体 -->
     <ElContainer v-if="isLoaded" class="h-dvh w-dvw relative">

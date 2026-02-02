@@ -53,7 +53,7 @@ function loadStats() {
   });
 
   // 计算运营天数
-  const startDate = new Date('2024-01-01');
+  const startDate = new Date('2026-02-01');
   const today = new Date();
   const diffTime = Math.abs(today.getTime() - startDate.getTime());
   runningDays.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

@@ -1,8 +1,9 @@
 import { bool, oneOf, string } from 'vue-types';
+import { getAppConfig } from '@/utils/env-util';
 
 export const venusImageProps = {
   // OSS实现
-  ossProvider: oneOf(['minio'] as const).def('minio'),
+  ossProvider: oneOf(getAppConfig().ossProviders).def(getAppConfig().defaultOssProvider),
   // 图片地址
   src: string(),
   // 图片宽度

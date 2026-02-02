@@ -11,7 +11,6 @@ import HotTags from '@/views/home/components/hot-tags/index.vue';
 import RecommendArticle from '@/views/home/components/recommend-article/index.vue';
 import { asyncRequest } from '@/utils/request-util';
 import { systemConfigApiModule } from '@/api/system/system-config';
-import type { SystemConfig } from '@/views/admin/system/system-config/metadata';
 import { useScrollAnimation } from '@/uses/use-scroll-animation';
 
 defineOptions({
