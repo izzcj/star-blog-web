@@ -4,7 +4,6 @@ import 'vditor/dist/index.css';
 import { venusEditorProps } from './props';
 import { asyncUploadRequest } from '@/utils/request-util';
 import { isValidImageType } from '@/utils/file-util';
-import { useUploadInfoStore } from '@/stores/upload-info-state';
 
 defineOptions({
   name: 'VenusVdMdEditor',
@@ -13,8 +12,6 @@ defineOptions({
 const props = defineProps({
   ...venusEditorProps,
 });
-
-const uploadInfoStore = useUploadInfoStore();
 
 const venusEditor = ref();
 const model = defineModel<string | null>('value', { type: String });
@@ -26,18 +23,18 @@ const model = defineModel<string | null>('value', { type: String });
  */
 function handleUploadImage(files: File[]): Nullable<string> {
   const fromData = new FormData();
-  files.forEach(file => {
-    if (!isValidImageType(file)) {
+  for (let i = files.length - 1; i >= 0; i--) {
+    if (!isValidImageType(files[i])) {
       return '仅支持jpeg,png,jpg,bmp格式的图片';
     }
-    fromData.append('file', file);
-  });
-  asyncUploadRequest<string | string[]>(fromData).then(res => {
+    fromData.append(`file${i}`, files[i]);
+  }
+  asyncUploadRequest(fromData, props.ossProvider).then(res => {
     if (files.length === 1) {
-      venusEditor.value.insertValue(`![${files[0].name}](${uploadInfoStore.getOssBaseUrl() + res.data})\n`);
+      venusEditor.value.insertValue(`![${files[0].name}](${res.data.url})\n`);
     } else {
       for (let i = 0; i < files.length; i++) {
-        venusEditor.value.insertValue(`![${files[i].name}](${uploadInfoStore.getOssBaseUrl() + res.data[i]})\n`);
+        venusEditor.value.insertValue(`![${files[i].name}](${res.data[i].url})\n`);
       }
     }
   })

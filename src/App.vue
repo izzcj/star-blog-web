@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
-import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { emitter } from '@/utils/event-util';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 const appSettingsStore = useAppSettingsStore();
-const uploadInfoStore = useUploadInfoStore();
-uploadInfoStore.fetchOssBaseUrls();
 emitter.on('global-im', message => handleGlobalEvent(message));
 
 const noticeDialogVisible = ref(false);

@@ -9,38 +9,33 @@ import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { useAuthenticationStore } from '@/stores/authentication-store';
 import { getAppConfig } from '@/utils/env-util';
 import { isValidImageType } from '@/utils/file-util';
+import { asyncRequest } from '@/utils/request-util';
+import { normalizeToArray } from '@/utils/array-util';
+import { isUrl } from '@/utils/string-util';
 import RequestHeader from '@/enums/request-header';
 import { errorNotification } from '@/element-plus/notification';
+import { uploadApiModule } from '@/api/upload';
 
-defineOptions({
-  name: 'VenusUpload',
-});
-const props = defineProps({
-  ...venusUploadProps,
-});
+defineOptions({ name: 'VenusUpload' });
 
-const model = defineModel<string | string[] | null>('value', { type: [String, Array] });
+const props = defineProps({ ...venusUploadProps });
+
+const model = defineModel<string | string[] | null>('value', {
+  type: [String, Array],
+});
 
 interface VenusUploadFile extends UploadUserFile {
-  fullPath?: string | null;
+  fileId?: string;
+  translated?: boolean;
 }
 
 const uploadInfoStore = useUploadInfoStore();
-const result = uploadInfoStore.fetchOssBaseUrls();
-const apiBaseUrl = getAppConfig().apiBaseUrl;
-
-let uploadUrl: string;
-if (apiBaseUrl.endsWith('/')) {
-  uploadUrl = `${apiBaseUrl}oss/upload/${props.ossProvider}/${
-    props.fileType == 'image' ? 'image' : 'file'
-  }`;
-} else {
-  uploadUrl = `${apiBaseUrl}/oss/upload/${props.ossProvider}/${
-    props.fileType == 'image' ? 'image' : 'file'
-  }`;
-}
-
 const authenticationStore = useAuthenticationStore();
+
+const apiBaseUrl = getAppConfig().apiBaseUrl;
+const uploadUrl = `${apiBaseUrl.replace(/\/$/, '')}/oss/upload/${props.ossProvider}/${
+  props.fileType === 'image' ? 'image' : 'file'
+}`;
 
 const headers = computed<Recordable>(() => {
   if (authenticationStore.isLoggedIn) {
@@ -48,80 +43,100 @@ const headers = computed<Recordable>(() => {
       [RequestHeader.AUTHORIZATION]: `Bearer ${authenticationStore.accessToken}`,
     } as Recordable;
   }
-
   return {};
 });
 
-const listType = computed(() => {
-  if (!props.multiple) {
-    return 'picture-card';
-  }
-  return props.fileType == 'image' ? 'picture-card' : 'picture';
-});
+const accept = computed(() => (props.fileType === 'image' ? 'image/*' : '*'));
 
-const limit = computed(() => {
-  return props.multiple ?? false ? (props.max ?? 5) : 1;
-});
+const limit = computed(() =>
+  (props.multiple ?? false) ? (props.max ?? 5) : 1,
+);
 
-const showFileList = computed(() => {
-  return (props.multiple ?? false) && limit.value > 1;
-});
+const listType = computed(() =>
+  props.multiple ? (props.fileType === 'image' ? 'picture-card' : 'picture') : 'picture-card',
+);
+
+const showFileList = computed(() => props.multiple && limit.value > 1);
 
 const fileList = ref<VenusUploadFile[]>([]);
+
 const singleImage = computed(() => {
   return fileList.value[fileList.value.length - 1];
 });
 
-const objectKeys = ref<string[]>([]);
+const fileIds = ref<string[]>([]);
+
+/**
+ * 根据 fileIds 重新生成 fileList
+ */
+async function rebuildFileList(ids: string[]) {
+  fileList.value = [];
+
+  // 防止竞态污染
+  const snapshot = [...ids];
+
+  const results = await Promise.all(
+    snapshot.map(async value => {
+      try {
+        if (isUrl(value)) {
+          const filename = path.basename(value);
+          return {
+            name: filename.includes('__') ? filename.split('__').pop()! : filename,
+            url: value,
+            status: 'success',
+            fileId: value,
+            translated: true,
+          } as VenusUploadFile;
+        }
+        const resp = await asyncRequest(uploadApiModule.apis.fetchVisitUrl, { params: { fileId: value } });
+        const url = resp.data;
+        if (!url) {
+          return null;
+        }
+
+        const filename = path.basename(url);
+        return {
+          name: filename.includes('__') ? filename.split('__').pop()! : filename,
+          translated: false,
+          fileId: value,
+          url,
+          status: 'success',
+        } as VenusUploadFile;
+      } catch {
+        return null;
+      }
+    }),
+  );
+
+  // 如果期间 fileIds 已变，丢弃旧结果
+  if (!isEqual(snapshot, fileIds.value)) {
+    return;
+  }
+
+  fileList.value = results.filter(Boolean) as VenusUploadFile[];
+}
 
 watch(
-  () => model.value ?? [],
-  value => {
-    let files: string[];
-    if (isString(value) && value) {
-      files = [value];
-    } else if (isArray(value) && value.length > 0) {
-      files = value;
-    } else {
-      files = [];
-    }
+  () => model.value,
+  async value => {
+    const ids = normalizeToArray(value);
 
-    if (isEqual(files, objectKeys.value)) {
+    if (isEqual(ids, fileIds.value)) {
       return;
     }
 
-    const updateFileList = () => {
-      fileList.value = files.map(file => {
-        objectKeys.value.push(file);
-        return {
-          name: path.basename(file).split('__', 2)[1],
-          fullPath: file,
-          url: uploadInfoStore.getOssBaseUrl(props.ossProvider) + file,
-          status: 'success',
-        } as VenusUploadFile;
-      });
-    };
-
-    if (uploadInfoStore.fetched) {
-      updateFileList();
-    } else {
-      result?.then(updateFileList);
-    }
+    fileIds.value = ids;
+    await rebuildFileList(ids);
   },
   { immediate: true },
 );
 
 watch(
-  () => objectKeys.value.length,
-  _ => {
-    let value;
-    if (props.multiple ?? false) {
-      value = [...objectKeys.value];
-    } else {
-      value = objectKeys.value.length ? objectKeys.value[0] : null;
-    }
-    model.value = value;
+  fileIds,
+  ids => {
+    model.value = props.multiple ? [...ids] : ids[0] ?? null;
   },
+  { deep: true },
 );
 
 /**
@@ -131,14 +146,15 @@ watch(
  * @param uploadFile 上传文件
  */
 function onSuccess(response: any, uploadFile: VenusUploadFile) {
-  const objectKey = response.data;
-  objectKeys.value.push(objectKey);
-  // 使用 nextTick 确保 DOM 更新后再修改文件信息
-  nextTick(() => {
-    uploadFile.url = uploadInfoStore.getOssBaseUrl(props.ossProvider) + objectKey;
-    uploadFile.fullPath = objectKey;
-    uploadFile.name = path.basename(objectKey).split('__', 2)[1];
-  });
+  const meta = response.data;
+
+  if (!fileIds.value.includes(meta.id)) {
+    fileIds.value.push(meta.id);
+  }
+
+  uploadFile.url = meta.url;
+  uploadFile.fileId = meta.id;
+  uploadFile.name = path.basename(meta.url).split('__', 2)[1];
 }
 
 /**
@@ -162,19 +178,23 @@ function beforeUpload(rawFile: UploadRawFile) {
  * @param uploadFile 上传文件
  */
 async function beforeRemove(uploadFile: VenusUploadFile) {
-  if (uploadFile.status != 'success') {
+  if (uploadFile.status !== 'success') {
     return true;
   }
-  if (!uploadFile.fullPath) {
-    errorNotification('请先上传文件', '错误');
+  if (!uploadFile.fileId) {
     return false;
   }
-  try {
-    await uploadInfoStore.removeTempObject(uploadFile.fullPath, props.ossProvider);
-    remove(objectKeys.value, item => item == uploadFile.fullPath);
+
+  if (uploadFile.translated) {
+    remove(fileIds.value, v => v === uploadFile.url);
     return true;
-  } catch (error) {
-    console.error('Failed to remove temp object:', error);
+  }
+
+  try {
+    await uploadInfoStore.removeTempObject(uploadFile.fileId);
+    remove(fileIds.value, id => id === uploadFile.fileId);
+    return true;
+  } catch {
     errorNotification('删除文件失败', '错误');
     return false;
   }
@@ -193,42 +213,40 @@ function handleRemove(file: VenusUploadFile) {
 </script>
 
 <template>
-  <div class="max-h-full">
-    <ElUpload
-      v-model:file-list="fileList"
-      class="size-full"
-      :action="uploadUrl"
-      :headers="headers"
-      :accept="props.fileType"
-      :disabled="props.disabled"
-      :drag="props.draggable"
-      :show-file-list="showFileList"
-      :multiple="props.multiple ?? false"
-      :limit="limit"
-      :list-type="listType"
-      :before-upload="beforeUpload"
-      :on-success="onSuccess"
-      :before-remove="beforeRemove"
-    >
-      <div v-if="!props.multiple && fileList.length === 1" class="el-upload-list--picture-card">
-        <img :src="singleImage.url" class="object-cover transition duration-500 ease-in-out transform animate-fade-in" alt="" />
-        <span class="el-upload-list__item-actions" @click.stop>
-          <span class="el-upload-list__item-delete" @click="handleRemove(singleImage)">
-            <ElIcon>
-              <Delete />
-            </ElIcon>
-          </span>
+  <ElUpload
+    v-model:file-list="fileList"
+    class="size-full"
+    :action="uploadUrl"
+    :headers="headers"
+    :accept="accept"
+    :disabled="props.disabled"
+    :drag="props.draggable"
+    :show-file-list="showFileList"
+    :multiple="props.multiple ?? false"
+    :limit="limit"
+    :list-type="listType"
+    :before-upload="beforeUpload"
+    :on-success="onSuccess"
+    :before-remove="beforeRemove"
+  >
+    <div v-if="!props.multiple && fileList.length === 1" class="el-upload-list--picture-card">
+      <img :src="singleImage.url" class="object-cover transition duration-500 ease-in-out transform animate-fade-in" alt="" />
+      <span class="el-upload-list__item-actions" @click.stop>
+        <span class="el-upload-list__item-delete" @click="handleRemove(singleImage)">
+          <ElIcon>
+            <Delete />
+          </ElIcon>
         </span>
-      </div>
-      <div v-else>
-        <ElIcon>
-          <slot>
-            <Plus />
-          </slot>
-        </ElIcon>
-      </div>
-    </ElUpload>
-  </div>
+      </span>
+    </div>
+    <div v-else>
+      <ElIcon>
+        <slot>
+          <Plus />
+        </slot>
+      </ElIcon>
+    </div>
+  </ElUpload>
 </template>
 
 <style scoped lang="scss">

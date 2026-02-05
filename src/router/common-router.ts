@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { DefaultLayout } from '@/layout/index';
+import { DefaultLayout } from '@/layout';
 import CommonRouterPath from '@/enums/common-router-path';
 import CommonRouterPathName from '@/enums/common-router-path-name';
 

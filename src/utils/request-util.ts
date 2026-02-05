@@ -103,6 +103,9 @@ export function asyncUploadRequest<T = any>(
   if (!api) {
     api = uploadApiModule.apis.uploadObject;
   }
+  if (!ossProvider) {
+    ossProvider = getAppConfig().defaultOssProvider;
+  }
   const authenticationStore = useAuthenticationStore();
   let headers: Recordable = {};
   if (authenticationStore.isLoggedIn) {
@@ -114,7 +117,7 @@ export function asyncUploadRequest<T = any>(
   const apiRequest: ApiRequest<FormData> = {
     pathParams: {
       fileType: fileType || 'image',
-      ossProvider: ossProvider || getAppConfig().defaultOssProvider,
+      ossProvider,
     },
     headers,
     data: formData,

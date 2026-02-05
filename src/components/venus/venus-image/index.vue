@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { venusImageProps } from './props';
-import { useUploadInfoStore } from '@/stores/upload-info-state';
+import { asyncRequest } from '@/utils/request-util';
+import { uploadApiModule } from '@/api/upload';
 
 defineOptions({
   name: 'VenusImage',
@@ -9,25 +10,35 @@ defineOptions({
 const props = defineProps({
   ...venusImageProps,
 });
+const src = ref('');
 
-const ossProvider = computed(() => props.ossProvider);
-
-const uploadInfoStore = useUploadInfoStore();
-
-const src = computed(() => {
-  if (!props.src) {
+/**
+ * 解析图片地址
+ *
+ * @param val 图片地址
+ */
+async function resolveSrc(val?: string) {
+  if (!val) {
+    src.value = '';
     return;
   }
-  if (props.src.startsWith('http://') || props.src.startsWith('https://')) {
-    return props.src;
+
+  try {
+    if (val.startsWith('http')) {
+      src.value = val;
+    } else {
+      const resp = await asyncRequest(uploadApiModule.apis.fetchVisitUrl, {
+        params: { fileId: val },
+      });
+      src.value = resp.data;
+    }
+  } catch (e) {
+    console.error('图片地址获取失败', e);
+    src.value = '';
   }
-  const baseUrl = uploadInfoStore.getOssBaseUrl(ossProvider.value);
-  if (!baseUrl) {
-    return;
-  }
-  return baseUrl + props.src;
-});
-uploadInfoStore.fetchOssBaseUrls();
+}
+
+watch(() => props.src, resolveSrc, { immediate: true });
 </script>
 
 <template>

@@ -52,10 +52,6 @@ declare global {
      */
     apiBaseUrl: string;
     /**
-     * oss提供器
-     */
-    ossProviders: string[];
-    /**
      * 默认oss提供器
      */
     defaultOssProvider: string;
@@ -239,6 +235,20 @@ declare global {
      * 分组下面的选项
      */
     options: DataOption[];
+  }
+
+  /**
+   * OSS对象存储元数据
+   */
+  interface OssMate {
+    /**
+     * 文件ID
+     */
+    id: string;
+    /**
+     * 文件URL
+     */
+    url: string;
   }
 
   /**

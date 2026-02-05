@@ -96,7 +96,6 @@ watch(() => props.src, () => {
     <VenusImage
       v-if="shouldShowImage"
       :src="props.src!"
-      :oss-provider="props.ossProvider"
       fit="cover"
       :width="computedWidth"
       :height="computedHeight"

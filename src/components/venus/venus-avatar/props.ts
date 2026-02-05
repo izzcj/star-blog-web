@@ -4,7 +4,7 @@ import { getAppConfig } from '@/utils/env-util';
 
 export const venusAvatarProps = {
   // OSS实现
-  ossProvider: oneOf(getAppConfig().ossProviders).def(getAppConfig().defaultOssProvider),
+  ossProvider: string().def(getAppConfig().defaultOssProvider),
   // 尺寸
   size: oneOfType([number(), oneOf(values(ComponentsSize))]).def(ComponentsSize.DEFAULT),
   // 形状

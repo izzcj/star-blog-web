@@ -7,7 +7,8 @@ import ImageCropper from './components/image-cropper/index.vue';
 import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { errorNotification, successNotification } from '@/element-plus/notification';
 import { blobToFile, fileToDataURL, isValidImageType } from '@/utils/file-util';
-import { asyncUploadRequest } from '@/utils/request-util';
+import { asyncRequest, asyncUploadRequest } from '@/utils/request-util';
+import { uploadApiModule } from '@/api/upload';
 
 defineOptions({
   name: 'VenusAvatar',
@@ -17,9 +18,29 @@ const props = defineProps({
   ...venusAvatarProps,
 });
 
+const uploadInfoStore = useUploadInfoStore();
+
 const model = defineModel<string | null>('value', { type: String });
 
-const uploadInfoStore = useUploadInfoStore();
+const avatarUrl = ref('');
+
+watch(
+  () => model.value,
+  value => {
+    if (!value) {
+      avatarUrl.value = '';
+      return;
+    }
+    if (value.startsWith('http')) {
+      avatarUrl.value = value;
+      return;
+    }
+    asyncRequest(uploadApiModule.apis.fetchVisitUrl, { params: { fileId: value } }).then(resp => {
+      avatarUrl.value = resp.data;
+    });
+  },
+  { immediate: true },
+);
 
 // 尺寸映射
 const sizeMap = {
@@ -95,8 +116,9 @@ async function uploadToOss(file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await asyncUploadRequest(formData, props.ossProvider);
-    model.value = response.data;
+    const response = await asyncUploadRequest<OssMate>(formData, props.ossProvider);
+    model.value = response.data.id;
+    avatarUrl.value = response.data.url;
 
     successNotification('头像上传成功', '成功');
   } catch (error) {
@@ -116,8 +138,9 @@ async function handleDelete() {
   }
 
   try {
-    await uploadInfoStore.removeTempObject(model.value, props.ossProvider);
+    await uploadInfoStore.removeTempObject(model.value);
     model.value = null;
+    avatarUrl.value = '';
   } catch (error) {
     console.error('删除失败:', error);
     errorNotification('删除头像失败', '错误');
@@ -137,13 +160,12 @@ async function handleDelete() {
       @delete="handleDelete"
     >
       <AvatarDisplay
-        :src="model"
+        :src="avatarUrl"
         :name="props.name"
         :size="computedSize"
         :shape="props.shape"
         :text-color="props.textColor"
         :bg-color="props.bgColor"
-        :oss-provider="props.ossProvider"
       />
     </AvatarUploader>
 

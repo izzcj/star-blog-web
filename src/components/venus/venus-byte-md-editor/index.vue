@@ -8,7 +8,6 @@ import { venusMdEditorProps } from './props';
 import codeCopy from './plugins/code-operation';
 import { asyncUploadRequest } from '@/utils/request-util';
 import { isValidImageType } from '@/utils/file-util';
-import { useUploadInfoStore } from '@/stores/upload-info-state';
 import { errorNotification } from '@/element-plus/notification';
 
 defineOptions({
@@ -29,8 +28,6 @@ const viewerPlugins = [
   codeCopy(),
 ];
 
-const uploadInfoStore = useUploadInfoStore();
-
 /**
  * 处理图片上传
  *
@@ -40,27 +37,27 @@ async function handleUploadImage(files: File[]) {
   const uploadedImages: Recordable[] = [];
   const fromData = new FormData();
   let valid = true;
-  files.forEach(file => {
-    if (!isValidImageType(file)) {
-      errorNotification('仅支持jpeg,png,jpg,bmp格式的图片');
+  for (let i = files.length - 1; i >= 0; i--) {
+    if (!isValidImageType(files[i])) {
       valid = false;
+      errorNotification('仅支持jpeg,png,jpg,bmp格式的图片', '错误');
       return;
     }
-    fromData.append('file', file);
-  });
+    fromData.append(`file${i}`, files[i]);
+  }
   if (!valid) {
     return uploadedImages;
   }
-  const result = await asyncUploadRequest<string | string[]>(fromData);
+  const result = await asyncUploadRequest<OssMate | OssMate[]>(fromData, props.ossProvider);
   if (isArray(result.data)) {
-    result.data.forEach(url => {
+    result.data.forEach(mate => {
       uploadedImages.push({
-        url: uploadInfoStore.getOssBaseUrl() + url,
+        url: mate.url,
       });
     });
   } else {
     uploadedImages.push({
-      url: uploadInfoStore.getOssBaseUrl() + result.data,
+      url: result.data.url,
     });
   }
   return uploadedImages;

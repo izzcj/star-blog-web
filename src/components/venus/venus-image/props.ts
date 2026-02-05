@@ -1,10 +1,7 @@
 import { bool, oneOf, string } from 'vue-types';
-import { getAppConfig } from '@/utils/env-util';
 
 export const venusImageProps = {
-  // OSS实现
-  ossProvider: oneOf(getAppConfig().ossProviders).def(getAppConfig().defaultOssProvider),
-  // 图片地址
+  // 图片地址(文件ID)
   src: string(),
   // 图片宽度
   width: string().def('100%'),

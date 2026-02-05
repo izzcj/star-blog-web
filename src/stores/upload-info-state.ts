@@ -1,7 +1,6 @@
-import { loadingMessage, successMessage, warningMessage } from '@/element-plus/notification';
+import { loadingMessage, successMessage } from '@/element-plus/notification';
 import { asyncRequest } from '@/utils/request-util';
 import { uploadApiModule } from '@/api/upload';
-import { getAppConfig } from '@/utils/env-util';
 
 export interface UploadInfoState {
   /**
@@ -12,14 +11,6 @@ export interface UploadInfoState {
    * 加载Promise
    */
   loadingPromise: Nullable<Promise<void>>;
-  /**
-   * 标识是否已经获取过OSS基URL
-   */
-  fetched: boolean;
-  /**
-   * OSS对象存储基URL
-   */
-  ossBaseUrls: Recordable<string>;
 }
 
 export const useUploadInfoStore = defineStore({
@@ -28,81 +19,29 @@ export const useUploadInfoStore = defineStore({
     return {
       loading: false,
       loadingPromise: null,
-      fetched: false,
-      ossBaseUrls: {},
     };
   },
   actions: {
     /**
-     * 获取OSS基URL
-     *
-     * @param ossProvider 实现类型
+     * 获取文件访问url
      */
-    getOssBaseUrl(ossProvider?: string): string {
-      if (!this.fetched) {
-        return '';
-      }
-
-      if (!ossProvider) {
-        ossProvider = getAppConfig().defaultOssProvider;
-      }
-
-      const baseUrl = this.ossBaseUrls[ossProvider];
-      if (!baseUrl) {
-        warningMessage(
-          `OSS实现类型[${ossProvider}]不存在基URL，请检查OSS实现类型是否正确或后端是否正确实现了获取基URL的方法！`,
-        );
-        return '';
-      }
-
-      return baseUrl;
-    },
-    /**
-     * 获取OSS实现基URL
-     */
-    fetchOssBaseUrls() {
-      if (this.fetched) {
-        return;
-      }
-
-      if (this.loading) {
-        return this.loadingPromise;
-      }
-
-      this.loading = true;
-      this.loadingPromise = asyncRequest<Recordable<string>>(uploadApiModule.apis.fetchOssBaseUrls)
-        .then(resp => {
-          this.ossBaseUrls = resp.data;
-          this.fetched = true;
-          this.loadingPromise = null;
-        })
-        .catch(() => {})
-        .finally(() => {
-          this.loading = false;
-        });
-
-      return this.loadingPromise;
+    fetchVisitUrl(fileId: string) {
+      return asyncRequest(uploadApiModule.apis.fetchVisitUrl, {
+        params: {
+          fileId,
+        },
+      });
     },
     /**
      * 移除临时上传对象文件
      *
-     * @param objectKey 对象文件Key
-     * @param ossProvider OSS实现
+     * @param fileId 文件ID
      */
-    async removeTempObject(objectKey: string, ossProvider?: string) {
-      if (!objectKey.startsWith('temp/')) {
-        return Promise.resolve(true);
-      }
-      if (!ossProvider) {
-        ossProvider = getAppConfig().defaultOssProvider;
-      }
+    async removeTempObject(fileId: string) {
       const closeLoading = loadingMessage('删除中...');
       return asyncRequest(uploadApiModule.apis.removeTempObject, {
-        pathParams: {
-          ossProvider,
-        },
         params: {
-          objectKey,
+          fileId,
         },
       })
         .then(resp => {

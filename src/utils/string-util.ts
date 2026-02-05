@@ -13,3 +13,10 @@ export function replaceTemplate(template: string, params: Recordable<Undefinable
   }
   return result;
 }
+
+/**
+ * 判断是否为URL
+ */
+export function isUrl(val: string) {
+  return /^https?:\/\//i.test(val);
+}

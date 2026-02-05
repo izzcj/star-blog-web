@@ -3,10 +3,10 @@ import RequestMethod from '@/enums/request-method';
 export const uploadApiModule: ApiModule = {
   apis: {
     /**
-     * 获取oss基地址
+     * 获取访问地址
      */
-    fetchOssBaseUrls: {
-      uri: '/oss/base-urls',
+    fetchVisitUrl: {
+      uri: '/oss/visit-url',
       method: RequestMethod.GET,
     },
     /**
@@ -20,14 +20,14 @@ export const uploadApiModule: ApiModule = {
      * 下载
      */
     downloadObject: {
-      uri: '/oss/download/{ossProvider}',
+      uri: '/oss/download',
       method: RequestMethod.GET,
     },
     /**
      * 删除临时对象
      */
     removeTempObject: {
-      uri: '/oss/temp/{ossProvider}',
+      uri: '/oss',
       method: RequestMethod.DELETE,
     },
   },
