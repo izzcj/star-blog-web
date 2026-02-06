@@ -2,8 +2,8 @@
 // 目录项接口
 interface TocItem {
   id: string;
-  level: number;
-  text: string;
+  depth: number;
+  value: string;
 }
 
 const props = defineProps<{
@@ -25,58 +25,38 @@ const scrollContainer = ref<Element | null>(null);
  * 从 Markdown 内容提取目录
  */
 function extractToc(content: string): TocItem[] {
-  const headingRegex = /^(#{1,6})\s+(.+)$/gm;
-  const items: TocItem[] = [];
+  const toc: TocItem[] = [];
+
+  // 1. 移除 fenced code block（```）
+  const withoutCodeBlock = content.replace(/```[\s\S]*?```/g, '');
+
+  // 2. 匹配真正的 Markdown 标题（排除 >、-、* 等前缀）
+  const headingRegex = /^(#{1,6})\s+(.*)$/gm;
+
+  let match: RegExpExecArray | null;
   let index = 0;
 
-  let match = headingRegex.exec(content);
-  while (match !== null) {
-    const level = match[1].length;
-    const text = match[2].trim();
+  for (const line of withoutCodeBlock.split('\n')) {
+    // 排除引用、列表
+    if (/^\s*([>\-*+])\s+/.test(line)) {
+      continue;
+    }
 
-    items.push({
-      id: `heading-${index}`,
-      level,
-      text,
+    match = headingRegex.exec(line);
+    if (!match) {
+      continue;
+    }
+
+    toc.push({
+      id: `heading-${index++}`,
+      depth: match[1].length,
+      value: match[2].trim(),
     });
 
-    index++;
-    match = headingRegex.exec(content);
+    headingRegex.lastIndex = 0;
   }
 
-  return items;
-}
-
-/**
- * 为 Markdown 渲染的标题元素注入 ID
- */
-function injectHeadingIds() {
-  // 使用 setTimeout 确保 Markdown 编辑器完全渲染
-  setTimeout(() => {
-    // ByteMD Viewer 渲染的内容在 .markdown-body 中
-    const contentContainer = document.querySelector('.article-content-wrapper .markdown-body')
-      || document.querySelector('.article-content-wrapper');
-
-    if (!contentContainer) {
-      console.warn('未找到内容容器');
-      return;
-    }
-
-    const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (headings.length === 0) {
-      console.warn('未找到任何标题元素，尝试延迟重试');
-      // 如果没找到，可能是异步组件还没渲染完，延迟重试
-      setTimeout(() => injectHeadingIds(), 500);
-      return;
-    }
-
-    headings.forEach((heading, index) => {
-      heading.id = `heading-${index}`;
-    });
-
-    // 注入 ID 后初始化滚动监听
-    initScrollObserver();
-  }, 500);
+  return toc;
 }
 
 /**
@@ -191,7 +171,9 @@ function initScrollObserver() {
 // 监听内容变化，重新提取目录
 watch(() => props.content, () => {
   tocItems.value = extractToc(props.content);
-  injectHeadingIds();
+  setTimeout(() => {
+    initScrollObserver();
+  }, 500);
 }, { immediate: true });
 
 // 清理 observer
@@ -234,17 +216,17 @@ onUnmounted(() => {
               : 'text-gray-700 hover:bg-gray-100 border-transparent',
           ]
           "
-          :style="{ paddingLeft: `${(item.level - 1) * 10 + 8}px` }"
+          :style="{ paddingLeft: `${(item.depth - 1) * 10 + 8}px` }"
           @click="scrollToHeading(item.id)"
         >
           <!-- 层级图标 -->
           <span class="text-xs flex-shrink-0">
-            {{ item.level <= 2 ? '▪️' : '·' }}
+            {{ item.depth <= 2 ? '▪️' : '·' }}
           </span>
 
           <!-- 标题文本 -->
-          <span class="flex-1 text-sm truncate" :title="item.text">
-            {{ item.text }}
+          <span class="flex-1 text-sm truncate" :title="item.value">
+            {{ item.value }}
           </span>
         </div>
       </div>

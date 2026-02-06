@@ -91,7 +91,7 @@ export default function codeCopy(): BytemdPlugin {
                         properties: {
                           className: ['code-block-extension-copyCodeBtn'],
                         },
-                        children: [{ type: 'text', value: '复制代码' }],
+                        children: [{ type: 'text', value: '复制' }],
                       },
                     ],
                   },

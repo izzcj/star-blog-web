@@ -6,6 +6,8 @@ import mermaid from '@bytemd/plugin-mermaid';
 import gEmoji from '@bytemd/plugin-gemoji';
 import breaks from '@bytemd/plugin-breaks';
 import mediumZoom from '@bytemd/plugin-medium-zoom';
+import autolinkHeading
+  from '@/components/venus/venus-byte-md-editor/plugins/autolink-heading';
 
 export const plugins = [
   highlight(),
@@ -13,6 +15,7 @@ export const plugins = [
   gEmoji(),
   breaks(),
   mediumZoom(),
+  autolinkHeading(),
   gfm(
     {
       locale: {
