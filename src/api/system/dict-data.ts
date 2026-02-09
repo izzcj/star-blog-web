@@ -48,7 +48,7 @@ const dictDataApiModule: ApiModule = {
      * 删除字典数据
      */
     delete: {
-      uri: '/system/dict-data/{ids}',
+      uri: '/system/dict-data/{id}',
       method: RequestMethod.DELETE,
     },
   },

@@ -34,7 +34,7 @@ const dictTypeApiModule: ApiModule = {
      * 删除字典类型
      */
     delete: {
-      uri: '/system/dict-type/{ids}',
+      uri: '/system/dict-type/{id}',
       method: RequestMethod.DELETE,
     },
     /**

@@ -318,7 +318,7 @@ function handleDialogClose() {
                 </ElButton>
               </template>
             </ElPopconfirm>
-            <ElPopconfirm title="确定删除吗？" placement="top" @confirm="handleDeleteUser(row)">
+            <ElPopconfirm v-if="row.id !== '1'" title="确定删除吗？" placement="top" @confirm="handleDeleteUser(row)">
               <template #reference>
                 <ElButton
                   :icon="Delete"
