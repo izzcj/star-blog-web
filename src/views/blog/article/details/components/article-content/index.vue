@@ -12,14 +12,28 @@ const props = defineProps<{
 
 const router = useRouter();
 const appSettingsStore = useAppSettingsStore();
+const contentLoading = ref(true);
 
 // 创建内容的本地副本，避免直接修改 prop
-const localContent = ref(props.articleDetail.content);
+const localContent = ref('');
 
 // 监听 prop 变化，同步到本地副本
-watch(() => props.articleDetail.content, newContent => {
-  localContent.value = newContent;
-}, { immediate: true });
+watch(
+  () => props.articleDetail.content,
+  newContent => {
+    if (!newContent) {
+      return;
+    }
+
+    contentLoading.value = true;
+
+    requestAnimationFrame(() => {
+      localContent.value = newContent;
+      contentLoading.value = false;
+    });
+  },
+  { immediate: true },
+);
 
 /**
  * 返回上一页
@@ -94,6 +108,13 @@ function goBack() {
       </span>
     </div>
 
+    <div
+      v-if="articleDetail.summary"
+      class="mt-6 px-5 py-4 text-gray-400 text-sm italic leading-relaxed border-l-2 border-gray-300 bg-gradient-to-r from-gray-50 to-transparent"
+    >
+      {{ articleDetail.summary }}
+    </div>
+
     <!-- 封面图 -->
     <div v-if="articleDetail.coverImage" class="my-5">
       <VenusImage :src="articleDetail.coverImage" :alt="articleDetail.title" class="rounded-md shadow-ms hover:shadow-xl" />
@@ -101,7 +122,11 @@ function goBack() {
 
     <!-- 内容 -->
     <div class="article-content-wrapper">
-      <VenusByteMdEditor v-model:value="localContent" :preview="true" />
+      <VenusByteMdEditor
+        v-if="!contentLoading"
+        v-model:value="localContent"
+        :preview="true"
+      />
     </div>
 
     <!-- 标签 -->

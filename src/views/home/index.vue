@@ -210,8 +210,8 @@ onBeforeRouteLeave(() => {
         <!-- 中间主内容区 -->
         <ElCol id="main-col" :xs="24" :sm="24" :md="12">
           <div class="fade-children w-full">
-            <HotArticle />
             <LatestArticle />
+            <HotArticle />
           </div>
         </ElCol>
 

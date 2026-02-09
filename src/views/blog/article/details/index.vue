@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { animate, stagger } from 'animejs';
+import { stagger } from 'animejs';
 import AuthorSidebar from './components/author-sidebar/index.vue';
 import ArticleContent from './components/article-content/index.vue';
 import ArticleToc from './components/article-toc/index.vue';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import { useAppSettingsStore } from '@/stores/app-settings-store';
+import { useScrollAnimation } from '@/uses/use-scroll-animation';
 
 defineOptions({
   name: 'ArticleDetails',
@@ -18,6 +19,9 @@ const props = defineProps({
   },
 });
 
+// 滚动动画
+const { observeElements, scaleInConfig, fadeInLeftConfig, fadeInRightConfig } = useScrollAnimation();
+
 const articleDetail = ref<ArticleDetail>();
 const appSettingsStore = useAppSettingsStore();
 
@@ -28,30 +32,21 @@ function initEnterAnimations() {
   // 使用setTimeout确保所有子组件都已渲染
   nextTick(() => {
     setTimeout(() => {
-      // 左侧作者栏淡入左移
-      animate('#author-sidebar-col', {
-        opacity: [0, 1],
-        translateX: [-30, 0],
-        duration: 800,
-        ease: 'easeOutCubic',
+      // 作者信息淡入左移
+      observeElements('#author-sidebar-col > *', {
+        ...fadeInLeftConfig,
         delay: stagger(100),
       });
 
-      // 中间内容缩放淡入
-      animate('#article-content-col', {
-        opacity: [0, 1],
-        scale: [0.8, 1],
-        duration: 600,
-        ease: 'easeOutCubic',
+      // 文章内容缩放淡入
+      observeElements('#article-content-col > *', {
+        ...scaleInConfig,
         delay: stagger(100),
       });
 
-      // 右侧目录淡入右移
-      animate('#article-toc-col', {
-        opacity: [0, 1],
-        translateX: [30, 0],
-        duration: 800,
-        ease: 'easeOutCubic',
+      // 目录淡入右移
+      observeElements('#article-toc-col > *', {
+        ...fadeInRightConfig,
         delay: stagger(100),
       });
     }, 100);
@@ -69,7 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ElCard>
+  <ElCard class="min-h-dvh">
     <div v-if="articleDetail" id="article-detail" class="max-w-[1500px] 2xl:max-w-[1700px] mx-auto py-6">
       <ElRow :gutter="24">
         <!-- 左侧作者栏：PC端显示 -->
@@ -101,7 +96,7 @@ onMounted(() => {
     </div>
 
     <!-- 加载状态 -->
-    <div v-else class="p-6 max-w-[1400px] mx-auto">
+    <div v-else class="p-6 min-h-dvh max-w-[1400px] mx-auto">
       <ElSkeleton :rows="10" animated />
     </div>
   </ElCard>
