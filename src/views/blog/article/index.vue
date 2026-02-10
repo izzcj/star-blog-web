@@ -6,6 +6,7 @@ import HeroBanner from './components/hero-banner/index.vue';
 import articleApiModule from '@/api/blog/article';
 import { asyncRequest } from '@/utils/request-util';
 import dictDataApiModule from '@/api/system/dict-data';
+import { useAppSettingsStore } from '@/stores/app-settings-store';
 
 defineOptions({
   name: 'ArticlePage',
@@ -18,8 +19,6 @@ const props = defineProps<{
 
 // 文章列表
 const articleList = ref<Article[]>([]);
-// 精选文章（用于横幅）
-const featuredArticle = ref<Article>();
 // 分类列表
 const categories = ref<DataOption[]>([]);
 // 总数
@@ -35,6 +34,7 @@ const size = ref(12);
 const currentCategory = ref(props.category);
 const currentSort = ref('publishTime:desc');
 const searchKeyword = ref('');
+const appSettingsStore = useAppSettingsStore();
 
 // 请求参数
 const params = computed(() => {
@@ -57,7 +57,6 @@ const params = computed(() => {
 onMounted(() => {
   loadCategories();
   loadArticles();
-  loadFeaturedArticle();
 });
 
 /**
@@ -79,23 +78,6 @@ async function loadArticles() {
     total.value = res.data.total;
   } finally {
     loading.value = false;
-  }
-}
-
-/**
- * 加载精选文章（获取第一个推荐且置顶的文章）
- */
-async function loadFeaturedArticle() {
-  const res = await asyncRequest<PageData<Article>>(articleApiModule.apis.fetchPage, {
-    params: {
-      page: 1,
-      size: 1,
-      status: 'published',
-      sortDesc: 'publishTime',
-    },
-  });
-  if (res.data.data.length > 0) {
-    featuredArticle.value = res.data.data[0];
   }
 }
 
@@ -147,15 +129,15 @@ function handleSizeChange(newSize: number) {
 </script>
 
 <template>
-  <div class="min-h-full bg-gray-50/75">
-    <div class="w-full max-w-[1280px] mx-auto px-4 md:px-6">
+  <div class="min-h-full bg-gradient-to-br from-mint-50 via-white to-mint-50/30">
+    <div class="w-full max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
       <!-- 顶部横幅 -->
-      <div class="pt-6 pb-8">
-        <HeroBanner :featured-article="featuredArticle" />
+      <div class="pt-6 md:pt-8 pb-6 md:pb-10">
+        <HeroBanner />
       </div>
 
       <!-- 筛选导航栏 -->
-      <div class="pb-8">
+      <div class="pb-6 md:pb-10">
         <FilterBar
           :categories="categories"
           :current-category="currentCategory"
@@ -167,18 +149,23 @@ function handleSizeChange(newSize: number) {
       </div>
 
       <!-- 文章列表 -->
-      <div class="min-h-[400px]">
+      <div class="min-h-[400px] pb-8">
         <!-- 骨架屏加载 -->
-        <div v-if="loading" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <ArticleSkeleton v-for="i of size" :key="i" />
+        <div v-if="loading" class="magazine-grid">
+          <ArticleSkeleton
+            v-for="i of size"
+            :key="i"
+            :is-featured="i === 1"
+          />
         </div>
 
-        <!-- 文章列表（带动画） -->
-        <div v-else-if="articleList.length > 0" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <!-- 文章列表（杂志风布局） -->
+        <div v-else-if="articleList.length > 0" class="magazine-grid">
           <ArticleCard
             v-for="(article, index) of articleList"
             :key="article.id"
             :article="article"
+            :is-featured="index === 0"
             :style="{ animationDelay: `${index * 50}ms` }"
             class="animate-fade-in-up"
           />
@@ -186,22 +173,27 @@ function handleSizeChange(newSize: number) {
 
         <!-- 空状态 -->
         <div v-else class="flex flex-col items-center justify-center py-20 animate-fade-in">
-          <ElEmpty description="暂无文章" :image-size="200" />
+          <div class="neumorphic rounded-2xl p-12">
+            <ElEmpty description="暂无文章" :image-size="200" />
+          </div>
         </div>
       </div>
 
       <!-- 分页 -->
-      <div v-if="total > 0" class="flex justify-center pt-12 pb-8">
-        <ElPagination
-          :current-page="page"
-          :page-size="size"
-          :total="total"
-          :page-sizes="[12, 24, 36, 48]"
-          layout="total, sizes, prev, pager, next, jumper"
-          background
-          @current-change="handlePageChange"
-          @size-change="handleSizeChange"
-        />
+      <div v-if="total > 0" class="flex justify-center pt-8 pb-12">
+        <div class="neumorphic rounded-lg p-4">
+          <ElPagination
+            :size="appSettingsStore.isMobile ? 'small' : 'default'"
+            :current-page="page"
+            :page-size="size"
+            :total="total"
+            :page-sizes="[12, 24, 36, 48]"
+            layout="total, sizes, prev, pager, next, jumper"
+            background
+            @current-change="handlePageChange"
+            @size-change="handleSizeChange"
+          />
+        </div>
       </div>
     </div>
   </div>

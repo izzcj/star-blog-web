@@ -58,24 +58,28 @@ function handleSearch() {
 </script>
 
 <template>
-  <div class="space-y-4">
-    <!-- 搜索栏 -->
-    <div class="flex items-center gap-4">
-      <div class="flex-1 max-w-2xl">
+  <div class="neumorphic rounded-lg md:rounded-xl p-4 md:p-6 space-y-4">
+    <!-- 搜索栏和排序 -->
+    <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-4">
+      <div class="flex-1 max-w-full md:max-w-2xl">
         <ElInput
           v-model="searchKeyword"
           placeholder="搜索文章标题..."
           size="large"
           clearable
+          class="neumorphic-input"
           @keyup.enter="handleSearch"
         >
           <template #prefix>
-            <ElIcon>
+            <ElIcon class="text-mint-600">
               <Search />
             </ElIcon>
           </template>
           <template #append>
-            <ElButton @click="handleSearch">
+            <ElButton
+              class="bg-mint-500! hover:bg-mint-600! text-white! border-none!"
+              @click="handleSearch"
+            >
               搜索
             </ElButton>
           </template>
@@ -87,7 +91,7 @@ function handleSearch() {
         :model-value="currentSort"
         placeholder="排序方式"
         size="large"
-        class="w-40!"
+        class="w-full md:w-40!"
         @update:model-value="selectSort"
       >
         <ElOption
@@ -100,13 +104,13 @@ function handleSearch() {
     </div>
 
     <!-- 分类标签栏 -->
-    <div class="py-2 flex items-center gap-3 overflow-x-auto scrollbar-hide">
+    <div class="flex items-center gap-2 md:gap-3 overflow-x-auto custom-scrollbar pb-2">
       <button
-        class="px-4 py-2 cursor-pointer rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200"
+        class="px-3 md:px-4 py-2 cursor-pointer rounded-full font-medium text-xs md:text-sm whitespace-nowrap transition-all duration-300 gpu-accelerate"
         :class="[
           props.currentCategory === ''
-            ? 'bg-blue-500 text-white shadow-md scale-105'
-            : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-500 hover:text-blue-500 hover:scale-105 hover:shadow-sm',
+            ? 'neumorphic-inset bg-mint-500 text-white'
+            : 'neumorphic-sm text-gray-600 hover:text-mint-700 hover:scale-105',
         ]"
         @click="selectCategory('')"
       >
@@ -115,11 +119,11 @@ function handleSearch() {
       <button
         v-for="category of props.categories"
         :key="category.value"
-        class="px-4 py-2 cursor-pointer rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200"
+        class="px-3 md:px-4 py-2 cursor-pointer rounded-full font-medium text-xs md:text-sm whitespace-nowrap transition-all duration-300 gpu-accelerate"
         :class="[
           props.currentCategory === category.value
-            ? 'bg-blue-500 text-white shadow-md scale-105'
-            : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-500 hover:text-blue-500 hover:scale-105 hover:shadow-sm',
+            ? 'neumorphic-inset bg-mint-500 text-white'
+            : 'neumorphic-sm text-gray-600 hover:text-mint-700 hover:scale-105',
         ]"
         @click="selectCategory(category.value as string)"
       >

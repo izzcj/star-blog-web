@@ -217,6 +217,7 @@ function submitForm() {
           <ElTable v-loading="loading" :data="systemConfigs" max-height="700px">
             <ElTableColumn label="序号" prop="sort" width="80px" />
             <ElTableColumn label="配置项" prop="name" width="150px" />
+            <ElTableColumn label="配置key" prop="key" width="120px" :show-overflow-tooltip="true" />
             <ElTableColumn label="配置值" prop="value" min-width="400px">
               <template #default="{ row }">
                 <ConfigItem
