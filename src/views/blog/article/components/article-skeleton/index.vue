@@ -13,68 +13,72 @@ interface Props {
 </script>
 
 <template>
+  <!-- 特色卡片骨架 -->
   <div
-    class="neumorphic rounded-lg md:rounded-xl overflow-hidden" :class="[
-      isFeatured ? 'featured-card' : '',
-    ]"
+    v-if="isFeatured"
+    class="featured-card relative rounded-2xl overflow-hidden min-h-[280px] bg-white shadow-card-subtle"
   >
-    <div
-      class="flex" :class="[
-        isFeatured ? 'flex-col md:flex-row' : 'flex-col',
-      ]"
-    >
-      <!-- 封面骨架 -->
-      <div
-        class="animate-skeleton" :class="[
-          isFeatured ? 'w-full md:w-[55%] aspect-video md:aspect-auto md:min-h-[300px]' : 'aspect-video',
-        ]"
-      />
+    <!-- 右侧图片骨架 -->
+    <div class="absolute inset-0 md:left-[48%] animate-skeleton" />
 
-      <!-- 内容骨架 -->
-      <div
-        class="p-4 md:p-6 space-y-3 flex flex-col" :class="[
-          isFeatured ? 'md:w-[45%]' : 'flex-1',
-        ]"
-      >
-        <!-- 标题骨架 -->
-        <div
-          class="animate-skeleton rounded-md" :class="[
-            isFeatured ? 'h-7 md:h-8' : 'h-6',
-          ]"
-        />
-        <div
-          class="animate-skeleton rounded-md" :class="[
-            isFeatured ? 'h-7 md:h-8 w-3/4' : 'h-6 w-5/6',
-          ]"
-        />
+    <!-- 内容区骨架 -->
+    <div class="relative z-10 flex flex-col h-full p-6 md:p-8 md:w-[52%] space-y-4">
+      <!-- 标签骨架 -->
+      <div class="flex gap-2">
+        <div class="h-6 w-16 animate-skeleton rounded-lg" />
+        <div class="h-6 w-12 animate-skeleton rounded-lg" />
+      </div>
+      <!-- 标题骨架 -->
+      <div class="space-y-2.5">
+        <div class="h-8 animate-skeleton rounded-xl w-full" />
+        <div class="h-8 animate-skeleton rounded-xl w-4/5" />
+        <div class="h-8 animate-skeleton rounded-xl w-3/5" />
+      </div>
+      <!-- 摘要骨架 -->
+      <div class="space-y-2 flex-1">
+        <div class="h-4 animate-skeleton rounded-md" />
+        <div class="h-4 animate-skeleton rounded-md w-11/12" />
+        <div class="h-4 animate-skeleton rounded-md w-4/5" />
+      </div>
+      <!-- 底部信息骨架 -->
+      <div class="flex items-center gap-3 mt-auto">
+        <div class="w-7 h-7 rounded-full animate-skeleton shrink-0" />
+        <div class="h-4 w-20 animate-skeleton rounded-md" />
+        <div class="h-4 w-4 animate-skeleton rounded-md" />
+        <div class="h-4 w-24 animate-skeleton rounded-md" />
+      </div>
+    </div>
+  </div>
 
-        <!-- 摘要骨架 -->
-        <div class="space-y-2 pt-1">
-          <div
-            class="animate-skeleton rounded-md" :class="[
-              isFeatured ? 'h-4 md:h-5' : 'h-4',
-            ]"
-          />
-          <div
-            class="animate-skeleton rounded-md" :class="[
-              isFeatured ? 'h-4 md:h-5 w-11/12' : 'h-4 w-5/6',
-            ]"
-          />
-          <div
-            v-if="isFeatured"
-            class="animate-skeleton rounded-md h-4 md:h-5 w-4/5"
-          />
+  <!-- 普通卡片骨架 -->
+  <div
+    v-else
+    class="flex flex-col rounded-2xl overflow-hidden bg-white shadow-card-subtle"
+  >
+    <!-- 封面骨架 -->
+    <div class="aspect-[16/10] animate-skeleton shrink-0" />
+
+    <!-- 内容骨架 -->
+    <div class="flex flex-col p-4 md:p-5 space-y-3">
+      <!-- 标题骨架 -->
+      <div class="space-y-2">
+        <div class="h-5 animate-skeleton rounded-lg" />
+        <div class="h-5 animate-skeleton rounded-lg w-4/5" />
+      </div>
+      <!-- 摘要骨架 -->
+      <div class="space-y-1.5">
+        <div class="h-3.5 animate-skeleton rounded-md" />
+        <div class="h-3.5 animate-skeleton rounded-md w-5/6" />
+      </div>
+      <!-- 底部信息骨架 -->
+      <div class="flex items-center justify-between pt-3 border-t border-gray-100/80">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-full animate-skeleton shrink-0" />
+          <div class="h-3.5 w-16 animate-skeleton rounded-md" />
+          <div class="h-3.5 w-2 animate-skeleton rounded-full" />
+          <div class="h-3.5 w-20 animate-skeleton rounded-md" />
         </div>
-
-        <!-- 底部信息骨架 -->
-        <div class="flex items-center gap-3 md:gap-4 pt-2 mt-auto">
-          <div class="flex items-center gap-2">
-            <div class="w-5 h-5 rounded-full animate-skeleton" />
-            <div class="w-16 h-4 animate-skeleton rounded-md" />
-          </div>
-          <div class="w-16 h-4 animate-skeleton rounded-md" />
-          <div class="w-20 h-4 animate-skeleton rounded-md" />
-        </div>
+        <div class="h-3.5 w-12 animate-skeleton rounded-md" />
       </div>
     </div>
   </div>

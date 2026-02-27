@@ -187,8 +187,8 @@ cd star-blog-web
 pnpm install
 
 # 3. 配置环境变量
-# 复制.env.example为.env并配置相关参数
-cp .env.example .env
+# 使用开发配置即可，一般不需要修改
+.env.development
 
 # 4. 启动开发服务器
 pnpm dev
@@ -233,7 +233,7 @@ VITE_OSS_URL=https://your-oss-domain.com       # OSS服务地址
 
 ## ⭐ Star
 
-本人也是深受开源项目启发，因此本项目也是选择开源，希望能给更多朋友带来一点点启发。
+本人也是得到很多开源项目的帮助，因此本项目也是选择开源，希望能给更多朋友带来一点点启发。
 如果这个项目对你有帮助，欢迎 Star 支持！
 
 ---

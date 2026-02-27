@@ -14,6 +14,13 @@ const router = useRouter();
 const appSettingsStore = useAppSettingsStore();
 const contentLoading = ref(true);
 
+// 估算阅读时间（按300字/分钟计算）
+const readTime = computed(() => {
+  const charCount = (props.articleDetail?.content?.length ?? 0);
+  const mins = Math.max(1, Math.ceil(charCount / 300));
+  return `${mins} 分钟`;
+});
+
 // 创建内容的本地副本，避免直接修改 prop
 const localContent = ref('');
 
@@ -77,7 +84,7 @@ function goBack() {
     </h1>
 
     <!-- 文章元信息 -->
-    <div class="flex flex-wrap justify-center gap-3 border-b border-solid border-[#eee] pb-4 text-sm text-gray-600">
+    <div class="flex flex-wrap justify-center gap-4 border-b border-solid border-[#eee] pb-4 text-sm text-gray-600">
       <ElTag v-if="articleDetail.top" type="danger">
         置顶
       </ElTag>
@@ -105,6 +112,11 @@ function goBack() {
           <Clock />
         </ElIcon>
         {{ formatRelativeTime(articleDetail.publishTime) }}
+      </span>
+
+      <span class="flex items-center gap-1">
+        约
+        {{ readTime }}
       </span>
     </div>
 

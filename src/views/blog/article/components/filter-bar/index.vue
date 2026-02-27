@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
+import { Filter, Search } from '@element-plus/icons-vue';
 
 defineOptions({
   name: 'FilterBar',
@@ -24,10 +24,8 @@ interface Emits {
   (e: 'search', keyword: string): void;
 }
 
-// 搜索关键词
 const searchKeyword = ref('');
 
-// 排序选项
 const sortOptions = [
   { label: '最新发布', value: 'publishTime:desc' },
   { label: '最早发布', value: 'publishTime:asc' },
@@ -35,103 +33,173 @@ const sortOptions = [
   { label: '最少浏览', value: 'viewCount:asc' },
 ];
 
-/**
- * 选择分类
- */
 function selectCategory(categoryValue: string) {
   emit('update:currentCategory', categoryValue);
 }
 
-/**
- * 选择排序
- */
 function selectSort(sortValue: string) {
   emit('update:currentSort', sortValue);
 }
 
-/**
- * 执行搜索
- */
 function handleSearch() {
   emit('search', searchKeyword.value);
 }
 </script>
 
 <template>
-  <div class="neumorphic rounded-lg md:rounded-xl p-4 md:p-6 space-y-4">
-    <!-- 搜索栏和排序 -->
-    <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-4">
-      <div class="flex-1 max-w-full md:max-w-2xl">
+  <div class="glass-filter rounded-2xl p-5 md:p-6 space-y-5">
+    <!-- 顶部：搜索 + 排序 -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+      <!-- 搜索框 -->
+      <div class="flex-1 search-glow rounded-xl overflow-hidden transition-all duration-300">
         <ElInput
           v-model="searchKeyword"
           placeholder="搜索文章标题..."
           size="large"
           clearable
-          class="neumorphic-input"
+          class="search-input-override"
           @keyup.enter="handleSearch"
         >
           <template #prefix>
-            <ElIcon class="text-mint-600">
+            <ElIcon>
               <Search />
             </ElIcon>
           </template>
           <template #append>
-            <ElButton
-              class="bg-mint-500! hover:bg-mint-600! text-white! border-none!"
+            <button
+              class="px-4 h-full text-white text-sm font-medium cursor-pointer bg-gradient-to-br from-teal-500 to-teal-700 transition-all duration-200 active:scale-95"
               @click="handleSearch"
             >
               搜索
-            </ElButton>
+            </button>
           </template>
         </ElInput>
       </div>
 
-      <!-- 排序选择 -->
-      <ElSelect
-        :model-value="currentSort"
-        placeholder="排序方式"
-        size="large"
-        class="w-full md:w-40!"
-        @update:model-value="selectSort"
-      >
-        <ElOption
-          v-for="option of sortOptions"
-          :key="option.value"
-          :label="option.label"
-          :value="option.value"
-        />
-      </ElSelect>
+      <!-- 排序选择器 -->
+      <div class="w-full sm:w-40 shrink-0">
+        <ElSelect
+          :model-value="currentSort"
+          placeholder="排序方式"
+          size="large"
+          class="w-full sort-select-override"
+          @update:model-value="selectSort"
+        >
+          <template #prefix>
+            <ElIcon>
+              <Filter />
+            </ElIcon>
+          </template>
+          <ElOption
+            v-for="option of sortOptions"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value"
+          />
+        </ElSelect>
+      </div>
     </div>
 
-    <!-- 分类标签栏 -->
-    <div class="flex items-center gap-2 md:gap-3 overflow-x-auto custom-scrollbar pb-2">
-      <button
-        class="px-3 md:px-4 py-2 cursor-pointer rounded-full font-medium text-xs md:text-sm whitespace-nowrap transition-all duration-300 gpu-accelerate"
-        :class="[
-          props.currentCategory === ''
-            ? 'neumorphic-inset bg-mint-500 text-white'
-            : 'neumorphic-sm text-gray-600 hover:text-mint-700 hover:scale-105',
-        ]"
-        @click="selectCategory('')"
-      >
-        全部
-      </button>
-      <button
-        v-for="category of props.categories"
-        :key="category.value"
-        class="px-3 md:px-4 py-2 cursor-pointer rounded-full font-medium text-xs md:text-sm whitespace-nowrap transition-all duration-300 gpu-accelerate"
-        :class="[
-          props.currentCategory === category.value
-            ? 'neumorphic-inset bg-mint-500 text-white'
-            : 'neumorphic-sm text-gray-600 hover:text-mint-700 hover:scale-105',
-        ]"
-        @click="selectCategory(category.value as string)"
-      >
-        {{ category.label }}
-      </button>
+    <!-- 分类导航栏 -->
+    <div class="relative">
+      <!-- 左右渐变蒙版 -->
+      <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/60 to-transparent z-10 pointer-events-none" />
+      <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/60 to-transparent z-10 pointer-events-none" />
+
+      <div class="flex items-center gap-2 overflow-x-auto pb-0.5 px-1 scrollbar-none">
+        <!-- 全部 -->
+        <button
+          class="shrink-0 px-4 py-2 rounded-xl font-medium text-xs md:text-sm whitespace-nowrap cursor-pointer transition-all duration-250 select-none"
+          :class="props.currentCategory === '' ? 'category-active' : 'category-default'"
+          @click="selectCategory('')"
+        >
+          全部
+        </button>
+
+        <!-- 分隔线 -->
+        <div class="h-5 w-px bg-mint-200/60 shrink-0 mx-0.5" />
+
+        <!-- 动态分类 -->
+        <button
+          v-for="category of props.categories"
+          :key="category.value"
+          class="shrink-0 px-4 py-2 rounded-xl font-medium text-xs md:text-sm whitespace-nowrap cursor-pointer transition-all duration-250 select-none"
+          :class="props.currentCategory === category.value ? 'category-active' : 'category-default'"
+          @click="selectCategory(category.value as string)"
+        >
+          {{ category.label }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+/* 隐藏滚动条但保留滚动功能 */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* 筛选提示过渡 */
+.filter-hint-enter-active,
+.filter-hint-leave-active {
+  transition: all 0.25s ease;
+}
+.filter-hint-enter-from,
+.filter-hint-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* 覆盖 Element Plus 搜索框样式 */
+:deep(.search-input-override) {
+  .el-input__wrapper {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    box-shadow: none;
+    border-radius: 12px 0 0 12px;
+
+    &:hover {
+      border-color: rgba(20, 184, 166, 0.4);
+    }
+
+    &.is-focus {
+      border-color: rgba(20, 184, 166, 0.6);
+      background: rgba(255, 255, 255, 0.95);
+    }
+  }
+
+  .el-input-group__append {
+    background: transparent;
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+    overflow: hidden;
+    padding: 0;
+
+    button {
+      height: 40px;
+    }
+  }
+}
+
+/* 覆盖排序下拉框样式 */
+:deep(.sort-select-override) {
+  .el-select__wrapper {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    box-shadow: none;
+    border-radius: 12px;
+
+    &:hover {
+      border-color: rgba(20, 184, 166, 0.4);
+    }
+
+    &.is-focused {
+      border-color: rgba(20, 184, 166, 0.6);
+    }
+  }
+}
 </style>
