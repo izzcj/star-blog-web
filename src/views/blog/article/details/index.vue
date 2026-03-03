@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 // 滚动动画
-const { observeElements, scaleInConfig, fadeInLeftConfig, fadeInRightConfig } = useScrollAnimation();
+const { observeElements, fadeInLeftConfig, fadeInRightConfig } = useScrollAnimation();
 
 const articleDetail = ref<ArticleDetail>();
 const appSettingsStore = useAppSettingsStore();
@@ -35,12 +35,6 @@ function initEnterAnimations() {
       // 作者信息淡入左移
       observeElements('#author-sidebar-col > *', {
         ...fadeInLeftConfig,
-        delay: stagger(100),
-      });
-
-      // 文章内容缩放淡入
-      observeElements('#article-content-col > *', {
-        ...scaleInConfig,
         delay: stagger(100),
       });
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Message } from '@element-plus/icons-vue';
+import { Icon } from '@iconify/vue';
 import { asyncRequest } from '@/utils/request-util';
 import userProfileApiModule from '@/api/user-profile';
 
@@ -54,6 +55,28 @@ onMounted(() => {
           </ElIcon>
           <span class="font-medium">{{ masterInfo.email }}</span>
         </div>
+        <div class="flex items-center gap-3 mt-3">
+          <a
+            href="https://github.com/izzcj"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="git-link"
+          >
+            <ElIcon size="20">
+              <Icon icon="ant-design:github-filled" />
+            </ElIcon>
+          </a>
+          <a
+            href="https://gitee.com/izzcj"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="git-link"
+          >
+            <ElIcon size="20">
+              <Icon icon="ri:gitee-fill" />
+            </ElIcon>
+          </a>
+        </div>
       </div>
     </ElCard>
   </div>
@@ -106,6 +129,25 @@ onMounted(() => {
   }
   100% {
     background-position: var(--shine-distance);
+  }
+}
+
+.git-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  padding: 6px 14px;
+  background-color: #f5f7fa;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #e8ebf0;
+    color: #409eff;
   }
 }
 

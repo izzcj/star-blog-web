@@ -124,7 +124,7 @@ function goBack() {
       v-if="articleDetail.summary"
       class="mt-6 px-5 py-4 text-gray-400 text-sm italic leading-relaxed border-l-2 border-gray-300 bg-gradient-to-r from-gray-50 to-transparent"
     >
-      {{ articleDetail.summary }}
+      <TextGenerateEffect :words="articleDetail.summary" :duration="2" />
     </div>
 
     <!-- 封面图 -->

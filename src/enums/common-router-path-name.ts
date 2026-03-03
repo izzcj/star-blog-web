@@ -26,6 +26,10 @@ enum CommonRouterPathName {
    * 单点登录页面
    */
   SSO_LOGIN = 'ssoLogin',
+  /**
+   * 起始页
+   */
+  START = 'start',
 }
 
 export default CommonRouterPathName;

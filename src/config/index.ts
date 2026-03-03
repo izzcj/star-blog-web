@@ -16,7 +16,7 @@ export default {
   /**
    * API Token过期结果码
    */
-  apiTokenExpiredCode: 1008,
+  apiTokenExpiredCode: 410,
   /**
    * 允许的路由路径（无需登录）
    */

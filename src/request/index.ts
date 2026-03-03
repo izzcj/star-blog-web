@@ -162,7 +162,7 @@ async function handleApiError(code: number, message: string, method: string, uri
       infoNotification('登录已失效！');
       authenticationStore.clearAuthentication();
       await router.replace({
-        name: CommonRouterPathName.LOGIN,
+        name: CommonRouterPathName.HOME,
         query: noRedirectRoutePaths.includes(pathTokens[0] as CommonRouterPath)
           ? undefined
           : {

@@ -22,6 +22,10 @@ enum CommonRouterPath {
    * 重定向页面
    */
   REDIRECT = '/redirect',
+  /**
+   * 起始页
+   */
+  START = '/start',
 }
 
 export default CommonRouterPath;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { Back, Check, Refresh } from '@element-plus/icons-vue';
+import { Back, Check, Refresh, Setting } from '@element-plus/icons-vue';
 import articleApiModule from '@/api/blog/article';
 import tagApiModule from '@/api/blog/tag';
 import { asyncRequest } from '@/utils/request-util';
@@ -19,6 +19,7 @@ const router = useRouter();
 
 const formRef = ref<FormInstance>();
 const loading = ref(false);
+const drawerVisible = ref(false);
 
 const initialFormData: Omit<ArticleDetail, 'categoryName' | 'viewCount' | 'publishTime' | 'createBy' | 'createByName' | 'tags'> & { tagIds: string[] } = {
   id: '',
@@ -149,116 +150,121 @@ function handleBack() {
 </script>
 
 <template>
-  <ElCard shadow="never" body-class="max-h-[80dvh] custom-scrollbar overflow-y-auto">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <ElButton :icon="Back" text @click="handleBack" />
+  <div>
+    <ElForm
+      ref="formRef"
+      :model="articleForm"
+      :rules="rules"
+      hide-required-asterisk
+    >
+      <!-- 顶部工具栏 -->
+      <div class="flex py-4 pr-5 items-center justify-between">
+        <div class="flex items-center">
+          <ElButton :icon="Back" text circle @click="handleBack" />
+          <ElFormItem prop="title" class="!mb-0 !rounded-3xl">
+            <ElInput
+              v-model="articleForm.title"
+              class="article-title-input !w-lg"
+              placeholder="输入文章标题..."
+              size="large"
+            />
+          </ElFormItem>
         </div>
-        <div>
+        <div class="flex items-center gap-2">
           <ElButton
-            type="primary"
-            :icon="Check"
-            :loading="loading"
-            @click="submitForm"
+            :icon="Setting"
+            round
+            @click="drawerVisible = true"
           >
-            保存
+            文章设置
           </ElButton>
-          <ElPopconfirm title="未保存数据将会丢失，确认清空吗？" placement="top" @confirm="resetForm">
+          <ElPopconfirm title="未保存数据将会丢失，确认清空吗？" placement="bottom-end" @confirm="resetForm">
             <template #reference>
-              <ElButton :icon="Refresh" class="ml-2">
+              <ElButton :icon="Refresh" round>
                 清空
               </ElButton>
             </template>
           </ElPopconfirm>
+          <ElButton
+            type="primary"
+            :icon="Check"
+            :loading="loading"
+            round
+            @click="submitForm"
+          >
+            保存
+          </ElButton>
         </div>
       </div>
-    </template>
 
-    <div>
-      <ElForm
-        ref="formRef"
-        :model="articleForm"
-        :rules="rules"
-        label-width="80px"
-        class="max-w-[80%] mx-auto"
+      <!-- 编辑器主体区域 -->
+      <ElFormItem prop="content">
+        <VenusByteMdEditor v-model:value="articleForm.content" />
+      </ElFormItem>
+
+      <!-- 文章设置抽屉 -->
+      <ElDrawer
+        v-model="drawerVisible"
+        title="文章设置"
+        direction="rtl"
+        size="600px"
+        :append-to-body="true"
       >
-        <ElRow :guid="20">
-          <ElCol :span="8">
-            <!-- 标题 -->
-            <ElFormItem label="标题" prop="title">
-              <ElInput
-                v-model="articleForm.title"
-                placeholder="请输入标题"
-                clearable
-              />
-            </ElFormItem>
-          </ElCol>
-          <ElCol :span="8">
-            <!-- 分类 -->
-            <ElFormItem label="分类" prop="category">
-              <VenusSelect
-                v-model:value="articleForm.category"
-                :option-type="DataOptionType.DICT"
-                option-key="article-category"
-                placeholder="请选择分类"
-              />
-            </ElFormItem>
-          </ElCol>
-          <ElCol :span="8">
-            <!-- 标签 -->
-            <ElFormItem label="标签" prop="tags">
-              <VenusSelect
-                v-model:value="articleForm.tagIds"
-                :option-type="DataOptionType.CONST"
-                :option-key="tagOptions"
-                placeholder="请选择标签"
-                multiple
-                collapse-tags
-                collapse-tags-tooltip
-              />
-            </ElFormItem>
-          </ElCol>
-        </ElRow>
+        <div class="py-0 px-4">
+          <ElRow :guid="20">
+            <ElCol :span="12">
+              <!-- 分类 -->
+              <ElFormItem label="分类" prop="category" class="w-11/12">
+                <VenusSelect
+                  v-model:value="articleForm.category"
+                  :option-type="DataOptionType.DICT"
+                  option-key="article-category"
+                  placeholder="请选择分类"
+                />
+              </ElFormItem>
+            </ElCol>
+            <ElCol :span="12">
+              <!-- 标签 -->
+              <ElFormItem label="标签" prop="tags" class="w-11/12">
+                <VenusSelect
+                  v-model:value="articleForm.tagIds"
+                  :option-type="DataOptionType.CONST"
+                  :option-key="tagOptions"
+                  placeholder="请选择标签"
+                  multiple
+                  collapse-tags
+                  collapse-tags-tooltip
+                />
+              </ElFormItem>
+            </ElCol>
+          </ElRow>
 
-        <ElRow :guid="20">
-          <ElCol :span="8">
-            <ElFormItem label="置顶" prop="top">
-              <ElSwitch v-model="articleForm.top" />
-            </ElFormItem>
-          </ElCol>
-          <ElCol :span="8">
-            <ElFormItem label="推荐" prop="recommended">
-              <ElSwitch v-model="articleForm.recommended" />
-            </ElFormItem>
-          </ElCol>
-        </ElRow>
+          <!-- 封面图 -->
+          <ElFormItem label="封面" prop="coverImage">
+            <VenusUpload v-model:value="articleForm.coverImage" />
+          </ElFormItem>
 
-        <!-- 摘要 -->
-        <ElFormItem label="摘要" prop="summary">
-          <ElInput
-            v-model="articleForm.summary"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入摘要"
-            maxlength="200"
-            show-word-limit
-          />
-        </ElFormItem>
-
-        <!-- 封面图 -->
-        <ElFormItem label="封面图">
-          <VenusUpload v-model:value="articleForm.coverImage" />
-        </ElFormItem>
-
-        <!-- 内容 -->
-        <ElFormItem class="" label="内容" prop="content">
-          <VenusByteMdEditor v-model:value="articleForm.content" />
-        </ElFormItem>
-      </ElForm>
-    </div>
-  </ElCard>
+          <!-- 摘要 -->
+          <ElFormItem label="摘要" prop="summary">
+            <ElInput
+              v-model="articleForm.summary"
+              type="textarea"
+              :rows="4"
+              placeholder="请输入文章摘要..."
+              maxlength="200"
+              show-word-limit
+            />
+          </ElFormItem>
+        </div>
+      </ElDrawer>
+    </ElForm>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.article-title-input {
+  :deep(.el-input__wrapper) {
+    border-radius: 30px;
+  }
+}
 </style>

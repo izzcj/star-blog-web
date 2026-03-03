@@ -11,6 +11,18 @@ import CommonRouterPathName from '@/enums/common-router-path-name';
  * @since 2024/8/30
  */
 const commonRouter: RouteRecordRaw[] = [
+  // 起始页（独立全屏，无导航栏/页脚）
+  {
+    path: CommonRouterPath.START,
+    name: CommonRouterPathName.START,
+    component: () => import('@/views/start/index.vue'),
+    meta: {
+      title: '起始页',
+      keepAlive: false,
+      topLevel: true,
+      icon: 'svg:search',
+    },
+  },
   // 登录
   {
     path: CommonRouterPath.LOGIN,

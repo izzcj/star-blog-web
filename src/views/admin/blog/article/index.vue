@@ -177,7 +177,6 @@ function deleteArticle(article: Article) {
                 :option-type="DataOptionType.DICT"
                 option-key="article-category"
                 placeholder="请选择分类"
-                clearable
               />
             </ElFormItem>
             <ElFormItem label="状态">
@@ -186,7 +185,6 @@ function deleteArticle(article: Article) {
                 :option-type="DataOptionType.ENUM"
                 option-key="com.ale.starblog.admin.blog.enums.ArticleStatus"
                 placeholder="请选择状态"
-                clearable
               />
             </ElFormItem>
           </div>
