@@ -27,7 +27,7 @@ defineProps<{
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:hidden" />
   </div>
 
-  <div v-else class="relative overflow-hidden">
+  <div v-else class="relative overflow-hidden aspect-[16/10]">
     <VenusImage
       :src="article.coverImage"
       :alt="article.title"
@@ -41,7 +41,7 @@ defineProps<{
     >
       <span
         v-if="article.top"
-        class="badge-top"
+        class="badge-top-bg"
       >
         <ElIcon :size="12">
           <Top />
@@ -51,7 +51,7 @@ defineProps<{
 
       <span
         v-if="article.recommended"
-        class="badge-rec"
+        class="badge-rec-bg"
       >
         <ElIcon :size="12">
           <Star />

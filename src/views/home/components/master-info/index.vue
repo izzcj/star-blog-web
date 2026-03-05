@@ -46,9 +46,9 @@ onMounted(() => {
         <p ref="textShineRef" class="mb-3 text-xl text-shine">
           {{ masterInfo.nickname }}
         </p>
-        <p class="mb-4 text-[14px] leading-normal text-[#666] max-w-[200px]">
-          {{ masterInfo.remark }}
-        </p>
+        <div v-if="masterInfo.remark" class="mb-4 text-[14px] leading-normal text-[#666] max-w-[200px]">
+          <TextGenerateEffect :words="masterInfo.remark" :duration="3" />
+        </div>
         <div class="group flex items-center gap-1.5 text-sm text-gray-500 px-4 py-2 bg-gray-100 rounded-full transition duration-200 hover:bg-gray-200 hover:text-blue-500">
           <ElIcon :size="16" class="text-gray-500 transition-colors duration-200 group-hover:text-blue-500">
             <Message />

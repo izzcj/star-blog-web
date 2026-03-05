@@ -48,10 +48,7 @@ function getAvatarClass(isFeatured: boolean) {
     </div>
 
     <!-- 阅读量 -->
-    <div
-      v-if="article.viewCount"
-      class="ml-auto flex items-center gap-1 text-xs md:text-gray-400 text-white/70"
-    >
+    <div class="ml-auto flex items-center gap-1 text-xs md:text-gray-400 text-white/70">
       <ElIcon>
         <View />
       </ElIcon>
@@ -77,10 +74,7 @@ function getAvatarClass(isFeatured: boolean) {
       </span>
     </div>
 
-    <div
-      v-if="article.viewCount"
-      class="flex items-center gap-1 text-xs text-gray-400"
-    >
+    <div class="flex items-center gap-1 text-xs text-gray-400">
       <ElIcon><View /></ElIcon>
       {{ formatViewCount(article.viewCount) }}
     </div>

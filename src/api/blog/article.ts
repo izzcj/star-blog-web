@@ -55,7 +55,7 @@ const articleApiModule: ApiModule = {
      * 切换推荐状态
      */
     toggleRecommend: {
-      uri: '/blog/article/{id}/toggle-recommended',
+      uri: '/blog/article/{id}/toggle-recommend',
       method: RequestMethod.PUT,
     },
     /**

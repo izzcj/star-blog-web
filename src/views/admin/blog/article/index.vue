@@ -117,7 +117,7 @@ const toggleTop = debounce((article: Article) => {
   })
     .then(() => {
       successNotification(
-        `${article.top ? '取消置顶' : '置顶'}成功`,
+        `${article.top ? '置顶' : '取消置顶'}成功`,
         '成功',
       );
       loadArticleList();
@@ -137,7 +137,7 @@ const toggleRecommend = debounce((article: Article) => {
   })
     .then(() => {
       successNotification(
-        `${article.recommended ? '取消推荐' : '推荐'}成功`,
+        `${article.recommended ? '推荐' : '取消推荐'}成功`,
         '成功',
       );
       loadArticleList();

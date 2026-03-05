@@ -25,8 +25,8 @@ const titleClass = computed(() =>
 // 摘要样式
 const summaryClass = computed(() =>
   props.isFeatured
-    ? 'text-sm md:text-base leading-relaxed line-clamp-3 mb-4 flex-1 md:text-gray-500 text-white/75'
-    : 'text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3 flex-1',
+    ? 'md:text-base leading-relaxed line-clamp-3 mb-4 md:text-gray-500 text-white/75'
+    : 'text-gray-400 line-clamp-2 leading-relaxed mb-3',
 );
 
 /**
@@ -67,16 +67,17 @@ function clickArticle(article: ArticleDetail) {
         {{ article.title }}
       </h2>
 
-      <!-- 摘要 -->
-      <p v-if="article.summary" :class="summaryClass">
-        {{ article.summary }}
-      </p>
+      <!-- 摘要 + 底部信息（整体贴底对齐） -->
+      <div class="mt-auto">
+        <p v-if="article.summary" class="text-sm" :class="summaryClass">
+          {{ article.summary }}
+        </p>
 
-      <!-- 底部信息 -->
-      <ArticleCardMeta
-        :article="article"
-        :is-featured="isFeatured"
-      />
+        <ArticleCardMeta
+          :article="article"
+          :is-featured="isFeatured"
+        />
+      </div>
     </div>
 
     <!-- 阅读按钮（仅精选） -->
