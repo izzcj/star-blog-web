@@ -153,7 +153,7 @@ function goBack() {
 
     <!-- 评论区 -->
     <div class="mt-4">
-      <CommentSection :article-id="articleDetail.id" />
+      <CommentSection :article-id="articleDetail.id" :author-id="articleDetail.createBy" />
     </div>
   </div>
 </template>

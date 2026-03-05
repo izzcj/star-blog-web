@@ -13,6 +13,8 @@ interface CommentItemProps {
   comment: CommentDetail;
   // 文章ID
   articleId: string;
+  // 文章作者ID
+  authorId: string;
   // 回复数
   replyCount: number;
 }
@@ -139,8 +141,9 @@ function handleReplyCountChange(count: number) {
 
       <ElCol :span="22">
         <!-- 用户名 -->
-        <div class="mb-1">
+        <div class="flex items-center gap-1.5 mb-1">
           <span class="font-semibold text-sm text-gray-400">{{ localComment.userNickname }}</span>
+          <span v-if="localComment.userId === authorId" class="text-[10px] leading-none px-1.5 py-0.5 rounded bg-gray-300 text-primary font-medium">作者</span>
         </div>
 
         <!-- 评论内容 -->
@@ -192,6 +195,7 @@ function handleReplyCountChange(count: number) {
       v-if="showReplySection"
       :comment-id="comment.id as string"
       :article-id="articleId"
+      :author-id="authorId"
       :reply-count="replyCount"
       :show-input="showReplyInput"
       @reply-count-change="handleReplyCountChange"

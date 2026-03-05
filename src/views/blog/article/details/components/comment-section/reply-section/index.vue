@@ -11,6 +11,8 @@ interface ReplySectionProps {
   commentId: string;
   // 文章ID
   articleId: string;
+  // 文章作者ID
+  authorId: string;
   // 回复数量
   replyCount: number | string;
   // 是否显示输入框
@@ -161,6 +163,7 @@ onMounted(() => {
         :key="reply.id"
         :reply="reply"
         :article-id="articleId"
+        :author-id="authorId"
         :root-comment-id="commentId"
         @reply="handleReplyClick"
       />

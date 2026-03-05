@@ -8,6 +8,8 @@ import { errorNotification, successNotification } from '@/element-plus/notificat
 interface CommentSectionProps {
   // 文章ID
   articleId: string;
+  // 文章作者ID
+  authorId: string;
 }
 
 defineOptions({
@@ -117,6 +119,7 @@ onMounted(() => {
         :key="comment.id"
         :comment="comment"
         :article-id="articleId"
+        :author-id="authorId"
         :reply-count="comment.replyCount"
       />
     </div>

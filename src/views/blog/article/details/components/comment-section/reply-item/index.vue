@@ -11,6 +11,8 @@ interface ReplyItemProps {
   reply: CommentDetail;
   // 文章ID
   articleId: string;
+  // 文章作者ID
+  authorId: string;
   // 根评论ID
   rootCommentId: string;
 }
@@ -104,8 +106,9 @@ function handleReply() {
 
       <ElCol :xs="20" :sm="22">
         <!-- 用户名 -->
-        <div class="flex items-center gap-2 mb-1">
+        <div class="flex items-center gap-1.5 mb-1">
           <span class="font-semibold text-sm text-gray-400">{{ localReply.userNickname }}</span>
+          <span v-if="localReply.userId === authorId" class="text-[10px] leading-none px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">作者</span>
         </div>
 
         <!-- 回复内容 -->
