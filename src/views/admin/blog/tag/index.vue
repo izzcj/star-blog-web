@@ -34,7 +34,7 @@ const formRef = ref();
 const formData = ref<Tag>({
   name: '',
   icon: '',
-  color: '#409EFF',
+  color: 'rgba(255,255,255,0)',
   description: '',
 } as Tag);
 
@@ -103,7 +103,7 @@ function handleAddTag() {
   formData.value = {
     name: '',
     icon: '',
-    color: '#409EFF',
+    color: 'rgba(255,255,255,0)',
     description: '',
   } as Tag;
   dialogVisible.value = true;

@@ -8,7 +8,7 @@ defineOptions({
 });
 
 defineProps<{
-  article: ArticleDetail;
+  article: Article;
   isFeatured?: boolean;
 }>();
 

@@ -6,7 +6,7 @@ defineOptions({
 });
 
 defineProps<{
-  article: ArticleDetail;
+  article: Article;
   isFeatured?: boolean;
 }>();
 </script>
@@ -37,11 +37,11 @@ defineProps<{
     <!-- 右上角标签 -->
     <div
       v-if="article.top || article.recommended"
-      class="absolute top-3 right-3 flex flex-col gap-1.5"
+      class="absolute top-3 right-3 flex gap-2"
     >
       <span
         v-if="article.top"
-        class="badge-top-bg"
+        class="px-2.5 py-1 rounded-lg text-xs font-semibold badge-top-bg"
       >
         <ElIcon :size="12">
           <Top />
@@ -51,12 +51,12 @@ defineProps<{
 
       <span
         v-if="article.recommended"
-        class="badge-rec-bg"
+        class="px-2.5 py-1 rounded-lg text-xs font-semibold badge-rec-bg"
       >
         <ElIcon :size="12">
           <Star />
         </ElIcon>
-        精选
+        推荐
       </span>
     </div>
   </div>

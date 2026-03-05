@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { DArrowRight } from '@element-plus/icons-vue';
 import ArticleCardCover from './cover/index.vue';
-import ArticleCardTag from './tag/index.vue';
 import ArticleCardMeta from './meta/index.vue';
 
 defineOptions({
@@ -9,7 +8,7 @@ defineOptions({
 });
 
 const props = defineProps<{
-  article: ArticleDetail;
+  article: Article;
   isFeatured?: boolean;
 }>();
 
@@ -34,7 +33,7 @@ const summaryClass = computed(() =>
  *
  * @param article 文章
  */
-function clickArticle(article: ArticleDetail) {
+function clickArticle(article: Article) {
   router.push({
     name: 'ArticleDetails',
     params: { id: article.id },
@@ -56,8 +55,15 @@ function clickArticle(article: ArticleDetail) {
       class="relative z-10 flex flex-col"
       :class="isFeatured ? 'p-6 md:p-8 md:w-[52%]' : 'p-4 md:p-5 flex-1'"
     >
-      <!-- 标签 -->
-      <ArticleCardTag :article="article" :is-featured="isFeatured" />
+      <!-- 分类 -->
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span
+          v-if="article.categoryName"
+          class="px-2.5 py-1 rounded-lg text-xs font-semibold tag-mint"
+        >
+          {{ article.categoryName }}
+        </span>
+      </div>
 
       <!-- 标题 -->
       <h2

@@ -547,14 +547,32 @@
   border: 1px solid rgba(20, 184, 166, 0.25);
 }
 
-/* 置顶标识背景 */
+/* 置顶标识（封面图上，高对比度玻璃态） */
 @utility badge-top-bg {
-  background: rgba(234, 88, 12, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(248, 52, 52, 0.82);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* 精选标识背景 */
+/* 精选标识（封面图上，高对比度玻璃态） */
 @utility badge-rec-bg {
-  background: rgba(20, 184, 166, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(26, 113, 225, 0.82);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 卡片底部渐变进度条 */
