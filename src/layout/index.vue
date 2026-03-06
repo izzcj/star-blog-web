@@ -88,7 +88,7 @@ onMounted(() => {
     <Loading />
 
     <!-- 背景图 -->
-    <VenusImage class="h-dvh w-dvw fixed!" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
+    <VenusImage class="h-dvh w-dvw fixed! pointer-events-none" :src="backgroundImage" fit="cover" :z-index="-1" alt="背景图" />
 
     <!-- 页面主体 -->
     <ElContainer v-if="isLoaded" class="h-dvh w-dvw relative">
