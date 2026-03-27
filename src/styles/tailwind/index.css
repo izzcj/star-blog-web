@@ -308,15 +308,6 @@
   }
 }
 
-/* 渐变遮罩覆盖 */
-@utility gradient-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
-}
 
 /* 分类标签色彩系统 */
 @utility tag-mint {

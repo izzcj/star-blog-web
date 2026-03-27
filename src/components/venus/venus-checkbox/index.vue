@@ -10,7 +10,7 @@ const props = defineProps({
   ...venusCheckboxProps,
 });
 
-const model = defineModel<string[] | number[] | null>('value', { type: Array });
+const model = defineModel<string[] | number[] | undefined>('value', { type: Array });
 
 const optionType = computed(() => props.optionType);
 const optionKey = computed(() => props.optionKey);

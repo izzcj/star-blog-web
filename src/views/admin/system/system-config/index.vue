@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Check, Delete, Plus } from '@element-plus/icons-vue';
 import type { FormRules } from 'element-plus';
-import type { SystemConfig } from './metadata';
 import ConfigItem from './components/config-item.vue';
 import { useLoadDataOptions } from '@/uses/use-data-options';
 import DataOptionType from '@/enums/data-option-type';

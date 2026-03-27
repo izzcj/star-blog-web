@@ -2,7 +2,7 @@ import type { RouteComponent, RouteRecordRaw } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import path from 'path-browserify';
 import { startsWith } from 'lodash-es';
-import { DefaultLayout } from '@/layout/index';
+import { DefaultLayout } from '@/layout';
 import dynamicRouters from '@/router/dynamic-router';
 import { asyncRequest } from '@/utils/request-util';
 import menuApiModule from '@/api/system/menu';

@@ -106,6 +106,19 @@ const commonRouter: RouteRecordRaw[] = [
       },
     ],
   },
+  // 404
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/error/not-found.vue'),
+    meta: {
+      title: '页面不存在',
+      keepAlive: false,
+      topLevel: true,
+      hidden: true,
+    },
+  },
+
 ];
 
 export default commonRouter;
